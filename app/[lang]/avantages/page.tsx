@@ -39,12 +39,11 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
               const Icon = solIcons[i];
               return (
                 <Reveal key={s.title} delay={(i % 3) * 0.08}>
-                  <HoverLift className="glass relative h-full overflow-hidden rounded-[2rem] p-8">
-                    <div aria-hidden="true" className="absolute -right-10 -top-10 size-36 rounded-full bg-lime/60 blur-2xl dark:bg-lime/20" />
+                  <HoverLift className="glass relative h-full overflow-hidden rounded-2xl p-8">
                     <span className="relative grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
                       <Icon className="size-6" />
                     </span>
-                    <h3 className="relative mt-6 text-xl font-semibold tracking-tight">{s.title}</h3>
+                    <h3 className="relative mt-6 text-2xl tracking-tight">{s.title}</h3>
                     <p className="relative mt-2 leading-relaxed text-muted">{s.text}</p>
                   </HoverLift>
                 </Reveal>
@@ -62,12 +61,12 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
               const Icon = benIcons[i];
               return (
                 <Reveal key={b.title} delay={(i % 2) * 0.1}>
-                  <div className="glass flex h-full gap-5 rounded-[2rem] p-7">
+                  <div className="glass flex h-full gap-5 rounded-2xl p-7">
                     <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
                       <Icon className="size-6" />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold tracking-tight">{b.title}</h3>
+                      <h3 className="text-2xl tracking-tight">{b.title}</h3>
                       <p className="mt-2 leading-relaxed text-muted">{b.text}</p>
                     </div>
                   </div>
@@ -80,8 +79,8 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
 
       <section className="px-4 py-6 sm:px-6">
         <Reveal className="mx-auto max-w-6xl">
-          <div className="glass-strong rounded-[2.5rem] p-8 text-center sm:p-12">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{d.productsTitle}</h2>
+          <div className="glass-strong rounded-3xl p-8 text-center sm:p-12">
+            <h2 className="text-3xl tracking-tight sm:text-3xl">{d.productsTitle}</h2>
             <ul className="mt-8 flex flex-wrap justify-center gap-3">
               {d.products.map((p) => (
                 <li key={p} className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium">

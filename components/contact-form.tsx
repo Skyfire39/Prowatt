@@ -37,7 +37,7 @@ export function ContactForm({
       </label>
       <button
         type="submit"
-        className="group inline-flex h-12 w-fit items-center gap-2 rounded-full bg-accent px-7 text-[15px] font-medium text-on-accent shadow-lg shadow-teal/25 transition-transform hover:scale-[1.03] active:scale-95"
+        className="group inline-flex h-12 w-fit items-center gap-2 rounded-full bg-accent px-7 text-[15px] font-medium text-on-accent transition-transform hover:opacity-85"
       >
         {labels.send}
         <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />

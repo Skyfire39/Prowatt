@@ -52,15 +52,15 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
 
       <section className="px-4 py-12 sm:px-6">
         <Reveal className="mx-auto max-w-6xl">
-          <h2 className="text-center text-lg font-semibold text-muted">{dict.realisations.others}</h2>
-          <ul className="mt-5 flex flex-wrap justify-center gap-3">
+          <p className="eyebrow">{dict.realisations.others}</p>
+          <ul className="mt-5 flex flex-wrap gap-3">
             {slugs
               .filter((s) => s !== slug)
               .map((s) => (
                 <li key={s}>
                   <Link
                     href={`/${lang}/realisations/${s}`}
-                    className="glass inline-block rounded-full px-5 py-2.5 text-sm font-medium transition-transform hover:scale-[1.04]"
+                    className="glass inline-block rounded-full px-5 py-2.5 text-sm font-medium transition-transform hover:opacity-80"
                   >
                     {dict.categories[s].name}
                   </Link>

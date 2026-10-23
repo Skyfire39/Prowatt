@@ -34,13 +34,13 @@ export function Stats({ lang, labels }: { lang: Locale; labels: Home["stats"] })
   return (
     <section className="px-4 py-6 sm:px-6">
       <Reveal className="mx-auto max-w-6xl">
-        <div className="glass-strong grid divide-y divide-line rounded-[2.5rem] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <div className="grid divide-y divide-white/15 rounded-3xl bg-teal text-white sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {values.map((v, i) => (
-            <div key={labels[i]} className="px-6 py-8 text-center sm:py-10">
-              <p className="text-gradient text-5xl font-semibold tracking-tight tabular-nums sm:text-6xl">
+            <div key={labels[i]} className="px-8 py-10 sm:py-14">
+              <p className="text-7xl leading-none tracking-tight tabular-nums text-lime sm:text-8xl" style={{ fontFamily: "var(--font-display)" }}>
                 <Counter value={v} display={nf.format(v)} locale={lang} />
               </p>
-              <p className="mt-2 text-sm font-medium text-muted">{labels[i]}</p>
+              <p className="mt-4 text-sm font-medium uppercase tracking-[0.14em] text-white/70">{labels[i]}</p>
             </div>
           ))}
         </div>
@@ -51,17 +51,19 @@ export function Stats({ lang, labels }: { lang: Locale; labels: Home["stats"] })
 
 export function Mission({ dict }: { dict: Home["message"] }) {
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-28">
-      <Reveal className="mx-auto max-w-4xl text-center">
-        <QuoteIcon className="mx-auto size-10 text-accent" />
-        <p className="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-accent">
-          {dict.eyebrow}
-        </p>
-        <blockquote className="mt-5 text-balance text-3xl font-semibold leading-snug tracking-tight sm:text-4xl">
+    <section className="px-4 py-24 sm:px-6 sm:py-36">
+      <Reveal className="mx-auto max-w-5xl">
+        <p className="eyebrow">{dict.eyebrow}</p>
+        <blockquote className="mt-8 text-balance text-4xl italic leading-[1.1] tracking-tight sm:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
           « {dict.quote} »
         </blockquote>
-        <p className="mt-6 font-medium">{dict.author}</p>
-        <p className="text-sm text-muted">{dict.role}</p>
+        <p className="mt-10 flex items-center gap-4 text-sm">
+          <span className="h-px w-10 bg-ink/40" />
+          <span>
+            <span className="font-semibold">{dict.author}</span>
+            <span className="text-muted"> · {dict.role}</span>
+          </span>
+        </p>
       </Reveal>
     </section>
   );
@@ -95,15 +97,11 @@ export function Solutions({
             const Icon = blockIcons[i];
             return (
               <Reveal key={b.title} delay={i * 0.08}>
-                <HoverLift className="glass relative h-full overflow-hidden rounded-[2rem] p-8">
-                  <div
-                    aria-hidden="true"
-                    className="absolute -right-10 -top-10 size-36 rounded-full bg-lime/60 blur-2xl dark:bg-lime/20"
-                  />
+                <HoverLift className="glass relative h-full overflow-hidden rounded-2xl p-8">
                   <span className="relative grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
                     <Icon className="size-6" />
                   </span>
-                  <h3 className="relative mt-6 text-xl font-semibold tracking-tight">{b.title}</h3>
+                  <h3 className="relative mt-6 text-2xl tracking-tight">{b.title}</h3>
                   <p className="relative mt-2 leading-relaxed text-muted">{b.text}</p>
                 </HoverLift>
               </Reveal>
@@ -112,7 +110,7 @@ export function Solutions({
         </div>
 
         <Reveal className="mt-16">
-          <h3 className="text-center text-lg font-semibold text-muted">{dict.typesTitle}</h3>
+          <p className="eyebrow">{dict.typesTitle}</p>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {slugs.map((slug) => {
               const Icon = typeIcons[slug];
@@ -141,30 +139,19 @@ export function EcooterTeaser({ lang, dict }: { lang: Locale; dict: Home["ecoote
   return (
     <section className="px-4 py-12 sm:px-6">
       <Reveal className="mx-auto max-w-6xl">
-        <div className="relative overflow-hidden rounded-[2.75rem] bg-teal p-8 text-white sm:p-14 dark:bg-[#0c3a35]">
-          <div aria-hidden="true" className="absolute -left-24 -top-24 size-96 rounded-full bg-lime/30 blur-3xl" />
-          <div aria-hidden="true" className="absolute -bottom-32 right-0 size-96 rounded-full bg-lime/20 blur-3xl" />
-          <div className="relative grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-lime">
-                {dict.eyebrow}
-              </p>
-              <h2 className="text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
-                {dict.title}
-              </h2>
-              <p className="mt-5 text-lg leading-relaxed text-white/75">{dict.subtitle}</p>
-              <div className="mt-9">
-                <ButtonLink href={`/${lang}/ecooter`} variant="lime" arrow>
-                  {dict.cta}
-                </ButtonLink>
-              </div>
+        <div className="grid items-center gap-10 overflow-hidden rounded-3xl bg-teal p-8 text-white sm:p-14 lg:grid-cols-2">
+          <div>
+            <p className="eyebrow !text-lime">{dict.eyebrow}</p>
+            <h2 className="mt-5 text-balance text-5xl leading-[1] tracking-tight sm:text-6xl">{dict.title}</h2>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-white/75">{dict.subtitle}</p>
+            <div className="mt-9">
+              <ButtonLink href={`/${lang}/ecooter`} variant="lime" arrow>
+                {dict.cta}
+              </ButtonLink>
             </div>
-            <div className="relative">
-              <div className="absolute inset-6 rounded-full bg-lime/25 blur-3xl" aria-hidden="true" />
-              <div className="relative rounded-[2.25rem] border border-white/15 bg-white/10 p-6 backdrop-blur-xl">
-                <MotoArt className="w-full text-white [--moto-a:#6fd0bd] [--moto-b:#3aa592]" />
-              </div>
-            </div>
+          </div>
+          <div className="rounded-2xl bg-white/[0.07] p-6 sm:p-10">
+            <MotoArt className="w-full [--moto-a:#c8e0a2] [--moto-b:#f6f8f0] [--moto-line:#f6f8f0]" />
           </div>
         </div>
       </Reveal>
@@ -180,15 +167,15 @@ export function Steps({ dict }: { dict: Home["steps"] }) {
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
           {dict.items.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.08}>
-              <div className="glass relative h-full overflow-hidden rounded-[2rem] p-6">
+              <div className="glass relative h-full overflow-hidden rounded-2xl p-6">
                 <span
                   aria-hidden="true"
-                  className="text-gradient absolute -right-1 -top-3 text-[7rem] font-semibold leading-none opacity-30"
+                  className="absolute right-4 top-2 font-display text-[5.5rem] leading-none text-accent opacity-25"
                 >
                   {i + 1}
                 </span>
                 <LeafIcon className="relative size-6 text-accent" />
-                <h3 className="relative mt-5 text-lg font-semibold leading-snug tracking-tight">
+                <h3 className="relative mt-5 text-2xl leading-snug tracking-tight">
                   {item.title}
                 </h3>
                 <p className="relative mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
@@ -213,12 +200,12 @@ export function SolarAdvantages({ dict }: { dict: Home["advantages"] }) {
             const Icon = advIcons[i];
             return (
               <Reveal key={item.title} delay={(i % 2) * 0.1}>
-                <div className="glass flex h-full gap-5 rounded-[2rem] p-7">
+                <div className="glass flex h-full gap-5 rounded-2xl p-7">
                   <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
                     <Icon className="size-6" />
                   </span>
                   <div>
-                    <h3 className="text-xl font-semibold tracking-tight">{item.title}</h3>
+                    <h3 className="text-2xl tracking-tight">{item.title}</h3>
                     <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
                   </div>
                 </div>
@@ -243,11 +230,11 @@ export function Audiences({ dict }: { dict: Home["audiences"] }) {
             const Icon = audIcons[i];
             return (
               <Reveal key={item.title} delay={i * 0.1}>
-                <HoverLift className="glass h-full rounded-[2rem] p-8 text-center">
+                <HoverLift className="glass h-full rounded-2xl p-8 text-center">
                   <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-accent text-on-accent">
                     <Icon className="size-7" />
                   </span>
-                  <h3 className="mt-6 text-xl font-semibold tracking-tight">{item.title}</h3>
+                  <h3 className="mt-6 text-2xl tracking-tight">{item.title}</h3>
                   <p className="mt-2 text-muted">{item.text}</p>
                 </HoverLift>
               </Reveal>
@@ -267,9 +254,9 @@ export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimo
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.08}>
-              <figure className="glass flex h-full flex-col rounded-[2rem] p-7">
+              <figure className="glass flex h-full flex-col rounded-2xl p-7">
                 <QuoteIcon className="size-7 text-accent" />
-                <blockquote className="mt-4 flex-1 leading-relaxed">{tr(t.text, lang)}</blockquote>
+                <blockquote className="mt-4 flex-1 font-display text-2xl leading-snug">{tr(t.text, lang)}</blockquote>
                 <figcaption className="mt-6 flex items-center gap-3">
                   <span className="grid size-9 place-items-center rounded-full bg-accent text-sm font-semibold text-on-accent">
                     {t.name[0]}
@@ -314,12 +301,12 @@ export function Why({ dict }: { dict: Home["why"] }) {
             const Icon = whyIcons[i];
             return (
               <Reveal key={item.title} delay={(i % 2) * 0.1}>
-                <div className="glass flex h-full gap-5 rounded-[2rem] p-7">
+                <div className="glass flex h-full gap-5 rounded-2xl p-7">
                   <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
                     <Icon className="size-6" />
                   </span>
                   <div>
-                    <h3 className="text-xl font-semibold tracking-tight">{item.title}</h3>
+                    <h3 className="text-2xl tracking-tight">{item.title}</h3>
                     <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
                   </div>
                 </div>

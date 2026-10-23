@@ -29,7 +29,7 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
           <Reveal className="lg:col-span-2">
             <div className="grid gap-4">
               {infos.map((i) => (
-                <div key={i.label} className="glass flex items-start gap-4 rounded-[1.75rem] p-6">
+                <div key={i.label} className="glass flex items-start gap-4 rounded-2xl p-6">
                   <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-accent text-on-accent">
                     <i.icon className="size-5" />
                   </span>
@@ -45,7 +45,7 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
                   </div>
                 </div>
               ))}
-              <div className="glass flex items-start gap-4 rounded-[1.75rem] p-6">
+              <div className="glass flex items-start gap-4 rounded-2xl p-6">
                 <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-accent text-on-accent">
                   <ClockIcon className="size-5" />
                 </span>
@@ -62,8 +62,8 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
           </Reveal>
 
           <Reveal delay={0.1} className="lg:col-span-3">
-            <div className="glass-strong h-full rounded-[2.5rem] p-6 sm:p-10">
-              <h2 className="mb-6 text-2xl font-semibold tracking-tight">{d.formTitle}</h2>
+            <div className="glass-strong h-full rounded-3xl p-6 sm:p-10">
+              <h2 className="mb-6 text-3xl tracking-tight">{d.formTitle}</h2>
               <ContactForm
                 labels={{ name: d.name, email: d.emailField, message: d.message, send: d.send }}
                 subject={dict.form.subjectContact}

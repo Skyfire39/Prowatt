@@ -54,13 +54,9 @@ export function ProjectCard({
 
   return (
     <Reveal delay={(index % 3) * 0.08}>
-      <HoverLift className="glass relative flex h-full flex-col overflow-hidden rounded-[2rem] p-7">
-        <div
-          aria-hidden="true"
-          className="absolute -right-12 -top-12 size-40 rounded-full bg-lime/50 blur-2xl dark:bg-lime/15"
-        />
+      <HoverLift className="glass relative flex h-full flex-col overflow-hidden rounded-2xl p-7">
         <div className="relative">
-          <h3 className="text-xl font-semibold leading-snug tracking-tight">
+          <h3 className="text-2xl leading-snug tracking-tight">
             {tr(project.title, lang)}
           </h3>
           {(project.city || when) && (
@@ -82,7 +78,7 @@ export function ProjectCard({
 
         <dl className="relative mt-6 grid grid-cols-2 gap-3">
           {specs.map(([k, v]) => (
-            <div key={k} className="rounded-2xl border border-line bg-white/30 px-3.5 py-2.5 dark:bg-white/5">
+            <div key={k} className="rounded-2xl border border-line bg-canvas px-3.5 py-2.5">
               <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted">{k}</dt>
               <dd className="mt-0.5 text-[15px] font-semibold">{v}</dd>
             </div>

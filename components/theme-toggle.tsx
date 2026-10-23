@@ -21,7 +21,7 @@ export function ThemeToggle({ label }: { label: string }) {
       onClick={toggle}
       aria-label={label}
       title={label}
-      className="glass grid size-10 place-items-center rounded-full text-ink transition-transform hover:scale-105 active:scale-95"
+      className="glass grid size-10 place-items-center rounded-full text-ink transition-transform hover:opacity-85"
     >
       <SunIcon className="size-5 dark:hidden" />
       <MoonIcon className="hidden size-5 dark:block" />

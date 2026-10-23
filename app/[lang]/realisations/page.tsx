@@ -38,13 +38,12 @@ export default async function RealisationsPage({ params }: PageProps<"/[lang]/re
                 <HoverLift className="h-full">
                   <Link
                     href={`/${lang}/realisations/${slug}`}
-                    className="glass group relative flex h-full flex-col overflow-hidden rounded-[2rem] p-8"
+                    className="glass group relative flex h-full flex-col overflow-hidden rounded-2xl p-8"
                   >
-                    <div aria-hidden="true" className="absolute -right-12 -top-12 size-44 rounded-full bg-lime/60 blur-2xl dark:bg-lime/20" />
                     <span className="relative grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
                       <Icon className="size-6" />
                     </span>
-                    <h2 className="relative mt-6 text-2xl font-semibold tracking-tight">{c.name}</h2>
+                    <h2 className="relative mt-6 text-3xl tracking-tight">{c.name}</h2>
                     <p className="relative mt-2 flex-1 leading-relaxed text-muted">{c.short}</p>
                     <p className="relative mt-6 flex items-center justify-between text-sm font-medium">
                       <span className="text-muted">

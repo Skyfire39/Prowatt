@@ -59,8 +59,8 @@ export function Shop({
       </div>
 
       {shown.length === 0 ? (
-        <div className="glass mx-auto mt-12 max-w-xl rounded-[2rem] p-10 text-center">
-          <h3 className="text-xl font-semibold">{labels.emptyTitle}</h3>
+        <div className="glass mx-auto mt-12 max-w-xl rounded-2xl p-10 text-center">
+          <p className="text-2xl" style={{ fontFamily: "var(--font-display)" }}>{labels.emptyTitle}</p>
           <p className="mt-2 text-muted">{labels.emptyText}</p>
           <a
             href={contactHref}
@@ -81,16 +81,16 @@ export function Shop({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="glass flex flex-col rounded-[2rem] p-6"
+                className="glass flex flex-col rounded-2xl p-6"
               >
-                <div className="grid h-36 place-items-center rounded-2xl border border-line bg-gradient-to-br from-lime/50 to-transparent dark:from-lime/10">
+                <div className="grid h-36 place-items-center rounded-2xl border border-line bg-accent-soft">
                   <svg viewBox="0 0 120 60" className="w-28 text-accent" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
                     <path d="M10 44h100M10 30h100M34 16v40M60 16v40M86 16v40" opacity="0.5" />
                     <rect x="10" y="16" width="100" height="36" rx="4" />
                   </svg>
                 </div>
-                <h3 className="mt-5 flex-1 font-semibold leading-snug">{p.name}</h3>
-                <p className="mt-3 text-2xl font-semibold tracking-tight text-accent">{p.price}</p>
+                <h3 className="mt-5 flex-1 text-xl leading-snug">{p.name}</h3>
+                <p className="mt-3 text-3xl tracking-tight text-accent">{p.price}</p>
                 <a
                   href={mailto(`${labels.mailSubject} — ${p.name}`)}
                   className="group mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-full border border-line text-sm font-medium transition hover:border-accent hover:bg-accent-soft"

@@ -27,14 +27,14 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
         <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {ecooters.map((m, i) => (
             <Reveal key={m.id} delay={(i % 3) * 0.08}>
-              <HoverLift className="glass flex h-full flex-col overflow-hidden rounded-[2rem] p-6">
-                <div className="relative rounded-3xl border border-line bg-gradient-to-br from-lime/40 to-transparent p-5 dark:from-lime/10">
+              <HoverLift className="glass flex h-full flex-col overflow-hidden rounded-2xl p-6">
+                <div className="relative rounded-3xl border border-line bg-accent-soft">
                   <MotoArt
                     className="w-full"
-                    style={{ "--moto-a": m.hue[0], "--moto-b": m.hue[1] } as CSSProperties}
+                    style={{ "--moto-a": m.hue[1], "--moto-b": m.hue[0] } as CSSProperties}
                   />
                 </div>
-                <h2 className="mt-6 text-2xl font-semibold tracking-tight">{m.name}</h2>
+                <h2 className="mt-6 text-3xl tracking-tight">{m.name}</h2>
                 <p className="mt-2 flex-1 leading-relaxed text-muted">{tr(m.tagline, lang)}</p>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-accent">{d.onRequest}</p>
                 <div className="mt-5">
@@ -56,11 +56,11 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
               const Icon = techIcons[i];
               return (
                 <Reveal key={t.title} delay={i * 0.1}>
-                  <div className="glass h-full rounded-[2rem] p-8">
+                  <div className="glass h-full rounded-2xl p-8">
                     <span className="grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
                       <Icon className="size-6" />
                     </span>
-                    <h3 className="mt-6 text-xl font-semibold tracking-tight">{t.title}</h3>
+                    <h3 className="mt-6 text-2xl tracking-tight">{t.title}</h3>
                     <p className="mt-2 text-muted">{t.text}</p>
                   </div>
                 </Reveal>

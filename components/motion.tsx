@@ -10,7 +10,7 @@ export function MotionProvider({ children }: { children: ReactNode }) {
 export function Reveal({
   children,
   delay = 0,
-  y = 28,
+  y = 20,
   className,
 }: {
   children: ReactNode;
@@ -21,10 +21,10 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -41,7 +41,7 @@ export function HoverLift({
   return (
     <motion.div
       className={className}
-      whileHover={{ y: -6, scale: 1.015 }}
+      whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
     >
       {children}

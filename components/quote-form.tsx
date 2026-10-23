@@ -7,10 +7,10 @@ import { mailto } from "@/lib/site";
 import { ArrowIcon } from "./icons";
 
 export const fieldClass =
-  "w-full rounded-2xl border border-line bg-white/40 px-4 py-3 text-[15px] outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-4 focus:ring-accent/20 dark:bg-white/5";
+  "w-full rounded-2xl border border-line bg-panel px-4 py-3 text-[15px] outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-4 focus:ring-accent/20";
 
 const pill =
-  "cursor-pointer select-none rounded-full border border-line bg-white/40 px-4 py-2 text-sm transition peer-checked:border-accent peer-checked:bg-accent peer-checked:text-on-accent peer-focus-visible:ring-4 peer-focus-visible:ring-accent/30 hover:border-accent dark:bg-white/5";
+  "cursor-pointer select-none rounded-full border border-line bg-panel px-4 py-2 text-sm transition peer-checked:border-accent peer-checked:bg-accent peer-checked:text-on-accent peer-focus-visible:ring-4 peer-focus-visible:ring-accent/30 hover:border-accent";
 
 type Labels = { submit: string; required: string; note: string };
 
@@ -65,7 +65,7 @@ export function QuoteForm({
         <p className="text-sm leading-relaxed text-muted">{labels.note}</p>
         <button
           type="submit"
-          className="group inline-flex h-12 w-fit items-center gap-2 rounded-full bg-accent px-7 text-[15px] font-medium text-on-accent shadow-lg shadow-teal/25 transition-transform hover:scale-[1.03] active:scale-95"
+          className="group inline-flex h-12 w-fit items-center gap-2 rounded-full bg-accent px-7 text-[15px] font-medium text-on-accent transition-transform hover:opacity-85"
         >
           {labels.submit}
           <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />

@@ -19,7 +19,7 @@ export default async function CompanyQuotePage({ params }: PageProps<"/[lang]/de
       <PageHero eyebrow={dict.quotes.eyebrow} title={q.formTitle} subtitle={q.formSubtitle} />
       <section className="px-4 pb-24 sm:px-6">
         <Reveal className="mx-auto max-w-4xl">
-          <div className="glass-strong rounded-[2.5rem] p-6 sm:p-12">
+          <div className="glass-strong rounded-3xl p-6 sm:p-12">
             <QuoteForm
               sections={resolveForm(companyForm, lang)}
               labels={dict.form}

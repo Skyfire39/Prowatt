@@ -25,14 +25,14 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
 
   return (
     <footer className="px-4 pb-8 sm:px-6">
-      <div className="glass mx-auto max-w-6xl rounded-[2.5rem] p-8 sm:p-12">
+      <div className="mx-auto max-w-6xl border-t border-line pt-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Logo />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">{footer.tagline}</p>
+            <p className="mt-5 max-w-xs text-2xl italic leading-snug" style={{ fontFamily: "var(--font-display)" }}>{footer.tagline}</p>
           </div>
           <div>
-            <h3 className="text-sm font-semibold">{footer.explore}</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{footer.explore}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               {explore.map((l) => (
                 <li key={l.href}>
@@ -44,7 +44,7 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold">{footer.solutions}</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{footer.solutions}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               {slugs.map((s) => (
                 <li key={s}>
@@ -56,7 +56,7 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold">{footer.contact}</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{footer.contact}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               <li>
                 <a href={site.phoneHref} className="transition-colors hover:text-ink">

@@ -26,12 +26,11 @@ export default async function QuotesPage({ params }: PageProps<"/[lang]/devis">)
           {cards.map((c, i) => (
             <Reveal key={c.href} delay={i * 0.1}>
               <HoverLift className="h-full">
-                <Link href={c.href} className="glass group relative flex h-full flex-col overflow-hidden rounded-[2.25rem] p-9">
-                  <div aria-hidden="true" className="absolute -right-12 -top-12 size-48 rounded-full bg-lime/60 blur-2xl dark:bg-lime/20" />
+                <Link href={c.href} className="glass group relative flex h-full flex-col overflow-hidden rounded-2xl p-9">
                   <span className="relative grid size-14 place-items-center rounded-2xl bg-accent text-on-accent">
                     <c.icon className="size-7" />
                   </span>
-                  <h2 className="relative mt-7 text-3xl font-semibold tracking-tight">{c.title}</h2>
+                  <h2 className="relative mt-7 text-4xl tracking-tight">{c.title}</h2>
                   <p className="relative mt-3 flex-1 leading-relaxed text-muted">{c.text}</p>
                   <span className="relative mt-8 inline-flex items-center gap-2 font-medium text-accent">
                     {q.open}

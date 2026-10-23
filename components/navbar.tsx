@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { slugs } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
@@ -28,10 +28,7 @@ export function Navbar({
   categories: Dictionary["categories"];
 }) {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 16));
 
   const base = `/${lang}`;
   const items: Item[] = [
@@ -64,13 +61,9 @@ export function Navbar({
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6"
+      className="fixed inset-x-0 top-0 z-50 border-b border-line bg-canvas"
     >
-      <nav
-        className={`mx-auto flex max-w-6xl items-center justify-between rounded-full px-4 py-2 transition-all duration-500 sm:px-5 ${
-          scrolled || open ? "glass-strong" : "border border-transparent"
-        }`}
-      >
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href={base} aria-label="Prowatt Madagascar" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
@@ -92,7 +85,7 @@ export function Navbar({
               </Link>
               {item.children && (
                 <div className="invisible absolute left-1/2 top-full z-10 w-72 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                  <ul className="glass-strong rounded-3xl p-2">
+                  <ul className="rounded-2xl border border-line bg-panel p-2">
                     {item.children.map((c) => (
                       <li key={c.href}>
                         <Link
@@ -130,11 +123,11 @@ export function Navbar({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.97 }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25 }}
-            className="glass-strong mx-auto mt-2 max-h-[75dvh] max-w-6xl overflow-y-auto rounded-3xl p-3 lg:hidden"
+            className="max-h-[75dvh] overflow-y-auto border-t border-line bg-canvas p-3 lg:hidden"
           >
             <ul className="flex flex-col">
               {items.map((item) => (

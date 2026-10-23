@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Hanken_Grotesk, Instrument_Serif } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
@@ -9,14 +9,16 @@ import { hasLocale, locales } from "@/lib/i18n";
 import { getDictionary } from "./dictionaries";
 import "../globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const hanken = Hanken_Grotesk({
+  variable: "--font-hanken",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const instrument = Instrument_Serif({
+  variable: "--font-instrument",
   subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 export function generateStaticParams() {
@@ -50,17 +52,12 @@ export default async function RootLayout({
     <html
       lang={lang}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${hanken.variable} ${instrument.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-dvh overflow-x-hidden">
-        <div className="ambient" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
         <MotionProvider>
           <Navbar lang={lang} nav={dict.nav} categories={dict.categories} />
           <main>{children}</main>

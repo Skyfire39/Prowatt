@@ -420,7 +420,13 @@
     "order": "Demander ce produit",
     "emptyTitle": "Catalogue en cours d'ajout",
     "emptyText": "Les produits de cette catégorie sont disponibles en magasin et sur demande. Contactez-nous pour connaître les références et les prix.",
-    "mailSubject": "Demande de produit"
+    "mailSubject": "Demande de produit",
+    "pagination": "Pagination",
+    "prev": "Page précédente",
+    "next": "Page suivante",
+    "goTo": "Aller à la page",
+    "results": "{from}–{to} sur {total} produits",
+    "one": "1 produit"
   },
   "contact": {
     "eyebrow": "Contact",

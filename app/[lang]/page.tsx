@@ -10,6 +10,7 @@ import {
   Testimonials,
   Why,
 } from "@/components/sections";
+import { ScrollScene } from "@/components/scroll-scene";
 import { CtaBand } from "@/components/ui";
 import { hasLocale } from "@/lib/i18n";
 import { getDictionary } from "./dictionaries";
@@ -21,6 +22,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
   return (
     <>
+      <ScrollScene />
       <Hero lang={lang} dict={home.hero} message={home.message} statLabels={home.stats} />
       <Solutions lang={lang} dict={home.solutions} categories={categories} />
       <EcooterTeaser lang={lang} dict={home.ecooter} models={ecooter} />

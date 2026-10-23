@@ -420,7 +420,13 @@
     "order": "Request this product",
     "emptyTitle": "Catalogue being added",
     "emptyText": "Products in this category are available in store and on request. Contact us for references and prices.",
-    "mailSubject": "Product request"
+    "mailSubject": "Product request",
+    "pagination": "Pagination",
+    "prev": "Previous page",
+    "next": "Next page",
+    "goTo": "Go to page",
+    "results": "{from}–{to} of {total} products",
+    "one": "1 product"
   },
   "contact": {
     "eyebrow": "Contact",

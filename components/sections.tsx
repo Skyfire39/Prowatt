@@ -128,7 +128,7 @@ export function EcooterTeaser({
           </ButtonLink>
         </Reveal>
         <Reveal y={40} delay={0.1} className="mx-auto mt-14 max-w-5xl">
-          <ModelSlider slides={slides} labels={{ ...models.slider, cta: dict.cta }} />
+          <ModelSlider slides={slides} labels={{ ...models.slider, cta: dict.cta }} circle="bg-white/45" />
         </Reveal>
       </div>
     </section>

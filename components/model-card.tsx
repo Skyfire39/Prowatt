@@ -28,14 +28,14 @@ export function ModelCard({
   return (
     <Reveal delay={(index % 3) * 0.08}>
       <HoverLift className="glass flex h-full flex-col overflow-hidden rounded-3xl p-5">
-        <div className="overflow-hidden rounded-2xl bg-white">
+        <div className="overflow-hidden rounded-2xl bg-accent-soft/60 p-4">
           <Image
             src={model.photo}
             alt={model.name}
             width={700}
             height={700}
             sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 90vw"
-            className="h-auto w-full"
+            className="h-auto w-full drop-shadow-[0_18px_18px_rgb(10_35_32/0.22)]"
           />
         </div>
         <div className="flex flex-1 flex-col px-2 pb-2 pt-6">

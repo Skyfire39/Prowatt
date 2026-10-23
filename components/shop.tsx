@@ -1,9 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { mailto } from "@/lib/site";
 import { ArrowIcon } from "./icons";
+
+const PAGE_SIZE = 6;
 
 type Cat = { id: string; name: string; count: number };
 type Item = { id: string; category: string; name: string; price: string };
@@ -13,6 +15,11 @@ type Labels = {
   emptyTitle: string;
   emptyText: string;
   mailSubject: string;
+  pagination: string;
+  prev: string;
+  next: string;
+  goTo: string;
+  results: string;
 };
 
 export function Shop({
@@ -27,7 +34,24 @@ export function Shop({
   contactHref: string;
 }) {
   const [active, setActive] = useState<string>("all");
-  const shown = active === "all" ? items : items.filter((i) => i.category === active);
+  const [page, setPage] = useState(1);
+  const topRef = useRef<HTMLDivElement>(null);
+
+  const filtered = active === "all" ? items : items.filter((i) => i.category === active);
+  const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const current = Math.min(page, pages);
+  const start = (current - 1) * PAGE_SIZE;
+  const shown = filtered.slice(start, start + PAGE_SIZE);
+
+  function choose(id: string) {
+    setActive(id);
+    setPage(1);
+  }
+
+  function goTo(n: number) {
+    setPage(n);
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   return (
     <div>
@@ -38,7 +62,7 @@ export function Shop({
             type="button"
             role="tab"
             aria-selected={active === c.id}
-            onClick={() => setActive(c.id)}
+            onClick={() => choose(c.id)}
             className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               active === c.id ? "text-on-accent" : "glass text-muted hover:text-ink"
             }`}
@@ -71,7 +95,8 @@ export function Shop({
           </a>
         </div>
       ) : (
-        <motion.div layout className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <>
+        <motion.div ref={topRef} layout className="mt-12 scroll-mt-28 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {shown.map((p) => (
               <motion.article
@@ -102,6 +127,58 @@ export function Shop({
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {pages > 1 && (
+          <nav
+            aria-label={labels.pagination}
+            className="mt-12 flex flex-col items-center gap-5 sm:flex-row sm:justify-between"
+          >
+            <p className="text-sm text-muted" aria-live="polite">
+              {labels.results
+                .replace("{from}", String(start + 1))
+                .replace("{to}", String(start + shown.length))
+                .replace("{total}", String(filtered.length))}
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label={labels.prev}
+                disabled={current === 1}
+                onClick={() => goTo(current - 1)}
+                className="glass-chip grid size-11 place-items-center rounded-full transition-opacity enabled:hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-35"
+              >
+                <ArrowIcon className="size-5 rotate-180" />
+              </button>
+              <ul className="flex items-center gap-1.5">
+                {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+                  <li key={n}>
+                    <button
+                      type="button"
+                      aria-label={`${labels.goTo} ${n}`}
+                      aria-current={n === current ? "page" : undefined}
+                      onClick={() => goTo(n)}
+                      className={`grid size-11 place-items-center rounded-full text-sm font-semibold tabular-nums transition-colors ${
+                        n === current ? "bg-accent text-on-accent" : "glass-chip hover:bg-accent-soft"
+                      }`}
+                    >
+                      {n}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                aria-label={labels.next}
+                disabled={current === pages}
+                onClick={() => goTo(current + 1)}
+                className="glass-chip grid size-11 place-items-center rounded-full transition-opacity enabled:hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-35"
+              >
+                <ArrowIcon className="size-5" />
+              </button>
+            </div>
+          </nav>
+        )}
+        </>
       )}
     </div>
   );

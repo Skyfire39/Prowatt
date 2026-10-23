@@ -272,12 +272,12 @@ export const products: Product[] = [
 
 // Ecooter
 export const ecooters: { id: string; name: string; tagline: L10n; photo: string }[] = [
-  { id: "aura", name: "AURA", tagline: { fr: "Confort, style et performance pour la ville.", en: "Comfort, style and performance for the city." }, photo: "/images/ecooter/aura.jpg" },
-  { id: "cargox", name: "CARGOX", tagline: { fr: "Le compagnon robuste des pros de la livraison et du terrain.", en: "The rugged companion for delivery and field professionals." }, photo: "/images/ecooter/cargox.jpg" },
-  { id: "alta", name: "ALTA", tagline: { fr: "L'électrique pour les actifs pressés et connectés.", en: "The electric ride for busy, connected people." }, photo: "/images/ecooter/alta.jpg" },
-  { id: "voltis", name: "VOLTIS", tagline: { fr: "L'excellence pour ceux qui veulent tout, sans compromis.", en: "Excellence for those who want it all, without compromise." }, photo: "/images/ecooter/voltis.jpg" },
-  { id: "via-lite", name: "VIA Lite", tagline: { fr: "La citadine parfaite pour les petits trajets du quotidien.", en: "The perfect city bike for short everyday trips." }, photo: "/images/ecooter/via-lite.jpg" },
-  { id: "nova-lite", name: "NOVA lite", tagline: { fr: "Le bon compromis entre budget et liberté urbaine.", en: "The right balance between budget and urban freedom." }, photo: "/images/ecooter/nova-lite.jpg" },
+  { id: "aura", name: "AURA", tagline: { fr: "Confort, style et performance pour la ville.", en: "Comfort, style and performance for the city." }, photo: "/images/ecooter/aura.webp" },
+  { id: "cargox", name: "CARGOX", tagline: { fr: "Le compagnon robuste des pros de la livraison et du terrain.", en: "The rugged companion for delivery and field professionals." }, photo: "/images/ecooter/cargox.webp" },
+  { id: "alta", name: "ALTA", tagline: { fr: "L'électrique pour les actifs pressés et connectés.", en: "The electric ride for busy, connected people." }, photo: "/images/ecooter/alta.webp" },
+  { id: "voltis", name: "VOLTIS", tagline: { fr: "L'excellence pour ceux qui veulent tout, sans compromis.", en: "Excellence for those who want it all, without compromise." }, photo: "/images/ecooter/voltis.webp" },
+  { id: "via-lite", name: "VIA Lite", tagline: { fr: "La citadine parfaite pour les petits trajets du quotidien.", en: "The perfect city bike for short everyday trips." }, photo: "/images/ecooter/via-lite.webp" },
+  { id: "nova-lite", name: "NOVA lite", tagline: { fr: "Le bon compromis entre budget et liberté urbaine.", en: "The right balance between budget and urban freedom." }, photo: "/images/ecooter/nova-lite.webp" },
 ];
 
 export const techs = ["lithium", "graphene"] as const;

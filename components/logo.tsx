@@ -76,9 +76,11 @@ type Variant = "wordmark" | "full" | "mark";
 export function Logo({
   variant = "wordmark",
   className = "h-9 w-auto",
+  color = "text-[#1f5750] dark:text-lime",
 }: {
   variant?: Variant;
   className?: string;
+  color?: string;
 }) {
   const paths =
     variant === "mark" ? MARK : variant === "wordmark" ? [...MARK, ...WORDMARK] : [...MARK, ...WORDMARK, ...TAGLINE];
@@ -88,7 +90,7 @@ export function Logo({
       role="img"
       aria-label={site.name}
       fill="currentColor"
-      className={`text-[#1f5750] dark:text-lime ${className}`}
+      className={`${color} ${className}`}
     >
       {paths.map((d, i) => (
         <path key={i} d={d} />

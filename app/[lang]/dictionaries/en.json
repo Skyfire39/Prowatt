@@ -374,6 +374,23 @@
     "rights": "All rights reserved.",
     "explore": "Explore",
     "solutions": "Solutions",
-    "contact": "Contact"
+    "contact": "Contact",
+    "topLabel": "Back to top",
+    "hours": "Opening hours",
+    "visit": "Find us",
+    "call": "Call",
+    "write": "Write"
+  },
+  "newsletter": {
+    "eyebrow": "Newsletter",
+    "title": "Stay in the light.",
+    "subtitle": "Solar tips, new projects and Prowatt offers, straight to your inbox. No spam, unsubscribe in one click.",
+    "label": "Your email address",
+    "placeholder": "you@example.com",
+    "button": "Subscribe",
+    "success": "Thank you! Your email app has opened: send the message to confirm your subscription.",
+    "note": "By subscribing, you agree to receive our news. You can unsubscribe at any time.",
+    "mailSubject": "Prowatt newsletter subscription",
+    "mailBody": "Hello, please subscribe this address to the Prowatt Madagascar newsletter: "
   }
 }

@@ -374,6 +374,23 @@
     "rights": "Tous droits réservés.",
     "explore": "Explorer",
     "solutions": "Solutions",
-    "contact": "Contact"
+    "contact": "Contact",
+    "topLabel": "Retour en haut",
+    "hours": "Horaires",
+    "visit": "Nous trouver",
+    "call": "Appeler",
+    "write": "Écrire"
+  },
+  "newsletter": {
+    "eyebrow": "Newsletter",
+    "title": "Restez dans la lumière.",
+    "subtitle": "Conseils solaires, nouvelles réalisations et offres Prowatt, directement dans votre boîte mail. Pas de spam, désinscription en un clic.",
+    "label": "Votre adresse e-mail",
+    "placeholder": "vous@exemple.com",
+    "button": "S'inscrire",
+    "success": "Merci ! Votre messagerie s'est ouverte : envoyez le message pour confirmer votre inscription.",
+    "note": "En vous inscrivant, vous acceptez de recevoir nos actualités. Vous pouvez vous désinscrire à tout moment.",
+    "mailSubject": "Inscription à la newsletter Prowatt",
+    "mailBody": "Bonjour, merci d'inscrire cette adresse à la newsletter Prowatt Madagascar : "
   }
 }

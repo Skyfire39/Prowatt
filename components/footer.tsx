@@ -3,12 +3,17 @@ import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { slugs } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { site } from "@/lib/site";
+import { ArrowUpIcon, ClockIcon, MailIcon, MapPinIcon, PhoneIcon } from "./icons";
 import { Logo } from "./logo";
+import { Newsletter } from "./newsletter";
 
 async function getYear() {
   "use cache";
   return new Date().getFullYear();
 }
+
+const linkClass = "text-[15px] text-white/70 transition-colors hover:text-white";
+const headClass = "text-sm font-semibold text-white";
 
 export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const year = await getYear();
@@ -24,61 +29,98 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
   ];
 
   return (
-    <footer className="mt-12 bg-panel px-4 pb-10 pt-14 sm:px-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <Logo className="h-12 w-auto" />
-            <p className="mt-5 max-w-xs text-lg leading-snug text-muted">{footer.tagline}</p>
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-ink">{footer.explore}</p>
-            <ul className="mt-4 space-y-2.5 text-sm text-muted">
-              {explore.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="transition-colors hover:text-ink">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-ink">{footer.solutions}</p>
-            <ul className="mt-4 space-y-2.5 text-sm text-muted">
-              {slugs.map((s) => (
-                <li key={s}>
-                  <Link href={`${base}/realisations/${s}`} className="transition-colors hover:text-ink">
-                    {categories[s].name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-ink">{footer.contact}</p>
-            <ul className="mt-4 space-y-2.5 text-sm text-muted">
-              <li>
-                <a href={site.phoneHref} className="transition-colors hover:text-ink">
+    <>
+      <Newsletter dict={dict.newsletter} />
+
+      <footer className="mt-16 bg-[#0a2420] text-white sm:mt-24">
+        <div className="mx-auto max-w-6xl px-4 pb-8 pt-16 sm:px-6 sm:pt-20">
+          <div className="grid gap-14 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <Link href={base} aria-label={site.name}>
+                <Logo color="text-lime" className="h-14 w-auto" />
+              </Link>
+              <p className="mt-8 max-w-sm text-balance text-3xl font-medium leading-tight tracking-[-0.03em]">
+                {footer.tagline}
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href={site.phoneHref}
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-lime px-5 text-sm font-medium text-teal transition-opacity hover:opacity-85"
+                >
+                  <PhoneIcon className="size-4" />
                   {site.phone}
                 </a>
-              </li>
-              <li>
-                <a href={`mailto:${site.email}`} className="break-all transition-colors hover:text-ink">
-                  {site.email}
+                <a
+                  href={`mailto:${site.email}`}
+                  className="inline-flex h-11 items-center gap-2 rounded-full border border-white/25 px-5 text-sm font-medium transition-colors hover:bg-white/10"
+                >
+                  <MailIcon className="size-4" />
+                  {footer.write}
                 </a>
-              </li>
-              <li>{site.address[lang]}</li>
-              {site.hours[lang].map((h) => (
-                <li key={h}>{h}</li>
-              ))}
-            </ul>
+              </div>
+            </div>
+
+            <nav aria-label={footer.explore} className="lg:col-span-2">
+              <h3 className={headClass}>{footer.explore}</h3>
+              <ul className="mt-5 space-y-3">
+                {explore.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className={linkClass}>
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav aria-label={footer.solutions} className="lg:col-span-2">
+              <h3 className={headClass}>{footer.solutions}</h3>
+              <ul className="mt-5 space-y-3">
+                {slugs.map((s) => (
+                  <li key={s}>
+                    <Link href={`${base}/realisations/${s}`} className={linkClass}>
+                      {categories[s].name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div className="lg:col-span-3">
+              <h3 className={headClass}>{footer.visit}</h3>
+              <ul className="mt-5 space-y-4 text-[15px] text-white/70">
+                <li className="flex gap-3">
+                  <MapPinIcon className="mt-0.5 size-5 shrink-0 text-lime" />
+                  <span>{site.address[lang]}</span>
+                </li>
+                <li className="flex gap-3">
+                  <ClockIcon className="mt-0.5 size-5 shrink-0 text-lime" />
+                  <span className="space-y-1">
+                    {site.hours[lang].map((h) => (
+                      <span key={h} className="block">
+                        {h}
+                      </span>
+                    ))}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-white/55">
+            <p>
+              © {year} {site.name}. {footer.rights}
+            </p>
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+            >
+              <ArrowUpIcon className="size-4" />
+              {footer.topLabel}
+            </a>
           </div>
         </div>
-        <div className="mt-10 border-t border-line pt-6 text-xs text-muted">
-          © {year} {site.name}. {footer.rights}
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

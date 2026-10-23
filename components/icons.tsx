@@ -182,3 +182,9 @@ export const GlobeIcon = (p: IconProps) => (
     <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" />
   </svg>
 );
+
+export const ArrowUpIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M12 19V5M6 11l6-6 6 6" />
+  </svg>
+);

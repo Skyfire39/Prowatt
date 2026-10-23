@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "title": "Prowatt Madagascar — Énergie solaire & motos électriques",
+    "description": "Boutique d'énergie solaire et de motos électriques à Madagascar : kits solaires, panneaux, batteries, onduleurs et deux-roues électriques."
+  },
+  "nav": {
+    "solar": "Solaire",
+    "moto": "Moto électrique",
+    "why": "Pourquoi Prowatt",
+    "contact": "Contact",
+    "cta": "Nous contacter",
+    "menu": "Ouvrir le menu",
+    "close": "Fermer le menu",
+    "theme": "Changer de thème",
+    "language": "Langue"
+  },
+  "hero": {
+    "eyebrow": "Prowatt Madagascar",
+    "title": "L'énergie du soleil.",
+    "titleAccent": "La route en silence.",
+    "subtitle": "Panneaux solaires, batteries et motos électriques : tout pour produire, stocker et rouler avec une énergie propre, partout à Madagascar.",
+    "primary": "Découvrir la boutique",
+    "secondary": "Parler à un conseiller",
+    "chips": ["Zéro carburant", "Énergie gratuite", "Installation locale"]
+  },
+  "solar": {
+    "eyebrow": "Énergie solaire",
+    "title": "Produisez votre propre électricité.",
+    "subtitle": "Des solutions solaires pensées pour le réseau et le climat malgaches : de la maison à l'entreprise, avec ou sans électricité du réseau.",
+    "items": [
+      {
+        "title": "Kits solaires",
+        "text": "Des kits complets, prêts à installer, pour éclairer et alimenter votre foyer ou votre commerce.",
+        "tag": "Maison & commerce"
+      },
+      {
+        "title": "Panneaux solaires",
+        "text": "Des panneaux à haut rendement, robustes face au soleil et aux pluies tropicales.",
+        "tag": "Production"
+      },
+      {
+        "title": "Batteries & onduleurs",
+        "text": "Stockez le surplus de la journée et gardez la lumière allumée, même pendant les coupures.",
+        "tag": "Stockage"
+      },
+      {
+        "title": "Éclairage & accessoires",
+        "text": "Lampes solaires, contrôleurs de charge, câbles et tout le nécessaire pour compléter votre installation.",
+        "tag": "Accessoires"
+      }
+    ]
+  },
+  "moto": {
+    "eyebrow": "Moto électrique",
+    "title": "Roulez sans carburant. Sans bruit. Sans compromis.",
+    "subtitle": "Une mobilité urbaine propre, économique et agréable. Rechargez chez vous, avec votre propre énergie solaire.",
+    "points": [
+      {
+        "title": "Silence total",
+        "text": "Un moteur électrique fluide et discret pour des trajets plus sereins."
+      },
+      {
+        "title": "Coût d'usage réduit",
+        "text": "Fini le plein : l'électricité coûte moins cher que l'essence, et le soleil est gratuit."
+      },
+      {
+        "title": "Recharge à la maison",
+        "text": "Branchez, rechargez, partez. Associez-la à un kit solaire pour rouler au soleil."
+      },
+      {
+        "title": "Entretien simplifié",
+        "text": "Moins de pièces mécaniques, donc moins de pannes et moins de visites à l'atelier."
+      }
+    ],
+    "cta": "Essayer une moto électrique"
+  },
+  "why": {
+    "eyebrow": "Pourquoi Prowatt",
+    "title": "Une énergie plus simple, plus propre, plus proche.",
+    "items": [
+      {
+        "title": "Expertise locale",
+        "text": "Une équipe qui connaît Madagascar, ses besoins et ses contraintes."
+      },
+      {
+        "title": "Produits fiables",
+        "text": "Une sélection d'équipements durables, choisis pour tenir dans le temps."
+      },
+      {
+        "title": "Conseil sur mesure",
+        "text": "Nous dimensionnons votre installation selon votre consommation réelle."
+      },
+      {
+        "title": "Service après-vente",
+        "text": "Installation, suivi et assistance pour que votre système tourne en toute sérénité."
+      }
+    ]
+  },
+  "steps": {
+    "eyebrow": "Comment ça marche",
+    "title": "Du soleil à votre prise en trois étapes.",
+    "items": [
+      {
+        "title": "Conseil",
+        "text": "Parlez-nous de vos besoins : maison, boutique, entreprise ou déplacements."
+      },
+      {
+        "title": "Installation",
+        "text": "Nos équipes installent et mettent en service votre système."
+      },
+      {
+        "title": "Suivi",
+        "text": "Nous restons disponibles pour la maintenance et l'évolution de votre installation."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Parlons de votre projet.",
+    "subtitle": "Dites-nous ce dont vous avez besoin, nous vous répondons avec une proposition adaptée.",
+    "name": "Nom complet",
+    "email": "Adresse e-mail",
+    "interest": "Votre intérêt",
+    "interests": ["Énergie solaire", "Moto électrique", "Les deux", "Autre"],
+    "message": "Votre message",
+    "send": "Envoyer le message",
+    "whatsapp": "Écrire sur WhatsApp",
+    "mailSubject": "Demande d'information — Prowatt Madagascar"
+  },
+  "footer": {
+    "tagline": "Boutique d'énergie solaire et de motos électriques.",
+    "rights": "Tous droits réservés.",
+    "explore": "Explorer",
+    "contact": "Contact"
+  }
+}

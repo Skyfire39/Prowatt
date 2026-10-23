@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "title": "Prowatt Madagascar — Solar energy & electric motorbikes",
+    "description": "Solar energy and electric motorbike shop in Madagascar: solar kits, panels, batteries, inverters and electric two-wheelers."
+  },
+  "nav": {
+    "solar": "Solar",
+    "moto": "Electric bikes",
+    "why": "Why Prowatt",
+    "contact": "Contact",
+    "cta": "Contact us",
+    "menu": "Open menu",
+    "close": "Close menu",
+    "theme": "Toggle theme",
+    "language": "Language"
+  },
+  "hero": {
+    "eyebrow": "Prowatt Madagascar",
+    "title": "The energy of the sun.",
+    "titleAccent": "The road, in silence.",
+    "subtitle": "Solar panels, batteries and electric motorbikes: everything you need to produce, store and ride on clean energy, anywhere in Madagascar.",
+    "primary": "Explore the shop",
+    "secondary": "Talk to an advisor",
+    "chips": ["Zero fuel", "Free energy", "Local installation"]
+  },
+  "solar": {
+    "eyebrow": "Solar energy",
+    "title": "Make your own electricity.",
+    "subtitle": "Solar solutions designed for Madagascar's grid and climate: from homes to businesses, with or without mains power.",
+    "items": [
+      {
+        "title": "Solar kits",
+        "text": "Complete, ready-to-install kits to light and power your home or shop.",
+        "tag": "Home & business"
+      },
+      {
+        "title": "Solar panels",
+        "text": "High-efficiency panels built to withstand strong sun and tropical rain.",
+        "tag": "Generation"
+      },
+      {
+        "title": "Batteries & inverters",
+        "text": "Store the day's surplus and keep the lights on, even during outages.",
+        "tag": "Storage"
+      },
+      {
+        "title": "Lighting & accessories",
+        "text": "Solar lamps, charge controllers, cables and everything to complete your setup.",
+        "tag": "Accessories"
+      }
+    ]
+  },
+  "moto": {
+    "eyebrow": "Electric motorbike",
+    "title": "Ride without fuel. Without noise. Without compromise.",
+    "subtitle": "Clean, affordable and enjoyable city mobility. Charge at home, with your own solar energy.",
+    "points": [
+      {
+        "title": "Total silence",
+        "text": "A smooth, quiet electric motor for calmer journeys."
+      },
+      {
+        "title": "Lower running costs",
+        "text": "No more fill-ups: electricity costs less than petrol, and sunlight is free."
+      },
+      {
+        "title": "Charge at home",
+        "text": "Plug in, charge, go. Pair it with a solar kit and ride on sunshine."
+      },
+      {
+        "title": "Easy maintenance",
+        "text": "Fewer mechanical parts means fewer breakdowns and fewer trips to the garage."
+      }
+    ],
+    "cta": "Try an electric bike"
+  },
+  "why": {
+    "eyebrow": "Why Prowatt",
+    "title": "Energy that is simpler, cleaner and closer to you.",
+    "items": [
+      {
+        "title": "Local expertise",
+        "text": "A team that understands Madagascar, its needs and its constraints."
+      },
+      {
+        "title": "Reliable products",
+        "text": "A selection of durable equipment, chosen to last."
+      },
+      {
+        "title": "Tailored advice",
+        "text": "We size your system to your real consumption."
+      },
+      {
+        "title": "After-sales service",
+        "text": "Installation, follow-up and support so your system runs with peace of mind."
+      }
+    ]
+  },
+  "steps": {
+    "eyebrow": "How it works",
+    "title": "From sunlight to your socket in three steps.",
+    "items": [
+      {
+        "title": "Advice",
+        "text": "Tell us what you need: home, shop, business or daily rides."
+      },
+      {
+        "title": "Installation",
+        "text": "Our teams install and commission your system."
+      },
+      {
+        "title": "Follow-up",
+        "text": "We stay available for maintenance and for growing your setup."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's talk about your project.",
+    "subtitle": "Tell us what you need and we'll come back with a tailored proposal.",
+    "name": "Full name",
+    "email": "Email address",
+    "interest": "I'm interested in",
+    "interests": ["Solar energy", "Electric motorbike", "Both", "Other"],
+    "message": "Your message",
+    "send": "Send message",
+    "whatsapp": "Message on WhatsApp",
+    "mailSubject": "Information request — Prowatt Madagascar"
+  },
+  "footer": {
+    "tagline": "Solar energy and electric motorbike shop.",
+    "rights": "All rights reserved.",
+    "explore": "Explore",
+    "contact": "Contact"
+  }
+}

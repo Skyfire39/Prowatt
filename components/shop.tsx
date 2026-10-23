@@ -83,7 +83,7 @@ export function Shop({
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="glass flex flex-col rounded-2xl p-6"
               >
-                <div className="grid h-36 place-items-center rounded-2xl border border-line bg-accent-soft">
+                <div className="grid h-36 place-items-center rounded-2xl border border-line bg-accent-soft/60">
                   <svg viewBox="0 0 120 60" className="w-28 text-accent" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
                     <path d="M10 44h100M10 30h100M34 16v40M60 16v40M86 16v40" opacity="0.5" />
                     <rect x="10" y="16" width="100" height="36" rx="4" />

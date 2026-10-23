@@ -32,8 +32,8 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
     <>
       <Newsletter dict={dict.newsletter} />
 
-      <footer className="mt-16 bg-[#0a2420] text-white sm:mt-24">
-        <div className="mx-auto max-w-6xl px-4 pb-8 pt-16 sm:px-6 sm:pt-20">
+      <footer className="mt-16 px-3 pb-3 sm:mt-24 sm:px-6 sm:pb-6">
+        <div className="glass-teal mx-auto max-w-6xl rounded-3xl px-5 pb-8 pt-14 sm:px-12 sm:pt-16">
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <Link href={base} aria-label={site.name}>

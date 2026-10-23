@@ -17,13 +17,13 @@ import { getDictionary } from "./dictionaries";
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const { home, categories } = await getDictionary(lang);
+  const { home, categories, ecooter } = await getDictionary(lang);
 
   return (
     <>
       <Hero lang={lang} dict={home.hero} message={home.message} statLabels={home.stats} />
       <Solutions lang={lang} dict={home.solutions} categories={categories} />
-      <EcooterTeaser lang={lang} dict={home.ecooter} />
+      <EcooterTeaser lang={lang} dict={home.ecooter} models={ecooter} />
       <Steps dict={home.steps} />
       <SolarAdvantages dict={home.advantages} />
       <Audiences dict={home.audiences} />

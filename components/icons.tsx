@@ -188,3 +188,18 @@ export const ArrowUpIcon = (p: IconProps) => (
     <path d="M12 19V5M6 11l6-6 6 6" />
   </svg>
 );
+
+export const CartIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 4h2.5l2.2 10.2a1.5 1.5 0 0 0 1.5 1.200h7.800a1.500 1.500 0 0 0 1.450-1.100L20 8H6.200" />
+    <circle cx="9.500" cy="19.500" r="1.300" />
+    <circle cx="17" cy="19.500" r="1.300" />
+  </svg>
+);
+
+export const WhatsAppIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 21l1.700-4.900A9 9 0 1 1 8 19.400L3 21Z" />
+    <path d="M9.200 8.500c-.4.500-.5 1.300 0 2.300.8 1.700 2.200 3 3.900 3.700 1 .4 1.800.3 2.300-.2l.4-.7-1.900-1-.8.8c-.9-.4-1.600-1.100-2-2l.8-.8-.9-2-.6.1-.5.1Z" />
+  </svg>
+);

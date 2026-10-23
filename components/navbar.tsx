@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { slugs } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
-import { ChevronIcon, CloseIcon, MenuIcon } from "./icons";
+import { CartIcon, ChevronIcon, CloseIcon, MenuIcon } from "./icons";
 import { LangSwitch } from "./lang-switch";
 import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
@@ -49,7 +49,15 @@ export function Navbar({
         { href: `${base}/devis/societe`, label: nav.company },
       ],
     },
-    { href: `${base}/ecooter`, label: nav.ecooter },
+    {
+      href: `${base}/ecooter`,
+      label: nav.ecooter,
+      children: [
+        { href: `${base}/ecooter`, label: nav.ecooterAll },
+        { href: `${base}/ecooter/lithium`, label: nav.lithium },
+        { href: `${base}/ecooter/graphene`, label: nav.graphene },
+      ],
+    },
     { href: `${base}/boutique`, label: nav.shop },
     { href: `${base}/contact`, label: nav.contact },
   ];
@@ -61,11 +69,11 @@ export function Navbar({
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-xl backdrop-saturate-150"
+      className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6"
     >
-      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+      <nav className="glass-nav mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 rounded-full px-3 sm:gap-3 sm:px-5">
         <Link href={base} aria-label="Prowatt Madagascar" onClick={() => setOpen(false)}>
-          <Logo />
+          <Logo className="h-7 w-auto sm:h-9" />
         </Link>
 
         <ul className="hidden flex-1 items-center justify-center gap-0.5 lg:flex">
@@ -85,7 +93,7 @@ export function Navbar({
               </Link>
               {item.children && (
                 <div className="invisible absolute left-1/2 top-full z-10 w-72 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                  <ul className="rounded-2xl border border-line bg-panel p-2">
+                  <ul className="glass-nav rounded-3xl p-2">
                     {item.children.map((c) => (
                       <li key={c.href}>
                         <Link
@@ -105,12 +113,20 @@ export function Navbar({
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <LangSwitch lang={lang} label={nav.language} />
+          <Link
+            href={`${base}/boutique`}
+            aria-label={nav.cart}
+            title={nav.cart}
+            className="glass-chip grid size-9 place-items-center rounded-full text-ink transition-opacity hover:opacity-70 sm:size-10"
+          >
+            <CartIcon className="size-5" />
+          </Link>
           <ThemeToggle label={nav.theme} />
           <button
             type="button"
-            className="glass grid size-10 place-items-center rounded-full lg:hidden"
+            className="glass-chip grid size-9 place-items-center rounded-full sm:size-10 lg:hidden"
             aria-label={open ? nav.close : nav.menu}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -127,7 +143,7 @@ export function Navbar({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25 }}
-            className="max-h-[75dvh] overflow-y-auto border-t border-line bg-canvas p-3 lg:hidden"
+            className="glass-nav mx-auto mt-2 max-h-[75dvh] max-w-6xl overflow-y-auto rounded-3xl p-3 lg:hidden"
           >
             <ul className="flex flex-col">
               {items.map((item) => (

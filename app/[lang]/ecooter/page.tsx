@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { MotoArt } from "@/components/art";
-import { BatteryIcon, BoltIcon, WrenchIcon } from "@/components/icons";
-import { HoverLift, Reveal } from "@/components/motion";
-import { ButtonLink, PageHero, SectionHead } from "@/components/ui";
-import { ecooters, tr } from "@/lib/data";
+import Link from "next/link";
+import { ArrowIcon, BatteryIcon, BoltIcon, WrenchIcon } from "@/components/icons";
+import { ModelCard } from "@/components/model-card";
+import { ModelSlider } from "@/components/model-slider";
+import { Reveal } from "@/components/motion";
+import { CtaBand, PageHero, SectionHead } from "@/components/ui";
+import { ecooters, techs, tr } from "@/lib/data";
 import { loadPage } from "@/lib/page";
-import { mailto } from "@/lib/site";
-import type { CSSProperties } from "react";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/ecooter">): Promise<Metadata> {
   const { dict } = await loadPage(params);
@@ -19,30 +19,42 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
   const { lang, dict } = await loadPage(params);
   const d = dict.ecooter;
 
+  const slides = ecooters.map((m) => ({
+    id: m.id,
+    name: m.name,
+    tagline: tr(m.tagline, lang),
+    photo: m.photo,
+    href: `/${lang}/contact`,
+  }));
+
   return (
     <>
       <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} />
 
       <section className="px-4 pb-12 sm:px-6">
-        <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {ecooters.map((m, i) => (
-            <Reveal key={m.id} delay={(i % 3) * 0.08}>
-              <HoverLift className="glass flex h-full flex-col overflow-hidden rounded-2xl p-6">
-                <div className="relative rounded-3xl border border-line bg-accent-soft">
-                  <MotoArt
-                    className="w-full"
-                    style={{ "--moto-a": m.hue[1], "--moto-b": m.hue[0] } as CSSProperties}
-                  />
-                </div>
-                <h2 className="mt-6 text-3xl tracking-tight">{m.name}</h2>
-                <p className="mt-2 flex-1 leading-relaxed text-muted">{tr(m.tagline, lang)}</p>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-accent">{d.onRequest}</p>
-                <div className="mt-5">
-                  <ButtonLink href={mailto(`${d.mailSubject} — ${m.name}`)} variant="glass" arrow>
-                    {d.cta}
-                  </ButtonLink>
-                </div>
-              </HoverLift>
+        <Reveal className="mx-auto max-w-6xl">
+          <ModelSlider slides={slides} labels={{ ...d.slider, cta: d.cta }} />
+        </Reveal>
+      </section>
+
+      <section className="px-4 py-12 sm:px-6">
+        <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2">
+          {techs.map((t, i) => (
+            <Reveal key={t} delay={i * 0.1}>
+              <Link
+                href={`/${lang}/ecooter/${t}`}
+                className="glass-teal group flex h-full flex-col rounded-3xl p-8 transition-transform hover:-translate-y-1 sm:p-10"
+              >
+                <span className="grid size-12 place-items-center rounded-full bg-lime text-teal">
+                  <BatteryIcon className="size-6" />
+                </span>
+                <h2 className="mt-6 text-4xl tracking-tight">{d.techs[t].name}</h2>
+                <p className="mt-2 flex-1 text-lg text-white/75">{d.techs[t].tagline}</p>
+                <span className="mt-8 inline-flex items-center gap-2 font-medium text-lime">
+                  {d.viewTech}
+                  <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </Link>
             </Reveal>
           ))}
         </div>
@@ -50,14 +62,25 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
 
       <section className="px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-6xl">
+          <SectionHead eyebrow={d.eyebrow} title={d.models} subtitle={d.note} />
+          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {ecooters.map((m, i) => (
+              <ModelCard key={m.id} model={m} lang={lang} dict={d} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-12 sm:px-6">
+        <div className="mx-auto max-w-6xl">
           <SectionHead eyebrow={d.eyebrow} title={d.techTitle} />
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             {d.tech.map((t, i) => {
               const Icon = techIcons[i];
               return (
                 <Reveal key={t.title} delay={i * 0.1}>
-                  <div className="glass h-full rounded-2xl p-8">
-                    <span className="grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
+                  <div className="glass h-full rounded-3xl p-8">
+                    <span className="grid size-12 place-items-center rounded-full bg-accent text-on-accent">
                       <Icon className="size-6" />
                     </span>
                     <h3 className="mt-6 text-2xl tracking-tight">{t.title}</h3>
@@ -69,6 +92,13 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
           </div>
         </div>
       </section>
+
+      <CtaBand
+        title={dict.home.cta.title}
+        subtitle={dict.home.cta.subtitle}
+        primary={{ href: `/${lang}/contact`, label: dict.home.cta.secondary }}
+        secondary={{ href: `/${lang}/devis`, label: dict.home.cta.primary }}
+      />
     </>
   );
 }

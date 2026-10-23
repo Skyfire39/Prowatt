@@ -5,37 +5,38 @@
 /*
  * Design inspiré d'apple.com : grands titres serrés, tuiles très arrondies,
  * bandes de couleur pleine largeur, photos plein cadre.
- * Palette Prowatt : #c8e0a2 (lime) et #175c55 (teal).
+ * Palette Prowatt : #c8e0a2 (lime) et #175c55 (teal). Toutes les autres teintes
+ * en dérivent, mélangées avec du blanc ou du noir.
  */
 :root {
   --brand-lime: #c8e0a2;
   --brand-teal: #175c55;
 
   --canvas: #ffffff;
-  --panel: #f4f7ee;
-  --ink: #10201e;
-  --muted: #5e6f6b;
-  --line: rgb(16 32 30 / 0.1);
-  --accent: #175c55;
+  --panel: color-mix(in srgb, var(--brand-lime) 20%, #fff);
+  --ink: var(--brand-teal);
+  --muted: color-mix(in srgb, var(--brand-teal) 72%, #fff);
+  --line: color-mix(in srgb, var(--brand-teal) 16%, transparent);
+  --accent: var(--brand-teal);
   --on-accent: #ffffff;
-  --accent-soft: #e6f0d3;
-  --band: #c8e0a2;
-  --on-band: #10201e;
+  --accent-soft: color-mix(in srgb, var(--brand-lime) 45%, #fff);
+  --band: var(--brand-lime);
+  --on-band: var(--brand-teal);
 
   color-scheme: light;
 }
 
 .dark {
-  --canvas: #050d0c;
-  --panel: #101f1d;
-  --ink: #f5f8f1;
-  --muted: #9db0ab;
-  --line: rgb(245 248 241 / 0.12);
-  --accent: #c8e0a2;
-  --on-accent: #0a2321;
-  --accent-soft: #17312d;
-  --band: #175c55;
-  --on-band: #f5f8f1;
+  --canvas: color-mix(in srgb, var(--brand-teal) 24%, #000);
+  --panel: color-mix(in srgb, var(--brand-teal) 40%, #000);
+  --ink: var(--brand-lime);
+  --muted: color-mix(in srgb, var(--brand-lime) 68%, var(--canvas));
+  --line: color-mix(in srgb, var(--brand-lime) 18%, transparent);
+  --accent: var(--brand-lime);
+  --on-accent: var(--brand-teal);
+  --accent-soft: color-mix(in srgb, var(--brand-teal) 60%, #000);
+  --band: var(--brand-teal);
+  --on-band: var(--brand-lime);
 
   color-scheme: dark;
 }
@@ -89,15 +90,166 @@ h3 {
   color: var(--brand-teal);
 }
 
+/* Fond ambiant : donne de la matière au verre dépoli. */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.6;
+  animation: drift 24s ease-in-out infinite alternate;
+}
+
+.ambient span:nth-child(1) {
+  width: 44rem;
+  height: 44rem;
+  top: -12rem;
+  left: -12rem;
+  background: var(--brand-lime);
+}
+
+.ambient span:nth-child(2) {
+  width: 38rem;
+  height: 38rem;
+  top: 35%;
+  right: -14rem;
+  background: var(--brand-teal);
+  opacity: 0.28;
+  animation-delay: -9s;
+}
+
+.ambient span:nth-child(3) {
+  width: 32rem;
+  height: 32rem;
+  bottom: -10rem;
+  left: 22%;
+  background: var(--brand-lime);
+  opacity: 0.45;
+  animation-delay: -15s;
+}
+
+.dark .ambient span {
+  opacity: 0.2;
+}
+
+.dark .ambient span:nth-child(2) {
+  opacity: 0.45;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6rem, 4rem, 0) scale(1.15);
+  }
+}
+
 section[id] {
   scroll-margin-top: 5rem;
 }
 
 @layer components {
-  /* Tuile : aplat arrondi sans bordure, comme les tuiles d'apple.com. */
+  /* Verre dépoli : surface translucide, flou, bordure lumineuse et ombre douce. */
   .glass,
   .glass-strong {
-    background: var(--panel);
+    background: color-mix(in srgb, var(--canvas) 52%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgb(255 255 255 / 0.7);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--brand-teal) 8%, transparent),
+      0 8px 32px color-mix(in srgb, var(--brand-teal) 12%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 0.6);
+  }
+
+  .glass-strong {
+    background: color-mix(in srgb, var(--canvas) 72%, transparent);
+  }
+
+  .dark .glass,
+  .dark .glass-strong {
+    background: rgb(255 255 255 / 0.07);
+    border-color: rgb(255 255 255 / 0.14);
+    box-shadow:
+      0 8px 32px rgb(0 0 0 / 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  .dark .glass-strong {
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  /* Verre teinté #175c55, texte clair. */
+  .glass-teal {
+    background: color-mix(in srgb, var(--brand-teal) 84%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    box-shadow:
+      0 16px 48px color-mix(in srgb, var(--brand-teal) 30%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 0.2);
+    color: #fff;
+  }
+
+  /* Verre teinté #c8e0a2, texte teal. */
+  .glass-lime {
+    background: color-mix(in srgb, var(--brand-lime) 66%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.55);
+    box-shadow:
+      0 16px 48px color-mix(in srgb, var(--brand-lime) 45%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 0.6);
+    color: var(--brand-teal);
+  }
+
+  .dark .glass-lime {
+    background: color-mix(in srgb, var(--brand-lime) 80%, transparent);
+    border-color: rgb(255 255 255 / 0.3);
+  }
+
+  /* Carte de verre posée sur une surface teintée. */
+  .glass-on-teal {
+    background: rgb(255 255 255 / 0.12);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.22);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22);
+    color: #fff;
+  }
+
+  /* Verre dépoli : barre de navigation uniquement. */
+  .glass-nav {
+    background: color-mix(in srgb, var(--canvas) 55%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--brand-teal) 14%, transparent);
+    box-shadow:
+      0 8px 32px color-mix(in srgb, var(--brand-teal) 14%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 0.55);
+  }
+
+  .dark .glass-nav {
+    background: color-mix(in srgb, var(--canvas) 45%, transparent);
+    border-color: rgb(255 255 255 / 0.14);
+    box-shadow:
+      0 8px 32px rgb(0 0 0 / 0.4),
+      inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  .glass-chip {
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 
   .eyebrow {
@@ -112,5 +264,8 @@ section[id] {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .ambient span {
+    animation: none;
   }
 }

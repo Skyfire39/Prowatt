@@ -27,7 +27,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative isolate mx-auto grid max-w-6xl items-center gap-10 overflow-hidden rounded-3xl bg-lime p-8 text-[#10201e] sm:p-14 lg:grid-cols-2 lg:gap-16"
+        className="relative isolate mx-auto grid max-w-6xl items-center gap-10 overflow-hidden rounded-3xl glass-lime p-8 sm:p-14 lg:grid-cols-2 lg:gap-16"
       >
         <Logo
           variant="mark"
@@ -43,7 +43,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
           >
             {dict.title}
           </h2>
-          <p className="mt-5 max-w-md text-lg leading-relaxed text-[#10201e]/75">{dict.subtitle}</p>
+          <p className="mt-5 max-w-md text-lg leading-relaxed text-teal/75">{dict.subtitle}</p>
         </div>
 
         <div>
@@ -55,7 +55,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="flex items-start gap-3 rounded-2xl bg-white/70 p-5 text-base font-medium text-teal"
+                className="flex items-start gap-3 rounded-2xl bg-white/60 p-5 backdrop-blur-md text-base font-medium text-teal"
               >
                 <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-teal text-white">
                   <CheckIcon className="size-3.5" />
@@ -73,7 +73,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                 <label htmlFor={`${id}-email`} className="sr-only">
                   {dict.label}
                 </label>
-                <div className="flex items-center gap-2 rounded-full bg-white p-1.5 pl-6 focus-within:ring-4 focus-within:ring-teal/25">
+                <div className="flex items-center gap-2 rounded-full bg-white/80 p-1.5 pl-6 backdrop-blur-md focus-within:ring-4 focus-within:ring-teal/25">
                   <input
                     id={`${id}-email`}
                     name="email"
@@ -81,7 +81,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                     required
                     autoComplete="email"
                     placeholder={dict.placeholder}
-                    className="min-w-0 flex-1 bg-transparent py-3 text-base text-[#10201e] outline-none placeholder:text-[#10201e]/45"
+                    className="min-w-0 flex-1 bg-transparent py-3 text-base text-teal outline-none placeholder:text-teal/45"
                   />
                   <button
                     type="submit"
@@ -91,7 +91,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                     <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-[#10201e]/65">{dict.note}</p>
+                <p className="mt-4 text-sm leading-relaxed text-teal/65">{dict.note}</p>
               </motion.form>
             )}
           </AnimatePresence>

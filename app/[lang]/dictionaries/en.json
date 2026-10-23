@@ -17,7 +17,11 @@
     "menu": "Open menu",
     "close": "Close menu",
     "theme": "Toggle theme",
-    "language": "Language"
+    "language": "Language",
+    "cart": "Cart",
+    "ecooterAll": "All models",
+    "lithium": "Lithium",
+    "graphene": "Graphene"
   },
   "categories": {
     "100-autonome": {
@@ -341,7 +345,71 @@
     ],
     "onRequest": "Specifications and price on request",
     "cta": "Request a test ride",
-    "mailSubject": "Ecooter test ride request"
+    "mailSubject": "Ecooter test ride request",
+    "models": "The models",
+    "viewTech": "Discover",
+    "allModels": "All models",
+    "otherTech": "Other technology",
+    "battery": "Battery",
+    "note": "Capacity, range, speed and exact price vary by model: contact us for a detailed data sheet.",
+    "slider": {
+      "prev": "Previous model",
+      "next": "Next model",
+      "goTo": "Go to model",
+      "label": "Discover the range"
+    },
+    "techs": {
+      "lithium": {
+        "name": "Lithium",
+        "title": "Ecooter Lithium",
+        "tagline": "Lightweight, enduring and fast to charge.",
+        "intro": "Lithium batteries power our electric scooters with an excellent energy-to-weight ratio: useful range, faster charging and lower maintenance.",
+        "benefitsTitle": "Why choose lithium?",
+        "benefits": [
+          {
+            "title": "Light and compact",
+            "text": "More energy for less weight, for a more agile scooter."
+          },
+          {
+            "title": "Long lifespan",
+            "text": "A high number of charge cycles, for years of use."
+          },
+          {
+            "title": "Fast charging",
+            "text": "Recharge faster at home, between two trips."
+          },
+          {
+            "title": "Minimal maintenance",
+            "text": "No routine battery maintenance, protected by the BMS system."
+          }
+        ]
+      },
+      "graphene": {
+        "name": "Graphene",
+        "title": "Ecooter Graphene",
+        "tagline": "Robust, high-performing and budget-friendly.",
+        "intro": "Graphene technology improves the conductivity and endurance of the battery: efficient charging, good heat resistance and a longer life for intensive daily use.",
+        "benefitsTitle": "Why choose graphene?",
+        "benefits": [
+          {
+            "title": "Efficient charging",
+            "text": "Graphene helps current flow for more efficient recharging."
+          },
+          {
+            "title": "Good heat resistance",
+            "text": "A battery that dissipates heat better, suited to the tropical climate."
+          },
+          {
+            "title": "Longer lifespan",
+            "text": "Slower wear than conventional batteries."
+          },
+          {
+            "title": "Robust and affordable",
+            "text": "An excellent balance between performance and budget."
+          }
+        ]
+      }
+    }
   },
   "shop": {
     "eyebrow": "Shop",
@@ -392,5 +460,12 @@
     "note": "By subscribing, you agree to receive our news. You can unsubscribe at any time.",
     "mailSubject": "Prowatt newsletter subscription",
     "mailBody": "Hello, please subscribe this address to the Prowatt Madagascar newsletter: "
+  },
+  "floating": {
+    "whatsapp": "Chat on WhatsApp",
+    "mail": "Send an email",
+    "group": "Contact us",
+    "message": "Hello Prowatt Madagascar, I would like some information.",
+    "mailSubject": "Information request — Prowatt Madagascar"
   }
 }

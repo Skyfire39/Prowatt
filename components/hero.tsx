@@ -37,7 +37,7 @@ export function Hero({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease }}
-            className="w-fit rounded-full bg-panel px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em]"
+            className="glass w-fit rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em]"
           >
             {dict.eyebrow}
           </motion.p>
@@ -107,7 +107,7 @@ export function Hero({
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease, delay: 0.3 }}
-          className="relative flex min-h-[34rem] flex-col overflow-hidden rounded-3xl bg-teal text-white lg:col-span-5"
+          className="relative flex min-h-[34rem] flex-col overflow-hidden rounded-3xl glass-teal lg:col-span-5"
         >
           <div className="relative z-10 p-8 sm:p-10">
             <QuoteIcon className="size-9 text-lime" />

@@ -15,7 +15,7 @@ export function ButtonLink({
 }: {
   href: string;
   children: ReactNode;
-  variant?: "primary" | "glass" | "lime";
+  variant?: "primary" | "glass" | "lime" | "teal";
   arrow?: boolean;
 }) {
   const style =
@@ -23,7 +23,9 @@ export function ButtonLink({
       ? "bg-accent text-on-accent"
       : variant === "lime"
         ? "bg-lime text-teal"
-        : "bg-panel text-ink";
+        : variant === "teal"
+          ? "bg-teal text-white"
+          : "glass text-ink";
   const content = (
     <>
       {children}
@@ -84,21 +86,21 @@ export function SectionHead({
   eyebrow,
   title,
   subtitle,
-  light = false,
+  tone = "default",
 }: {
   eyebrow: string;
   title: string;
   subtitle?: string;
-  light?: boolean;
+  tone?: "default" | "dark" | "lime";
 }) {
   return (
     <Reveal className="mx-auto max-w-3xl text-center">
-      <p className={`eyebrow ${light ? "!text-lime" : ""}`}>{eyebrow}</p>
-      <h2 className="mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
+      <p className={`eyebrow ${tone === "dark" ? "!text-lime" : tone === "lime" ? "!text-teal" : ""}`}>{eyebrow}</p>
+      <h2 className={`mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-7xl ${tone === "dark" ? "text-white" : tone === "lime" ? "text-teal" : ""}`}>
         {title}
       </h2>
       {subtitle && (
-        <p className={`mx-auto mt-5 max-w-2xl text-xl leading-relaxed ${light ? "text-white/75" : "text-muted"}`}>
+        <p className={`mx-auto mt-5 max-w-2xl text-xl leading-relaxed ${tone === "dark" ? "text-white/75" : tone === "lime" ? "text-teal/75" : "text-muted"}`}>
           {subtitle}
         </p>
       )}
@@ -159,7 +161,7 @@ export function CtaBand({
   return (
     <section className="px-4 py-12 sm:px-6 sm:py-20">
       <Reveal className="mx-auto max-w-6xl">
-        <div className="relative isolate overflow-hidden rounded-3xl bg-teal px-6 py-20 text-center text-white sm:py-28">
+        <div className="glass-teal relative isolate overflow-hidden rounded-3xl px-6 py-20 text-center sm:py-28">
           <Photo pos="30% 40%" zoom={1.3} className="absolute inset-0 -z-10 opacity-25" />
           <h2 className="mx-auto max-w-3xl text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-7xl">
             {title}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hanken_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
+import { FloatingContact } from "@/components/floating-contact";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
 import { Navbar } from "@/components/navbar";
@@ -52,10 +53,16 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-dvh overflow-x-hidden">
+        <div className="ambient" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
         <MotionProvider>
           <Navbar lang={lang} nav={dict.nav} categories={dict.categories} />
           <main>{children}</main>
           <Footer lang={lang} dict={dict} />
+          <FloatingContact dict={dict.floating} />
         </MotionProvider>
       </body>
     </html>

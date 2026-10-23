@@ -271,14 +271,18 @@ export const products: Product[] = [
 ];
 
 // Ecooter
-export const ecooters: { id: string; name: string; tagline: L10n; hue: [string, string] }[] = [
-  { id: "aura", name: "AURA", tagline: { fr: "Confort, style et performance pour la ville.", en: "Comfort, style and performance for the city." }, hue: ["#6fd0bd", "#3aa592"] },
-  { id: "cargox", name: "CARGOX", tagline: { fr: "Le compagnon robuste des pros de la livraison et du terrain.", en: "The rugged companion for delivery and field professionals." }, hue: ["#e0c06a", "#b98f2a"] },
-  { id: "alta", name: "ALTA", tagline: { fr: "L'électrique pour les actifs pressés et connectés.", en: "The electric ride for busy, connected people." }, hue: ["#8fb8e8", "#4a7fc0"] },
-  { id: "voltis", name: "VOLTIS", tagline: { fr: "L'excellence pour ceux qui veulent tout, sans compromis.", en: "Excellence for those who want it all, without compromise." }, hue: ["#c8e0a2", "#8fbf6a"] },
-  { id: "via-lite", name: "VIA Lite", tagline: { fr: "La citadine parfaite pour les petits trajets du quotidien.", en: "The perfect city bike for short everyday trips." }, hue: ["#e8a3b8", "#c4607f"] },
-  { id: "nova-lite", name: "NOVA lite", tagline: { fr: "Le bon compromis entre budget et liberté urbaine.", en: "The right balance between budget and urban freedom." }, hue: ["#b9a3e8", "#7d5fc4"] },
+export const ecooters: { id: string; name: string; tagline: L10n; photo: string }[] = [
+  { id: "aura", name: "AURA", tagline: { fr: "Confort, style et performance pour la ville.", en: "Comfort, style and performance for the city." }, photo: "/images/ecooter/aura.jpg" },
+  { id: "cargox", name: "CARGOX", tagline: { fr: "Le compagnon robuste des pros de la livraison et du terrain.", en: "The rugged companion for delivery and field professionals." }, photo: "/images/ecooter/cargox.jpg" },
+  { id: "alta", name: "ALTA", tagline: { fr: "L'électrique pour les actifs pressés et connectés.", en: "The electric ride for busy, connected people." }, photo: "/images/ecooter/alta.jpg" },
+  { id: "voltis", name: "VOLTIS", tagline: { fr: "L'excellence pour ceux qui veulent tout, sans compromis.", en: "Excellence for those who want it all, without compromise." }, photo: "/images/ecooter/voltis.jpg" },
+  { id: "via-lite", name: "VIA Lite", tagline: { fr: "La citadine parfaite pour les petits trajets du quotidien.", en: "The perfect city bike for short everyday trips." }, photo: "/images/ecooter/via-lite.jpg" },
+  { id: "nova-lite", name: "NOVA lite", tagline: { fr: "Le bon compromis entre budget et liberté urbaine.", en: "The right balance between budget and urban freedom." }, photo: "/images/ecooter/nova-lite.jpg" },
 ];
+
+export const techs = ["lithium", "graphene"] as const;
+export type Tech = (typeof techs)[number];
+export const isTech = (v: string): v is Tech => (techs as readonly string[]).includes(v);
 
 // Accueil
 export const partners = ["Rapide Service", "Jovena", "Jiro Ve", "Vision"];

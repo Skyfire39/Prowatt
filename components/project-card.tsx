@@ -78,7 +78,7 @@ export function ProjectCard({
 
         <dl className="relative mt-6 grid grid-cols-2 gap-3">
           {specs.map(([k, v]) => (
-            <div key={k} className="rounded-2xl border border-line bg-canvas px-3.5 py-2.5">
+            <div key={k} className="rounded-2xl border border-line bg-white/35 px-3.5 py-2.5 dark:bg-white/5">
               <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted">{k}</dt>
               <dd className="mt-0.5 text-[15px] font-semibold">{v}</dd>
             </div>

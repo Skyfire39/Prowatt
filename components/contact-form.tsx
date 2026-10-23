@@ -20,18 +20,18 @@ export function ContactForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-1.5 text-sm font-medium">
+    <form onSubmit={onSubmit} className="grid gap-6">
+      <div className="grid gap-6 sm:grid-cols-2">
+        <label className="grid gap-2 text-sm font-medium">
           {labels.name}
           <input name="name" required autoComplete="name" className={fieldClass} />
         </label>
-        <label className="grid gap-1.5 text-sm font-medium">
+        <label className="grid gap-2 text-sm font-medium">
           {labels.email}
           <input name="email" type="email" required autoComplete="email" className={fieldClass} />
         </label>
       </div>
-      <label className="grid gap-1.5 text-sm font-medium">
+      <label className="grid gap-2 text-sm font-medium">
         {labels.message}
         <textarea name="message" rows={6} required className={`${fieldClass} resize-none`} />
       </label>

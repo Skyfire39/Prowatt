@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
-import { partners, slugs, testimonials, tr } from "@/lib/data";
+import { ecooters, partners, slugs, testimonials, tr } from "@/lib/data";
 import type { Slug } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
-import { MotoArt } from "./art";
+import { ModelSlider } from "./model-slider";
 import {
   ArrowIcon,
   BatteryIcon,
@@ -51,23 +51,23 @@ export function Solutions({
   categories: Dictionary["categories"];
 }) {
   return (
-    <section className="bg-teal px-4 py-24 text-white sm:px-6 sm:py-32">
-      <div className="mx-auto max-w-6xl">
-        <SectionHead eyebrow={dict.eyebrow} title={dict.title} subtitle={dict.subtitle} light />
+    <section className="px-4 py-12 sm:px-6 sm:py-20">
+      <div className="glass-teal mx-auto max-w-6xl rounded-3xl px-5 py-16 sm:px-12 sm:py-24">
+        <SectionHead eyebrow={dict.eyebrow} title={dict.title} subtitle={dict.subtitle} tone="dark" />
 
         <div className="mt-16 grid gap-5 md:grid-cols-3">
           {dict.blocks.map((b, i) => {
             const Icon = blockIcons[i];
             return (
               <Reveal key={b.title} delay={i * 0.08}>
-                <HoverLift className="flex h-full flex-col overflow-hidden rounded-3xl bg-canvas text-ink">
+                <HoverLift className="glass-on-teal flex h-full flex-col overflow-hidden rounded-3xl">
                   <Photo {...blockCrops[i]} className="h-56" sizes="(min-width: 768px) 380px, 100vw" />
                   <div className="flex flex-1 flex-col p-8">
                     <span className="grid size-11 place-items-center rounded-full bg-lime text-teal">
                       <Icon className="size-5" />
                     </span>
                     <h3 className="mt-5 text-2xl leading-tight tracking-tight">{b.title}</h3>
-                    <p className="mt-2 leading-relaxed text-muted">{b.text}</p>
+                    <p className="mt-2 leading-relaxed text-white/75">{b.text}</p>
                   </div>
                 </HoverLift>
               </Reveal>
@@ -85,7 +85,7 @@ export function Solutions({
                 <Link
                   key={slug}
                   href={`/${lang}/realisations/${slug}`}
-                  className="group flex flex-col rounded-2xl bg-white/10 p-5 transition-colors hover:bg-white/20"
+                  className="glass-on-teal group flex flex-col rounded-2xl p-5 transition-colors hover:bg-white/20"
                 >
                   <Icon className="size-6 text-lime" />
                   <span className="mt-4 font-semibold leading-snug">{c.name}</span>
@@ -102,18 +102,33 @@ export function Solutions({
 }
 
 /** Bande noire façon page produit Apple : titre centré, visuel XXL. */
-export function EcooterTeaser({ lang, dict }: { lang: Locale; dict: Home["ecooter"] }) {
+export function EcooterTeaser({
+  lang,
+  dict,
+  models,
+}: {
+  lang: Locale;
+  dict: Home["ecooter"];
+  models: Dictionary["ecooter"];
+}) {
+  const slides = ecooters.map((m) => ({
+    id: m.id,
+    name: m.name,
+    tagline: tr(m.tagline, lang),
+    photo: m.photo,
+    href: `/${lang}/ecooter`,
+  }));
   return (
-    <section className="bg-[#050d0c] px-4 pt-24 text-white sm:px-6 sm:pt-32">
-      <div className="mx-auto max-w-6xl">
-        <SectionHead eyebrow={dict.eyebrow} title={dict.title} subtitle={dict.subtitle} light />
+    <section className="px-4 py-12 sm:px-6 sm:py-20">
+      <div className="glass-lime mx-auto max-w-6xl rounded-3xl px-5 pb-10 pt-16 sm:px-12 sm:pt-24">
+        <SectionHead eyebrow={dict.eyebrow} title={dict.title} subtitle={dict.subtitle} tone="lime" />
         <Reveal className="mt-8 flex justify-center">
-          <ButtonLink href={`/${lang}/ecooter`} variant="lime" arrow>
+          <ButtonLink href={`/${lang}/ecooter`} variant="teal" arrow>
             {dict.cta}
           </ButtonLink>
         </Reveal>
-        <Reveal y={40} delay={0.1} className="mx-auto mt-14 max-w-4xl">
-          <MotoArt className="w-full [--moto-a:#c8e0a2] [--moto-b:#ffffff] [--moto-line:#f5f8f1]" />
+        <Reveal y={40} delay={0.1} className="mx-auto mt-14 max-w-5xl">
+          <ModelSlider slides={slides} labels={{ ...models.slider, cta: dict.cta }} />
         </Reveal>
       </div>
     </section>
@@ -123,13 +138,13 @@ export function EcooterTeaser({ lang, dict }: { lang: Locale; dict: Home["ecoote
 /** Méthode en 5 étapes sur fond tuile. */
 export function Steps({ dict }: { dict: Home["steps"] }) {
   return (
-    <section className="bg-panel px-4 py-24 sm:px-6 sm:py-32">
+    <section className="px-4 py-24 sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
         <div className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {dict.items.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.08}>
-              <div className="flex h-full flex-col rounded-3xl bg-canvas p-6">
+              <div className="glass flex h-full flex-col rounded-3xl p-6">
                 <span className="grid size-10 place-items-center rounded-full bg-accent text-lg font-semibold text-on-accent">
                   {i + 1}
                 </span>
@@ -153,7 +168,7 @@ export function SolarAdvantages({ dict }: { dict: Home["advantages"] }) {
       <Reveal className="mx-auto max-w-6xl">
         <div className="relative isolate overflow-hidden rounded-3xl px-5 py-20 text-white sm:px-10 sm:py-28">
           <Photo pos="50% 40%" className="absolute inset-0 -z-20" />
-          <div className="absolute inset-0 -z-10 bg-[#0b2b27]/75" />
+          <div className="absolute inset-0 -z-10 bg-teal/70" />
           <div className="mx-auto max-w-3xl text-center">
             <p className="eyebrow !text-lime">{dict.eyebrow}</p>
             <h2 className="mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-7xl">
@@ -164,12 +179,12 @@ export function SolarAdvantages({ dict }: { dict: Home["advantages"] }) {
             {dict.items.map((item, i) => {
               const Icon = advIcons[i];
               return (
-                <div key={item.title} className="rounded-2xl bg-canvas p-7 text-ink">
-                  <span className="grid size-12 place-items-center rounded-full bg-accent-soft text-accent">
+                <div key={item.title} className="glass-on-teal rounded-2xl p-7">
+                  <span className="grid size-12 place-items-center rounded-full bg-lime text-teal">
                     <Icon className="size-6" />
                   </span>
                   <h3 className="mt-6 text-xl leading-snug tracking-tight">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-white/75">{item.text}</p>
                 </div>
               );
             })}
@@ -197,10 +212,10 @@ export function Audiences({ dict }: { dict: Home["audiences"] }) {
             const Icon = audIcons[i];
             return (
               <Reveal key={item.title} delay={i * 0.1}>
-                <HoverLift className="h-full overflow-hidden rounded-3xl bg-panel">
+                <HoverLift className="glass h-full overflow-hidden rounded-3xl">
                   <Photo {...audCrops[i]} className="h-48" sizes="(min-width: 768px) 380px, 100vw" />
                   <div className="p-8">
-                    <span className="-mt-14 mb-5 grid size-12 place-items-center rounded-full bg-lime text-teal ring-4 ring-panel relative">
+                    <span className="-mt-14 mb-5 grid size-12 place-items-center rounded-full bg-lime text-teal ring-4 ring-white/70 relative dark:ring-white/15">
                       <Icon className="size-6" />
                     </span>
                     <h3 className="text-2xl tracking-tight">{item.title}</h3>
@@ -219,8 +234,8 @@ export function Audiences({ dict }: { dict: Home["audiences"] }) {
 /** Bande lime pleine largeur avec les portraits des clients. */
 export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimonials"] }) {
   return (
-    <section className="bg-lime px-4 py-24 text-[#10201e] sm:px-6 sm:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-4 py-12 sm:px-6 sm:py-20">
+      <div className="glass-lime mx-auto max-w-6xl rounded-3xl px-5 py-16 sm:px-12 sm:py-24">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="eyebrow !text-teal">{dict.eyebrow}</p>
           <h2 className="mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] text-teal sm:text-6xl lg:text-7xl">
@@ -230,7 +245,7 @@ export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimo
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.08}>
-              <figure className="flex h-full flex-col rounded-3xl bg-teal p-7 text-white">
+              <figure className="glass-teal flex h-full flex-col rounded-3xl p-7">
                 <div className="flex items-center gap-3">
                   <Image
                     src={t.photo}
@@ -260,7 +275,7 @@ export function Partners({ dict }: { dict: Home["partners"] }) {
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
         <Reveal className="mt-12 flex flex-wrap justify-center gap-3">
           {partners.map((p) => (
-            <span key={p} className="rounded-full bg-panel px-7 py-3.5 text-lg font-semibold tracking-tight">
+            <span key={p} className="glass rounded-full px-7 py-3.5 text-lg font-semibold tracking-tight">
               {p}
             </span>
           ))}
@@ -274,7 +289,7 @@ const whyIcons = [WrenchIcon, ShieldIcon, LampIcon, MapPinIcon];
 
 export function Why({ dict }: { dict: Home["why"] }) {
   return (
-    <section className="bg-panel px-4 py-24 sm:px-6 sm:py-32">
+    <section className="px-4 py-24 sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -282,7 +297,7 @@ export function Why({ dict }: { dict: Home["why"] }) {
             const Icon = whyIcons[i];
             return (
               <Reveal key={item.title} delay={i * 0.08}>
-                <div className="flex h-full flex-col rounded-3xl bg-canvas p-8">
+                <div className="glass flex h-full flex-col rounded-3xl p-8">
                   <span className="grid size-12 place-items-center rounded-full bg-accent text-on-accent">
                     <Icon className="size-6" />
                   </span>

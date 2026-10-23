@@ -76,7 +76,7 @@ type Variant = "wordmark" | "full" | "mark";
 export function Logo({
   variant = "wordmark",
   className = "h-9 w-auto",
-  color = "text-[#1f5750] dark:text-lime",
+  color = "text-teal dark:text-lime",
 }: {
   variant?: Variant;
   className?: string;

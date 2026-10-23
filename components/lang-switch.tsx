@@ -14,7 +14,7 @@ export function LangSwitch({ lang, label }: { lang: Locale; label: string }) {
     <div
       role="group"
       aria-label={label}
-      className="glass relative flex h-10 items-center rounded-full p-1 text-xs font-semibold"
+      className="glass-chip relative flex h-9 items-center sm:h-10 rounded-full p-1 text-xs font-semibold"
     >
       {locales.map((code) => {
         const active = code === lang;
@@ -27,7 +27,7 @@ export function LangSwitch({ lang, label }: { lang: Locale; label: string }) {
             onClick={() => {
               document.cookie = `${LOCALE_COOKIE}=${code}; path=/; max-age=31536000; samesite=lax`;
             }}
-            className={`relative z-10 grid h-8 w-10 place-items-center rounded-full uppercase transition-colors ${
+            className={`relative z-10 grid h-7 w-9 place-items-center sm:h-8 sm:w-10 rounded-full uppercase transition-colors ${
               active ? "text-on-accent" : "text-muted hover:text-ink"
             }`}
           >

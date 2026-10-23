@@ -17,7 +17,11 @@
     "menu": "Ouvrir le menu",
     "close": "Fermer le menu",
     "theme": "Changer de thème",
-    "language": "Langue"
+    "language": "Langue",
+    "cart": "Panier",
+    "ecooterAll": "Tous les modèles",
+    "lithium": "Lithium",
+    "graphene": "Graphène"
   },
   "categories": {
     "100-autonome": {
@@ -341,7 +345,71 @@
     ],
     "onRequest": "Caractéristiques et prix sur demande",
     "cta": "Demander un essai",
-    "mailSubject": "Demande d'essai Ecooter"
+    "mailSubject": "Demande d'essai Ecooter",
+    "models": "Les modèles",
+    "viewTech": "Découvrir",
+    "allModels": "Tous les modèles",
+    "otherTech": "Autre technologie",
+    "battery": "Batterie",
+    "note": "Capacité, autonomie, vitesse et prix précis varient selon le modèle : contactez-nous pour une fiche détaillée.",
+    "slider": {
+      "prev": "Modèle précédent",
+      "next": "Modèle suivant",
+      "goTo": "Aller au modèle",
+      "label": "Découvrez la gamme"
+    },
+    "techs": {
+      "lithium": {
+        "name": "Lithium",
+        "title": "Ecooter Lithium",
+        "tagline": "Légèreté, endurance et recharge rapide.",
+        "intro": "La batterie lithium alimente nos scooters électriques avec un excellent rapport énergie/poids : une autonomie utile, une recharge plus rapide et un entretien réduit.",
+        "benefitsTitle": "Pourquoi choisir le lithium ?",
+        "benefits": [
+          {
+            "title": "Légère et compacte",
+            "text": "Plus d'énergie pour moins de poids, pour un scooter plus maniable."
+          },
+          {
+            "title": "Longue durée de vie",
+            "text": "Un grand nombre de cycles de charge, pour des années d'usage."
+          },
+          {
+            "title": "Recharge rapide",
+            "text": "Rechargez plus vite à la maison, entre deux trajets."
+          },
+          {
+            "title": "Entretien minimal",
+            "text": "Aucun entretien régulier de la batterie, protégée par le système BMS."
+          }
+        ]
+      },
+      "graphene": {
+        "name": "Graphène",
+        "title": "Ecooter Graphène",
+        "tagline": "Robustesse, performance et budget maîtrisé.",
+        "intro": "La technologie au graphène améliore la conductivité et la tenue de la batterie : une charge efficace, une bonne résistance à la chaleur et une durée de vie accrue pour un usage quotidien intensif.",
+        "benefitsTitle": "Pourquoi choisir le graphène ?",
+        "benefits": [
+          {
+            "title": "Charge efficace",
+            "text": "Le graphène facilite le passage du courant pour une recharge plus efficace."
+          },
+          {
+            "title": "Bonne tenue à la chaleur",
+            "text": "Une batterie qui dissipe mieux la chaleur, adaptée au climat tropical."
+          },
+          {
+            "title": "Durée de vie accrue",
+            "text": "Une usure ralentie par rapport aux batteries classiques."
+          },
+          {
+            "title": "Robuste et économique",
+            "text": "Un excellent compromis entre performance et budget."
+          }
+        ]
+      }
+    }
   },
   "shop": {
     "eyebrow": "Boutique",
@@ -392,5 +460,12 @@
     "note": "En vous inscrivant, vous acceptez de recevoir nos actualités. Vous pouvez vous désinscrire à tout moment.",
     "mailSubject": "Inscription à la newsletter Prowatt",
     "mailBody": "Bonjour, merci d'inscrire cette adresse à la newsletter Prowatt Madagascar : "
+  },
+  "floating": {
+    "whatsapp": "Écrire sur WhatsApp",
+    "mail": "Envoyer un e-mail",
+    "group": "Nous contacter",
+    "message": "Bonjour Prowatt Madagascar, je souhaite avoir des informations.",
+    "mailSubject": "Demande d'information — Prowatt Madagascar"
   }
 }

@@ -48,7 +48,7 @@ export function SolarPanelArt(props: SVGProps<SVGSVGElement>) {
       />
       <polygon
         points={[BL, BR, TR, TL].map(fmt).join(" ")}
-        fill="#0d3b36"
+        fill="#c8e0a2" fillOpacity="0.14"
         stroke="#c8e0a2"
         strokeWidth="3"
         strokeLinejoin="round"

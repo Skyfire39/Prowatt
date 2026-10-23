@@ -11,7 +11,7 @@ import { ArrowIcon, BoltIcon, LeafIcon, SunIcon } from "./icons";
 const ease = [0.22, 1, 0.36, 1] as const;
 const chipIcons = [BoltIcon, SunIcon, LeafIcon];
 
-export function Hero({ lang, dict }: { lang: Locale; dict: Dictionary["hero"] }) {
+export function Hero({ lang, dict }: { lang: Locale; dict: Dictionary["home"]["hero"] }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -76,14 +76,14 @@ export function Hero({ lang, dict }: { lang: Locale; dict: Dictionary["hero"] })
           className="mt-9 flex flex-col items-center gap-3 sm:flex-row"
         >
           <Link
-            href={`/${lang}#solaire`}
+            href={`/${lang}/devis`}
             className="group inline-flex h-12 items-center gap-2 rounded-full bg-accent px-7 text-[15px] font-medium text-on-accent shadow-lg shadow-teal/25 transition-transform hover:scale-[1.03] active:scale-95"
           >
             {dict.primary}
             <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href={`/${lang}#contact`}
+            href={`/${lang}/realisations`}
             className="glass inline-flex h-12 items-center rounded-full px-7 text-[15px] font-medium transition-transform hover:scale-[1.03] active:scale-95"
           >
             {dict.secondary}

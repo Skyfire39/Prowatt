@@ -1,23 +1,45 @@
 import { notFound } from "next/navigation";
-import { Contact } from "@/components/contact";
 import { Hero } from "@/components/hero";
-import { Moto, Solar, Steps, Why } from "@/components/sections";
+import {
+  Audiences,
+  EcooterTeaser,
+  Mission,
+  Partners,
+  SolarAdvantages,
+  Solutions,
+  Stats,
+  Steps,
+  Testimonials,
+  Why,
+} from "@/components/sections";
+import { CtaBand } from "@/components/ui";
 import { hasLocale } from "@/lib/i18n";
 import { getDictionary } from "./dictionaries";
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const dict = await getDictionary(lang);
+  const { home, categories } = await getDictionary(lang);
 
   return (
     <>
-      <Hero lang={lang} dict={dict.hero} />
-      <Solar dict={dict.solar} />
-      <Moto lang={lang} dict={dict.moto} />
-      <Why dict={dict.why} />
-      <Steps dict={dict.steps} />
-      <Contact dict={dict.contact} />
+      <Hero lang={lang} dict={home.hero} />
+      <Stats lang={lang} labels={home.stats} />
+      <Mission dict={home.message} />
+      <Solutions lang={lang} dict={home.solutions} categories={categories} />
+      <EcooterTeaser lang={lang} dict={home.ecooter} />
+      <Steps dict={home.steps} />
+      <SolarAdvantages dict={home.advantages} />
+      <Audiences dict={home.audiences} />
+      <Testimonials lang={lang} dict={home.testimonials} />
+      <Partners dict={home.partners} />
+      <Why dict={home.why} />
+      <CtaBand
+        title={home.cta.title}
+        subtitle={home.cta.subtitle}
+        primary={{ href: `/${lang}/devis`, label: home.cta.primary }}
+        secondary={{ href: `/${lang}/contact`, label: home.cta.secondary }}
+      />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { SVGProps } from "react";
 
 type Pt = [number, number];
@@ -16,6 +17,7 @@ const r = (n: number) => Number(n.toFixed(2));
 const fmt = ([x, y]: Pt) => `${x.toFixed(1)},${y.toFixed(1)}`;
 
 export function SolarPanelArt(props: SVGProps<SVGSVGElement>) {
+  const u = useId().replace(/[^a-zA-Z0-9_]/g, "");
   const cols = 6;
   const rows = 4;
   const lines: string[] = [];
@@ -25,27 +27,27 @@ export function SolarPanelArt(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 400 300" role="img" aria-hidden="true" {...props}>
       <defs>
-        <linearGradient id="sp-panel" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={`sp-panel-${u}`} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#2a8a7d" />
           <stop offset="0.55" stopColor="#175c55" />
           <stop offset="1" stopColor="#0d3a36" />
         </linearGradient>
-        <linearGradient id="sp-shine" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id={`sp-shine-${u}`} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor="#fff" stopOpacity="0" />
           <stop offset="0.5" stopColor="#fff" stopOpacity="0.28" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
-        <radialGradient id="sp-sun">
+        <radialGradient id={`sp-sun-${u}`}>
           <stop offset="0" stopColor="#f6ffd9" />
           <stop offset="0.5" stopColor="#c8e0a2" />
           <stop offset="1" stopColor="#c8e0a2" stopOpacity="0" />
         </radialGradient>
-        <clipPath id="sp-clip">
+        <clipPath id={`sp-clip-${u}`}>
           <polygon points={[BL, BR, TR, TL].map(fmt).join(" ")} />
         </clipPath>
       </defs>
 
-      <circle cx="78" cy="58" r="52" fill="url(#sp-sun)" />
+      <circle cx="78" cy="58" r="52" fill={`url(#sp-sun-${u})`} />
       <circle cx="78" cy="58" r="22" fill="#e9f6c9" />
       <g stroke="#c8e0a2" strokeWidth="3" strokeLinecap="round" opacity="0.9">
         {Array.from({ length: 10 }).map((_, i) => {
@@ -65,20 +67,21 @@ export function SolarPanelArt(props: SVGProps<SVGSVGElement>) {
       <path d={`M${fmt(at(0.3, 0))}L170 285M${fmt(at(0.8, 0))}L250 285`} stroke="#175c55" strokeWidth="6" strokeLinecap="round" opacity="0.55" />
       <polygon
         points={[BL, BR, TR, TL].map(fmt).join(" ")}
-        fill="url(#sp-panel)"
+        fill={`url(#sp-panel-${u})`}
         stroke="#c8e0a2"
         strokeWidth="4"
         strokeLinejoin="round"
       />
-      <g clipPath="url(#sp-clip)">
+      <g clipPath={`url(#sp-clip-${u})`}>
         <path d={lines.join("")} stroke="#c8e0a2" strokeOpacity="0.55" strokeWidth="1.6" />
-        <polygon points="120,80 190,80 120,250 50,250" fill="url(#sp-shine)" transform="translate(120 0)" />
+        <polygon points="120,80 190,80 120,250 50,250" fill={`url(#sp-shine-${u})`} transform="translate(120 0)" />
       </g>
     </svg>
   );
 }
 
 export function MotoArt(props: SVGProps<SVGSVGElement>) {
+  const u = useId().replace(/[^a-zA-Z0-9_]/g, "");
   const wheel = (cx: number) => (
     <g>
       <circle cx={cx} cy="190" r="58" fill="none" stroke="currentColor" strokeWidth="9" />
@@ -105,11 +108,11 @@ export function MotoArt(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 440 280" role="img" aria-hidden="true" className="text-ink" {...props}>
       <defs>
-        <linearGradient id="mo-body" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={`mo-body-${u}`} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" style={{ stopColor: "var(--moto-a, #2a8a7d)" }} />
           <stop offset="1" style={{ stopColor: "var(--moto-b, #175c55)" }} />
         </linearGradient>
-        <linearGradient id="mo-batt" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={`mo-batt-${u}`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#dff0bd" />
           <stop offset="1" stopColor="#c8e0a2" />
         </linearGradient>
@@ -126,10 +129,10 @@ export function MotoArt(props: SVGProps<SVGSVGElement>) {
       {/* carénage */}
       <path
         d="M112 142 C140 112 210 104 262 116 L302 98 C322 94 332 102 326 114 L298 142 C262 160 200 170 160 170 C136 170 118 160 112 142 Z"
-        fill="url(#mo-body)"
+        fill={`url(#mo-body-${u})`}
       />
       {/* batterie */}
-      <rect x="168" y="138" width="92" height="46" rx="12" fill="url(#mo-batt)" stroke="#175c55" strokeWidth="3" />
+      <rect x="168" y="138" width="92" height="46" rx="12" fill={`url(#mo-batt-${u})`} stroke="#175c55" strokeWidth="3" />
       <path d="M222 146l-14 18h12l-4 14 18-22h-12l4-10z" fill="#175c55" />
       {/* selle */}
       <path d="M96 128 C120 112 168 108 214 112 L214 124 C170 122 130 126 100 140 Z" fill="currentColor" />

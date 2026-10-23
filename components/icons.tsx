@@ -106,3 +106,65 @@ export const ChatIcon = (p: IconProps) => (
     <path d="M4 5h16v11H9l-5 4V5Z" />
   </svg>
 );
+
+export const ChevronIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
+
+export const PhoneIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+  </svg>
+);
+
+export const MailIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="m3 7 9 6 9-6" />
+  </svg>
+);
+
+export const ClockIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 2" />
+  </svg>
+);
+
+export const DropIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M12 3s6 6.2 6 11a6 6 0 0 1-12 0c0-4.800 6-11 6-11Z" />
+  </svg>
+);
+
+export const GridIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M12 3v18M3 12h18M7 3h10l3 5H4l3-5Z" />
+  </svg>
+);
+
+export const CheckIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="m5 12 5 5 9-10" />
+  </svg>
+);
+
+export const BuildingIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M5 21V4h10v17M15 9h4v12M3 21h18M9 8h2M9 12h2M9 16h2" />
+  </svg>
+);
+
+export const FactoryIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 21V10l6 4v-4l6 4V6h3v15H3ZM7 17h2M12 17h2" />
+  </svg>
+);
+
+export const QuoteIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M10 7H6v5h3c0 2-1 3-3 3M18 7h-4v5h3c0 2-1 3-3 3" />
+  </svg>
+);

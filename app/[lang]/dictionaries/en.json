@@ -1,136 +1,357 @@
 {
   "meta": {
-    "title": "Prowatt Madagascar — Solar energy & electric motorbikes",
-    "description": "Solar energy and electric motorbike shop in Madagascar: solar kits, panels, batteries, inverters and electric two-wheelers."
+    "title": "Prowatt Madagascar — Solar energy, water and electric mobility",
+    "description": "Standalone, hybrid, on-grid and anti-load-shedding solar solutions, water access, Ecooter electric scooters and an equipment shop in Madagascar."
   },
   "nav": {
-    "solar": "Solar",
-    "moto": "Electric bikes",
-    "why": "Why Prowatt",
+    "home": "Home",
+    "advantages": "Benefits",
+    "realisations": "Our projects",
+    "quotes": "Quote",
+    "ecooter": "Ecooter",
+    "shop": "Shop",
     "contact": "Contact",
-    "cta": "Contact us",
+    "cta": "Get a quote",
+    "individual": "Individual",
+    "company": "Company",
     "menu": "Open menu",
     "close": "Close menu",
     "theme": "Toggle theme",
     "language": "Language"
   },
-  "hero": {
-    "eyebrow": "Prowatt Madagascar",
-    "title": "The energy of the sun.",
-    "titleAccent": "The road, in silence.",
-    "subtitle": "Solar panels, batteries and electric motorbikes: everything you need to produce, store and ride on clean energy, anywhere in Madagascar.",
-    "primary": "Explore the shop",
-    "secondary": "Talk to an advisor",
-    "chips": ["Zero fuel", "Free energy", "Local installation"]
+  "categories": {
+    "100-autonome": {
+      "name": "100% standalone solutions",
+      "short": "Total independence from the grid, day and night.",
+      "intro": "Solar installations with no grid connection: panels, lithium batteries and inverters sized for green electricity with no outages, no monthly bill and no voltage fluctuations."
+    },
+    "hybride": {
+      "name": "Hybrid solutions",
+      "short": "Solar, batteries and grid or generator working in harmony.",
+      "intro": "Solar and batteries combine with the grid or a generator for continuous power, with automatic management of the sources."
+    },
+    "ongrid": {
+      "name": "On-grid solutions",
+      "short": "Use your own energy and cut your bill.",
+      "intro": "Grid-connected solar plants that produce and consume on site. Ideal for businesses, shops and buildings already connected that want to lighten their bill."
+    },
+    "anti-delestage": {
+      "name": "Anti-load-shedding solutions",
+      "short": "Batteries take over the moment the power stops.",
+      "intro": "For homes, shopkeepers and industries fed up with scheduled outages: a battery kit that switches over automatically and keeps your equipment running."
+    },
+    "acces-a-eau": {
+      "name": "Water access",
+      "short": "Solar water heaters, drilling and solar pumping.",
+      "intro": "Solar water heaters and solar submersible pumps, accessible to everyone, for hot water and water supply without relying on the grid or fuel."
+    }
   },
-  "solar": {
-    "eyebrow": "Solar energy",
-    "title": "Make your own electricity.",
-    "subtitle": "Solar solutions designed for Madagascar's grid and climate: from homes to businesses, with or without mains power.",
-    "items": [
-      {
-        "title": "Solar kits",
-        "text": "Complete, ready-to-install kits to light and power your home or shop.",
-        "tag": "Home & business"
-      },
-      {
-        "title": "Solar panels",
-        "text": "High-efficiency panels built to withstand strong sun and tropical rain.",
-        "tag": "Generation"
-      },
-      {
-        "title": "Batteries & inverters",
-        "text": "Store the day's surplus and keep the lights on, even during outages.",
-        "tag": "Storage"
-      },
-      {
-        "title": "Lighting & accessories",
-        "text": "Solar lamps, charge controllers, cables and everything to complete your setup.",
-        "tag": "Accessories"
-      }
-    ]
+  "common": {
+    "requestQuote": "Get a quote",
+    "contactUs": "Contact us",
+    "call": "Call",
+    "discover": "Discover",
+    "seeProjects": "See our projects",
+    "back": "Back"
   },
-  "moto": {
-    "eyebrow": "Electric motorbike",
-    "title": "Ride without fuel. Without noise. Without compromise.",
-    "subtitle": "Clean, affordable and enjoyable city mobility. Charge at home, with your own solar energy.",
-    "points": [
+  "home": {
+    "hero": {
+      "eyebrow": "Prowatt Madagascar",
+      "title": "Lighting the future",
+      "titleAccent": "with green energy.",
+      "subtitle": "Solar, water and electric mobility: sustainable, universal access to electricity and water, everywhere in Madagascar.",
+      "primary": "Get a quote",
+      "secondary": "See our projects",
+      "chips": ["Zero outages", "Zero bills", "Up to 10-year warranty"]
+    },
+    "stats": ["kWp installed", "Customers equipped", "Tonnes of CO₂ avoided"],
+    "message": {
+      "eyebrow": "Our mission",
+      "quote": "At Prowatt, we work for sustainable, universal access to electricity and water in Madagascar.",
+      "author": "Sultanhoussen Alishane",
+      "role": "Chief Executive Officer"
+    },
+    "solutions": {
+      "eyebrow": "Our solutions",
+      "title": "Energy, water, and support that lasts.",
+      "subtitle": "Three pillars to equip your home, your shop or your industrial site.",
+      "blocks": [
+        {
+          "title": "Energy independence",
+          "text": "Standalone, hybrid, on-grid and anti-load-shedding solar systems."
+        },
+        {
+          "title": "Water independence",
+          "text": "Water drilling and pumping, solar water heating."
+        },
+        {
+          "title": "Monitoring and maintenance",
+          "text": "Remote monitoring of your installation and periodic maintenance."
+        }
+      ],
+      "typesTitle": "Choose the solution that fits you"
+    },
+    "ecooter": {
+      "eyebrow": "Ecooter",
+      "title": "Ride electric. Ride free.",
+      "subtitle": "A range of electric scooters for the city, work and delivery: AURA, CARGOX, ALTA, VOLTIS, VIA Lite and NOVA lite.",
+      "cta": "Discover the range"
+    },
+    "steps": {
+      "eyebrow": "Our method",
+      "title": "Five steps, from study to warranty.",
+      "items": [
+        {
+          "title": "Tailored study",
+          "text": "A free pre-analysis of your needs and consumption."
+        },
+        {
+          "title": "Site visit and quote",
+          "text": "A detailed quote with a projection of your solar output."
+        },
+        {
+          "title": "Installation",
+          "text": "The system is installed by our technicians."
+        },
+        {
+          "title": "Commissioning",
+          "text": "Training on how to use it and real-time monitoring of your system."
+        },
+        {
+          "title": "Warranty and maintenance",
+          "text": "A warranty of up to 10 years on equipment and installation."
+        }
+      ]
+    },
+    "advantages": {
+      "eyebrow": "Why solar",
+      "title": "Stop noticing the power cuts.",
+      "items": [
+        {
+          "title": "Zero outages",
+          "text": "Your electricity stays on, even when the grid goes down."
+        },
+        {
+          "title": "Zero bills",
+          "text": "Produce your own energy and free yourself from the monthly bill."
+        },
+        {
+          "title": "Profitable investment",
+          "text": "Pay back your investment in under 5 years with equipment built to last 20."
+        },
+        {
+          "title": "Step-by-step investment",
+          "text": "Start with the essentials and grow your system over time."
+        }
+      ]
+    },
+    "audiences": {
+      "eyebrow": "Who it's for",
+      "title": "A solution for every need.",
+      "items": [
+        {
+          "title": "Individuals",
+          "text": "Homes, city houses or remote dwellings."
+        },
+        {
+          "title": "Shops and offices",
+          "text": "Boutiques, restaurants, hotels, SMEs."
+        },
+        {
+          "title": "Industrial and agricultural sites",
+          "text": "Factories, warehouses, farms."
+        }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Testimonials",
+      "title": "They trusted us… What are you waiting for?"
+    },
+    "partners": {
+      "eyebrow": "Partners",
+      "title": "They work with us."
+    },
+    "why": {
+      "eyebrow": "Why Prowatt",
+      "title": "Energy that is simpler, cleaner and closer to you.",
+      "items": [
+        {
+          "title": "Turnkey solution",
+          "text": "Study, installation, commissioning and monitoring: we take care of everything."
+        },
+        {
+          "title": "Up to 10-year warranty",
+          "text": "Reliable equipment, covered on both hardware and installation."
+        },
+        {
+          "title": "24/7 monitoring",
+          "text": "A connected system to keep an eye on your installation at any time."
+        },
+        {
+          "title": "Recognised expertise",
+          "text": "A team that understands the local context and its constraints."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to go solar?",
+      "subtitle": "Tell us about your project: free pre-analysis and detailed quote.",
+      "primary": "Get a quote",
+      "secondary": "Contact us"
+    }
+  },
+  "advantagesPage": {
+    "eyebrow": "Benefits",
+    "title": "Everything solar changes for you.",
+    "subtitle": "Complete solutions to produce, store and use your energy and your water.",
+    "solutionsTitle": "Our solutions",
+    "solutions": [
       {
-        "title": "Total silence",
-        "text": "A smooth, quiet electric motor for calmer journeys."
+        "title": "100% standalone solar",
+        "text": "Grid-independent systems with panels and batteries, for remote areas. Electricity available day and night."
       },
       {
-        "title": "Lower running costs",
-        "text": "No more fill-ups: electricity costs less than petrol, and sunlight is free."
+        "title": "Hybrid solar",
+        "text": "Solar, batteries and a generator or the grid combined: continuous power and automatic source management."
       },
       {
-        "title": "Charge at home",
-        "text": "Plug in, charge, go. Pair it with a solar kit and ride on sunshine."
+        "title": "On-grid solar",
+        "text": "Grid-connected installations to use your own energy and cut your bill. For businesses, shops and connected buildings."
       },
       {
-        "title": "Easy maintenance",
-        "text": "Fewer mechanical parts means fewer breakdowns and fewer trips to the garage."
+        "title": "Anti-load-shedding",
+        "text": "Batteries that take over automatically during power outages."
+      },
+      {
+        "title": "Solar water heaters",
+        "text": "Forced-circulation, pressurised or thermosiphon models, to reduce electricity or gas consumption."
+      },
+      {
+        "title": "Water drilling and pumping",
+        "text": "Solar pumps and sized tanks for rural or agricultural areas."
       }
     ],
-    "cta": "Try an electric bike"
-  },
-  "why": {
-    "eyebrow": "Why Prowatt",
-    "title": "Energy that is simpler, cleaner and closer to you.",
-    "items": [
+    "benefitsTitle": "The benefits of solar",
+    "benefits": [
       {
-        "title": "Local expertise",
-        "text": "A team that understands Madagascar, its needs and its constraints."
+        "title": "Savings",
+        "text": "A lower electricity bill and less dependence on the grid."
       },
       {
-        "title": "Reliable products",
-        "text": "A selection of durable equipment, chosen to last."
+        "title": "Clean energy",
+        "text": "Renewable energy, with fewer CO₂ emissions."
       },
       {
-        "title": "Tailored advice",
-        "text": "We size your system to your real consumption."
+        "title": "A more valuable property",
+        "text": "A property equipped with solar gains value."
       },
       {
-        "title": "After-sales service",
-        "text": "Installation, follow-up and support so your system runs with peace of mind."
+        "title": "Energy independence",
+        "text": "Your electricity stays on, including during outages."
       }
-    ]
+    ],
+    "productsTitle": "The equipment we supply",
+    "products": ["Solar panels", "Lithium batteries", "Cabling", "Inverters"]
   },
-  "steps": {
-    "eyebrow": "How it works",
-    "title": "From sunlight to your socket in three steps.",
-    "items": [
-      {
-        "title": "Advice",
-        "text": "Tell us what you need: home, shop, business or daily rides."
-      },
-      {
-        "title": "Installation",
-        "text": "Our teams install and commission your system."
-      },
-      {
-        "title": "Follow-up",
-        "text": "We stay available for maintenance and for growing your setup."
-      }
-    ]
+  "realisations": {
+    "eyebrow": "Our projects",
+    "title": "Installations that keep their promises.",
+    "subtitle": "We contribute to the energy transition by installing high-performance, durable solar solutions.",
+    "projects": "projects",
+    "project": "project",
+    "explore": "See projects",
+    "others": "Other solutions",
+    "installed": "Installed in",
+    "specs": {
+      "kwc": "Capacity",
+      "panels": "Panels",
+      "storage": "Storage",
+      "inverter": "Inverter",
+      "co2": "CO₂ avoided",
+      "roi": "Payback",
+      "coverage": "Daytime coverage",
+      "autonomy": "Autonomy",
+      "annual": "Annual output",
+      "capacity": "Capacity",
+      "warranty": "Warranty",
+      "perYear": "/ year",
+      "years": "years",
+      "hours": "h",
+      "tons": "t"
+    }
+  },
+  "quotes": {
+    "eyebrow": "Quote",
+    "title": "A quote tailored to your situation.",
+    "subtitle": "Choose your profile. We'll get back to you with a free pre-analysis.",
+    "individual": {
+      "title": "Individual",
+      "text": "House or apartment: anti-load-shedding, standalone or hybrid system.",
+      "formTitle": "Quote request · Individual",
+      "formSubtitle": "A few questions to size your installation."
+    },
+    "company": {
+      "title": "Company",
+      "text": "Offices, shop, factory, warehouse: savings, autonomy or service continuity.",
+      "formTitle": "Quote request · Company",
+      "formSubtitle": "Please fill in the form below."
+    },
+    "open": "Fill in the form"
+  },
+  "form": {
+    "submit": "Send request",
+    "required": "Required field",
+    "choose": "Select…",
+    "note": "When you send, your email app opens with your request pre-filled. Remember to attach your Jirama bill (the last three for a company).",
+    "subjectIndividual": "Quote request — Individual",
+    "subjectCompany": "Quote request — Company",
+    "subjectContact": "Message from the Prowatt Madagascar website"
+  },
+  "ecooter": {
+    "eyebrow": "Ecooter",
+    "title": "Electric mobility, the Prowatt way.",
+    "subtitle": "Six electric scooters designed for everyday trips, work and delivery. Quiet, economical and rechargeable with your own solar energy.",
+    "techTitle": "Built-in technology",
+    "tech": [
+      { "title": "Central motor", "text": "A motor placed at the centre of the vehicle." },
+      { "title": "BMS system", "text": "Battery management and protection." },
+      { "title": "Rotary controller", "text": "Control of acceleration and power." }
+    ],
+    "onRequest": "Specifications and price on request",
+    "cta": "Request a test ride",
+    "mailSubject": "Ecooter test ride request"
+  },
+  "shop": {
+    "eyebrow": "Shop",
+    "title": "Solar equipment, all in one place.",
+    "subtitle": "Mounting, panels, batteries, inverters, pumps and more. Ask for a price or order by email or phone.",
+    "all": "All",
+    "currency": "Ar",
+    "order": "Request this product",
+    "emptyTitle": "Catalogue being added",
+    "emptyText": "Products in this category are available in store and on request. Contact us for references and prices.",
+    "mailSubject": "Product request"
   },
   "contact": {
     "eyebrow": "Contact",
     "title": "Let's talk about your project.",
-    "subtitle": "Tell us what you need and we'll come back with a tailored proposal.",
+    "subtitle": "Our team replies with a free pre-analysis and a detailed quote.",
+    "visit": "Come and see us",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "hours": "Opening hours",
+    "formTitle": "Write to us",
     "name": "Full name",
-    "email": "Email address",
-    "interest": "I'm interested in",
-    "interests": ["Solar energy", "Electric motorbike", "Both", "Other"],
+    "emailField": "Email address",
     "message": "Your message",
-    "send": "Send message",
-    "whatsapp": "Message on WhatsApp",
-    "mailSubject": "Information request — Prowatt Madagascar"
+    "send": "Send message"
   },
   "footer": {
-    "tagline": "Solar energy and electric motorbike shop.",
+    "tagline": "Lighting the future with green energy.",
     "rights": "All rights reserved.",
     "explore": "Explore",
+    "solutions": "Solutions",
     "contact": "Contact"
   }
 }

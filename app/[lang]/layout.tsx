@@ -30,7 +30,7 @@ export async function generateMetadata({
   if (!hasLocale(lang)) return {};
   const { meta } = await getDictionary(lang);
   return {
-    title: meta.title,
+    title: { default: meta.title, template: "%s — Prowatt Madagascar" },
     description: meta.description,
     alternates: {
       languages: Object.fromEntries(locales.map((l) => [l, `/${l}`])),
@@ -62,9 +62,9 @@ export default async function RootLayout({
           <span />
         </div>
         <MotionProvider>
-          <Navbar lang={lang} dict={dict.nav} />
+          <Navbar lang={lang} nav={dict.nav} categories={dict.categories} />
           <main>{children}</main>
-          <Footer lang={lang} dict={dict.footer} nav={dict.nav} />
+          <Footer lang={lang} dict={dict} />
         </MotionProvider>
       </body>
     </html>

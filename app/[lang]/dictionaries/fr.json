@@ -1,136 +1,357 @@
 {
   "meta": {
-    "title": "Prowatt Madagascar — Énergie solaire & motos électriques",
-    "description": "Boutique d'énergie solaire et de motos électriques à Madagascar : kits solaires, panneaux, batteries, onduleurs et deux-roues électriques."
+    "title": "Prowatt Madagascar — Énergie solaire, eau et mobilité électrique",
+    "description": "Solutions solaires 100 % autonomes, hybrides, on-grid et anti-délestage, accès à l'eau, scooters électriques Ecooter et boutique d'équipements à Madagascar."
   },
   "nav": {
-    "solar": "Solaire",
-    "moto": "Moto électrique",
-    "why": "Pourquoi Prowatt",
+    "home": "Accueil",
+    "advantages": "Les avantages",
+    "realisations": "Nos réalisations",
+    "quotes": "Devis",
+    "ecooter": "Ecooter",
+    "shop": "Boutique",
     "contact": "Contact",
-    "cta": "Nous contacter",
+    "cta": "Demander un devis",
+    "individual": "Particulier",
+    "company": "Société",
     "menu": "Ouvrir le menu",
     "close": "Fermer le menu",
     "theme": "Changer de thème",
     "language": "Langue"
   },
-  "hero": {
-    "eyebrow": "Prowatt Madagascar",
-    "title": "L'énergie du soleil.",
-    "titleAccent": "La route en silence.",
-    "subtitle": "Panneaux solaires, batteries et motos électriques : tout pour produire, stocker et rouler avec une énergie propre, partout à Madagascar.",
-    "primary": "Découvrir la boutique",
-    "secondary": "Parler à un conseiller",
-    "chips": ["Zéro carburant", "Énergie gratuite", "Installation locale"]
+  "categories": {
+    "100-autonome": {
+      "name": "Solutions 100 % autonomes",
+      "short": "Indépendance totale vis-à-vis du réseau, jour et nuit.",
+      "intro": "Des installations solaires sans raccordement au réseau : panneaux, batteries lithium et onduleurs dimensionnés pour une électricité verte, sans coupures, sans facture mensuelle et sans variation de tension."
+    },
+    "hybride": {
+      "name": "Solutions hybrides",
+      "short": "Solaire, batteries et réseau ou groupe électrogène en parfaite harmonie.",
+      "intro": "Le solaire et les batteries s'associent au réseau ou à un groupe électrogène pour une alimentation continue, avec une gestion automatique des sources."
+    },
+    "ongrid": {
+      "name": "Solutions on-grid",
+      "short": "Consommez votre propre énergie et réduisez votre facture.",
+      "intro": "Des centrales solaires raccordées au réseau pour produire et consommer sur place. Idéal pour les entreprises, commerces et bâtiments déjà raccordés qui veulent alléger leur facture."
+    },
+    "anti-delestage": {
+      "name": "Solutions anti-délestage",
+      "short": "Les batteries prennent le relais dès que le courant s'arrête.",
+      "intro": "Pour les particuliers, commerçants et industriels excédés par les coupures programmées : un kit de batteries qui bascule automatiquement et garde vos équipements en marche."
+    },
+    "acces-a-eau": {
+      "name": "Accès à l'eau",
+      "short": "Chauffe-eau solaires, forage et pompage solaire.",
+      "intro": "Des chauffe-eau solaires et des pompes immergées solaires, accessibles à tous, pour l'eau chaude et l'approvisionnement en eau sans dépendre du réseau ni du carburant."
+    }
   },
-  "solar": {
-    "eyebrow": "Énergie solaire",
-    "title": "Produisez votre propre électricité.",
-    "subtitle": "Des solutions solaires pensées pour le réseau et le climat malgaches : de la maison à l'entreprise, avec ou sans électricité du réseau.",
-    "items": [
-      {
-        "title": "Kits solaires",
-        "text": "Des kits complets, prêts à installer, pour éclairer et alimenter votre foyer ou votre commerce.",
-        "tag": "Maison & commerce"
-      },
-      {
-        "title": "Panneaux solaires",
-        "text": "Des panneaux à haut rendement, robustes face au soleil et aux pluies tropicales.",
-        "tag": "Production"
-      },
-      {
-        "title": "Batteries & onduleurs",
-        "text": "Stockez le surplus de la journée et gardez la lumière allumée, même pendant les coupures.",
-        "tag": "Stockage"
-      },
-      {
-        "title": "Éclairage & accessoires",
-        "text": "Lampes solaires, contrôleurs de charge, câbles et tout le nécessaire pour compléter votre installation.",
-        "tag": "Accessoires"
-      }
-    ]
+  "common": {
+    "requestQuote": "Demander un devis",
+    "contactUs": "Nous contacter",
+    "call": "Appeler",
+    "discover": "Découvrir",
+    "seeProjects": "Voir les réalisations",
+    "back": "Retour"
   },
-  "moto": {
-    "eyebrow": "Moto électrique",
-    "title": "Roulez sans carburant. Sans bruit. Sans compromis.",
-    "subtitle": "Une mobilité urbaine propre, économique et agréable. Rechargez chez vous, avec votre propre énergie solaire.",
-    "points": [
+  "home": {
+    "hero": {
+      "eyebrow": "Prowatt Madagascar",
+      "title": "Éclairons l'avenir",
+      "titleAccent": "avec l'énergie verte.",
+      "subtitle": "Solaire, eau et mobilité électrique : un accès durable et universel à l'électricité et à l'eau, partout à Madagascar.",
+      "primary": "Demander un devis",
+      "secondary": "Voir les réalisations",
+      "chips": ["Zéro coupure", "Zéro facture", "Garantie jusqu'à 10 ans"]
+    },
+    "stats": ["kWc installés", "Clients équipés", "Tonnes de CO₂ évitées"],
+    "message": {
+      "eyebrow": "Notre mission",
+      "quote": "Chez Prowatt, nous œuvrons pour un accès durable et universel à l'électricité et à l'eau à Madagascar.",
+      "author": "Sultanhoussen Alishane",
+      "role": "Directeur général"
+    },
+    "solutions": {
+      "eyebrow": "Nos solutions",
+      "title": "De l'énergie, de l'eau, et un suivi qui dure.",
+      "subtitle": "Trois piliers pour équiper votre maison, votre commerce ou votre site industriel.",
+      "blocks": [
+        {
+          "title": "Autonomisation énergétique",
+          "text": "Systèmes solaires 100 % autonomes, hybrides, on-grid et anti-délestage."
+        },
+        {
+          "title": "Autonomisation en eau",
+          "text": "Forage et pompage de l'eau, chauffage solaire de l'eau."
+        },
+        {
+          "title": "Suivi et maintenance",
+          "text": "Suivi à distance de votre installation et maintenance périodique."
+        }
+      ],
+      "typesTitle": "Choisissez la solution qui vous correspond"
+    },
+    "ecooter": {
+      "eyebrow": "Ecooter",
+      "title": "Roulez électrique. Roulez libre.",
+      "subtitle": "Une gamme de scooters électriques pour la ville, le travail et la livraison : AURA, CARGOX, ALTA, VOLTIS, VIA Lite et NOVA lite.",
+      "cta": "Découvrir la gamme"
+    },
+    "steps": {
+      "eyebrow": "Notre méthode",
+      "title": "Cinq étapes, de l'étude à la garantie.",
+      "items": [
+        {
+          "title": "Étude personnalisée",
+          "text": "Une pré-analyse gratuite de vos besoins et de votre consommation."
+        },
+        {
+          "title": "Visite technique et devis",
+          "text": "Un devis détaillé avec une projection de la production solaire."
+        },
+        {
+          "title": "Installation",
+          "text": "Le système est installé par nos techniciens."
+        },
+        {
+          "title": "Mise en service",
+          "text": "Formation à l'usage et suivi en temps réel de votre installation."
+        },
+        {
+          "title": "Garantie et maintenance",
+          "text": "Une garantie pouvant aller jusqu'à 10 ans sur le matériel et la pose."
+        }
+      ]
+    },
+    "advantages": {
+      "eyebrow": "Pourquoi le solaire",
+      "title": "Ne remarquez plus les coupures d'électricité.",
+      "items": [
+        {
+          "title": "Zéro coupure",
+          "text": "Votre électricité reste disponible, même quand le réseau s'arrête."
+        },
+        {
+          "title": "Zéro facture",
+          "text": "Produisez votre propre énergie et libérez-vous de la facture mensuelle."
+        },
+        {
+          "title": "Investissement rentable",
+          "text": "Amortissez l'investissement en moins de 5 ans avec du matériel conçu pour durer 20 ans."
+        },
+        {
+          "title": "Investissement progressif",
+          "text": "Commencez par l'essentiel et faites évoluer votre système au fil du temps."
+        }
+      ]
+    },
+    "audiences": {
+      "eyebrow": "Pour qui",
+      "title": "Une solution pour chaque besoin.",
+      "items": [
+        {
+          "title": "Particuliers",
+          "text": "Foyers, maisons en ville ou habitations isolées."
+        },
+        {
+          "title": "Commerces et bureaux",
+          "text": "Boutiques, restaurants, hôtels, PME."
+        },
+        {
+          "title": "Sites industriels et agricoles",
+          "text": "Usines, entrepôts, exploitations."
+        }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Témoignages",
+      "title": "Ils nous ont fait confiance… Qu'attendez-vous ?"
+    },
+    "partners": {
+      "eyebrow": "Partenaires",
+      "title": "Ils travaillent avec nous."
+    },
+    "why": {
+      "eyebrow": "Pourquoi Prowatt",
+      "title": "Une énergie plus simple, plus propre, plus proche.",
+      "items": [
+        {
+          "title": "Solution clé en main",
+          "text": "Étude, installation, mise en service et suivi : nous nous occupons de tout."
+        },
+        {
+          "title": "Garantie jusqu'à 10 ans",
+          "text": "Un équipement fiable, garanti sur le matériel et la pose."
+        },
+        {
+          "title": "Suivi 24h/24",
+          "text": "Un système connecté pour surveiller votre installation à tout moment."
+        },
+        {
+          "title": "Expertise reconnue",
+          "text": "Une équipe qui connaît le contexte local et ses contraintes."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Prêt à passer au solaire ?",
+      "subtitle": "Parlez-nous de votre projet : pré-analyse gratuite et devis détaillé.",
+      "primary": "Demander un devis",
+      "secondary": "Nous contacter"
+    }
+  },
+  "advantagesPage": {
+    "eyebrow": "Les avantages",
+    "title": "Tout ce que le solaire change pour vous.",
+    "subtitle": "Des solutions complètes pour produire, stocker et utiliser votre énergie et votre eau.",
+    "solutionsTitle": "Nos solutions",
+    "solutions": [
       {
-        "title": "Silence total",
-        "text": "Un moteur électrique fluide et discret pour des trajets plus sereins."
+        "title": "Solaire 100 % autonome",
+        "text": "Systèmes indépendants du réseau, avec panneaux et batteries, pour les zones isolées. Électricité disponible jour et nuit."
       },
       {
-        "title": "Coût d'usage réduit",
-        "text": "Fini le plein : l'électricité coûte moins cher que l'essence, et le soleil est gratuit."
+        "title": "Solaire hybride",
+        "text": "Solaire, batteries et groupe électrogène ou réseau combinés : alimentation continue et gestion automatique des sources."
       },
       {
-        "title": "Recharge à la maison",
-        "text": "Branchez, rechargez, partez. Associez-la à un kit solaire pour rouler au soleil."
+        "title": "Solaire on-grid",
+        "text": "Installations raccordées au réseau pour consommer votre propre énergie et réduire la facture. Pour entreprises, commerces et bâtiments raccordés."
       },
       {
-        "title": "Entretien simplifié",
-        "text": "Moins de pièces mécaniques, donc moins de pannes et moins de visites à l'atelier."
+        "title": "Anti-délestage",
+        "text": "Des batteries qui prennent le relais automatiquement pendant les coupures de courant."
+      },
+      {
+        "title": "Chauffe-eau solaires",
+        "text": "Modèles à circulation forcée, pressurisés ou thermosiphon, pour réduire la consommation d'électricité ou de gaz."
+      },
+      {
+        "title": "Forage et pompage d'eau",
+        "text": "Pompes solaires et réservoirs dimensionnés pour les zones rurales ou agricoles."
       }
     ],
-    "cta": "Essayer une moto électrique"
-  },
-  "why": {
-    "eyebrow": "Pourquoi Prowatt",
-    "title": "Une énergie plus simple, plus propre, plus proche.",
-    "items": [
+    "benefitsTitle": "Les avantages du solaire",
+    "benefits": [
       {
-        "title": "Expertise locale",
-        "text": "Une équipe qui connaît Madagascar, ses besoins et ses contraintes."
+        "title": "Des économies",
+        "text": "Une facture d'électricité réduite et une moindre dépendance au réseau."
       },
       {
-        "title": "Produits fiables",
-        "text": "Une sélection d'équipements durables, choisis pour tenir dans le temps."
+        "title": "Une énergie propre",
+        "text": "Une énergie renouvelable, avec moins d'émissions de CO₂."
       },
       {
-        "title": "Conseil sur mesure",
-        "text": "Nous dimensionnons votre installation selon votre consommation réelle."
+        "title": "Un bien valorisé",
+        "text": "Un bien immobilier équipé en solaire prend de la valeur."
       },
       {
-        "title": "Service après-vente",
-        "text": "Installation, suivi et assistance pour que votre système tourne en toute sérénité."
+        "title": "Indépendance énergétique",
+        "text": "Votre électricité reste là, y compris pendant les coupures."
       }
-    ]
+    ],
+    "productsTitle": "Les équipements que nous proposons",
+    "products": ["Panneaux solaires", "Batteries au lithium", "Câblages", "Convertisseurs"]
   },
-  "steps": {
-    "eyebrow": "Comment ça marche",
-    "title": "Du soleil à votre prise en trois étapes.",
-    "items": [
-      {
-        "title": "Conseil",
-        "text": "Parlez-nous de vos besoins : maison, boutique, entreprise ou déplacements."
-      },
-      {
-        "title": "Installation",
-        "text": "Nos équipes installent et mettent en service votre système."
-      },
-      {
-        "title": "Suivi",
-        "text": "Nous restons disponibles pour la maintenance et l'évolution de votre installation."
-      }
-    ]
+  "realisations": {
+    "eyebrow": "Nos réalisations",
+    "title": "Des installations qui tiennent leurs promesses.",
+    "subtitle": "Nous contribuons à la transition énergétique en installant des solutions solaires performantes et durables.",
+    "projects": "projets",
+    "project": "projet",
+    "explore": "Voir les projets",
+    "others": "Autres solutions",
+    "installed": "Installé en",
+    "specs": {
+      "kwc": "Puissance",
+      "panels": "Panneaux",
+      "storage": "Stockage",
+      "inverter": "Onduleur",
+      "co2": "CO₂ évité",
+      "roi": "Retour sur investissement",
+      "coverage": "Couverture en journée",
+      "autonomy": "Autonomie",
+      "annual": "Production annuelle",
+      "capacity": "Capacité",
+      "warranty": "Garantie",
+      "perYear": "/ an",
+      "years": "ans",
+      "hours": "h",
+      "tons": "t"
+    }
+  },
+  "quotes": {
+    "eyebrow": "Devis",
+    "title": "Un devis adapté à votre situation.",
+    "subtitle": "Choisissez votre profil. Nous revenons vers vous avec une pré-analyse gratuite.",
+    "individual": {
+      "title": "Particulier",
+      "text": "Maison ou appartement : anti-délestage, système autonome ou hybride.",
+      "formTitle": "Demande de devis · Particulier",
+      "formSubtitle": "Quelques questions pour dimensionner votre installation."
+    },
+    "company": {
+      "title": "Société",
+      "text": "Bureaux, commerce, usine, dépôt : économies, autonomie ou continuité de service.",
+      "formTitle": "Demande de devis · Société",
+      "formSubtitle": "Veuillez remplir le formulaire ci-dessous."
+    },
+    "open": "Remplir le formulaire"
+  },
+  "form": {
+    "submit": "Envoyer la demande",
+    "required": "Champ obligatoire",
+    "choose": "Choisir…",
+    "note": "En envoyant, votre messagerie s'ouvre avec votre demande pré-remplie. Pensez à joindre votre facture Jirama (les trois dernières pour une société).",
+    "subjectIndividual": "Demande de devis — Particulier",
+    "subjectCompany": "Demande de devis — Société",
+    "subjectContact": "Message depuis le site Prowatt Madagascar"
+  },
+  "ecooter": {
+    "eyebrow": "Ecooter",
+    "title": "La mobilité électrique, version Prowatt.",
+    "subtitle": "Six scooters électriques conçus pour les trajets du quotidien, le travail et la livraison. Silencieux, économiques et rechargeables avec votre énergie solaire.",
+    "techTitle": "Technologies embarquées",
+    "tech": [
+      { "title": "Moteur central", "text": "Un moteur placé au centre du véhicule." },
+      { "title": "Système BMS", "text": "Gestion et protection de la batterie." },
+      { "title": "Contrôleur rotatif", "text": "Contrôle de l'accélération et de la puissance." }
+    ],
+    "onRequest": "Caractéristiques et prix sur demande",
+    "cta": "Demander un essai",
+    "mailSubject": "Demande d'essai Ecooter"
+  },
+  "shop": {
+    "eyebrow": "Boutique",
+    "title": "Les équipements solaires, en un seul endroit.",
+    "subtitle": "Structures, panneaux, batteries, convertisseurs, pompes et plus encore. Demandez un prix ou passez commande par e-mail ou téléphone.",
+    "all": "Tous",
+    "currency": "Ar",
+    "order": "Demander ce produit",
+    "emptyTitle": "Catalogue en cours d'ajout",
+    "emptyText": "Les produits de cette catégorie sont disponibles en magasin et sur demande. Contactez-nous pour connaître les références et les prix.",
+    "mailSubject": "Demande de produit"
   },
   "contact": {
     "eyebrow": "Contact",
     "title": "Parlons de votre projet.",
-    "subtitle": "Dites-nous ce dont vous avez besoin, nous vous répondons avec une proposition adaptée.",
+    "subtitle": "Notre équipe vous répond pour une pré-analyse gratuite et un devis détaillé.",
+    "visit": "Venez nous voir",
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "hours": "Horaires",
+    "formTitle": "Écrivez-nous",
     "name": "Nom complet",
-    "email": "Adresse e-mail",
-    "interest": "Votre intérêt",
-    "interests": ["Énergie solaire", "Moto électrique", "Les deux", "Autre"],
+    "emailField": "Adresse e-mail",
     "message": "Votre message",
-    "send": "Envoyer le message",
-    "whatsapp": "Écrire sur WhatsApp",
-    "mailSubject": "Demande d'information — Prowatt Madagascar"
+    "send": "Envoyer le message"
   },
   "footer": {
-    "tagline": "Boutique d'énergie solaire et de motos électriques.",
+    "tagline": "Éclairons l'avenir avec l'énergie verte.",
     "rights": "Tous droits réservés.",
     "explore": "Explorer",
+    "solutions": "Solutions",
     "contact": "Contact"
   }
 }

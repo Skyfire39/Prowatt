@@ -61,20 +61,20 @@ export function Navbar({
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-line bg-canvas"
+      className="fixed inset-x-0 top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-xl backdrop-saturate-150"
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href={base} aria-label="Prowatt Madagascar" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
 
-        <ul className="hidden items-center gap-0.5 lg:flex">
+        <ul className="hidden flex-1 items-center justify-center gap-0.5 lg:flex">
           {items.map((item) => (
             <li key={item.href} className="group relative">
               <Link
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={`inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-sm transition-colors hover:bg-accent-soft hover:text-ink ${
+                className={`inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[13px] transition-colors hover:bg-accent-soft hover:text-ink ${
                   isActive(item.href) ? "bg-accent-soft text-ink" : "text-muted"
                 }`}
               >

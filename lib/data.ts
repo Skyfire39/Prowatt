@@ -283,9 +283,10 @@ export const ecooters: { id: string; name: string; tagline: L10n; hue: [string, 
 // Accueil
 export const partners = ["Rapide Service", "Jovena", "Jiro Ve", "Vision"];
 
-export const testimonials: { name: string; text: L10n }[] = [
+export const testimonials: { name: string; photo: string; text: L10n }[] = [
   {
     name: "Fanilo Razanamino",
+    photo: "/images/testimonials/fanilo.jpg",
     text: {
       fr: "Très satisfait de l'installation, et le produit est garanti.",
       en: "Very happy with the installation, and the product is under warranty.",
@@ -293,6 +294,7 @@ export const testimonials: { name: string; text: L10n }[] = [
   },
   {
     name: "Mampiray Rakotoarisoa",
+    photo: "/images/testimonials/mampiray.jpg",
     text: {
       fr: "Très satisfait : plus aucun souci de délestage.",
       en: "Very satisfied: no more load-shedding worries.",
@@ -300,6 +302,7 @@ export const testimonials: { name: string; text: L10n }[] = [
   },
   {
     name: "Arnaud Aban'i Magneva",
+    photo: "/images/testimonials/arnaud.jpg",
     text: {
       fr: "Une électricité stable en brousse, sans factures ni coupures.",
       en: "Stable electricity in the countryside, with no bills and no outages.",
@@ -307,6 +310,7 @@ export const testimonials: { name: string; text: L10n }[] = [
   },
   {
     name: "Mika Andriamaraina",
+    photo: "/images/testimonials/mika.jpg",
     text: {
       fr: "Tranquille depuis 5 ans : je ne remarque même plus les délestages.",
       en: "At ease for 5 years now: I no longer even notice the power cuts.",

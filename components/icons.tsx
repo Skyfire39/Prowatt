@@ -168,3 +168,17 @@ export const QuoteIcon = (p: IconProps) => (
     <path d="M10 7H6v5h3c0 2-1 3-3 3M18 7h-4v5h3c0 2-1 3-3 3" />
   </svg>
 );
+
+export const UsersIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <circle cx="12" cy="8" r="3.5" />
+    <path d="M5 20c0-3.900 3-6 7-6s7 2.100 7 6M17.500 4.500l.6 1.300 1.400.2-1 1 .2 1.400-1.200-.7-1.200.7.2-1.400-1-1 1.400-.2.6-1.300Z" />
+  </svg>
+);
+
+export const GlobeIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" />
+  </svg>
+);

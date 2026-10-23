@@ -29,7 +29,7 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
 
   return (
     <>
-      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} />
+      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} photo={{ pos: "50% 45%" }} />
 
       <section className="px-4 py-12 sm:px-6">
         <div className="mx-auto max-w-6xl">

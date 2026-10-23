@@ -60,7 +60,7 @@ export function Shop({
 
       {shown.length === 0 ? (
         <div className="glass mx-auto mt-12 max-w-xl rounded-2xl p-10 text-center">
-          <p className="text-2xl" style={{ fontFamily: "var(--font-display)" }}>{labels.emptyTitle}</p>
+          <p className="text-2xl font-semibold tracking-tight">{labels.emptyTitle}</p>
           <p className="mt-2 text-muted">{labels.emptyText}</p>
           <a
             href={contactHref}

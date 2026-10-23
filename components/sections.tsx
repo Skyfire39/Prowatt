@@ -1,11 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { partners, slugs, testimonials, tr } from "@/lib/data";
 import type { Slug } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
-import { site } from "@/lib/site";
 import { MotoArt } from "./art";
-import { Counter } from "./counter";
 import {
   ArrowIcon,
   BatteryIcon,
@@ -16,60 +15,23 @@ import {
   GridIcon,
   HomeIcon,
   LampIcon,
-  LeafIcon,
+  MapPinIcon,
   PanelIcon,
-  QuoteIcon,
   ShieldIcon,
   WrenchIcon,
-  MapPinIcon,
 } from "./icons";
 import { HoverLift, Reveal } from "./motion";
-import { ButtonLink, SectionHead } from "./ui";
+import { ButtonLink, Photo, SectionHead } from "./ui";
 
 type Home = Dictionary["home"];
 
-export function Stats({ lang, labels }: { lang: Locale; labels: Home["stats"] }) {
-  const values = [site.stats.kwc, site.stats.clients, site.stats.co2];
-  const nf = new Intl.NumberFormat(lang);
-  return (
-    <section className="px-4 py-6 sm:px-6">
-      <Reveal className="mx-auto max-w-6xl">
-        <div className="grid divide-y divide-white/15 rounded-3xl bg-teal text-white sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {values.map((v, i) => (
-            <div key={labels[i]} className="px-8 py-10 sm:py-14">
-              <p className="text-7xl leading-none tracking-tight tabular-nums text-lime sm:text-8xl" style={{ fontFamily: "var(--font-display)" }}>
-                <Counter value={v} display={nf.format(v)} locale={lang} />
-              </p>
-              <p className="mt-4 text-sm font-medium uppercase tracking-[0.14em] text-white/70">{labels[i]}</p>
-            </div>
-          ))}
-        </div>
-      </Reveal>
-    </section>
-  );
-}
-
-export function Mission({ dict }: { dict: Home["message"] }) {
-  return (
-    <section className="px-4 py-24 sm:px-6 sm:py-36">
-      <Reveal className="mx-auto max-w-5xl">
-        <p className="eyebrow">{dict.eyebrow}</p>
-        <blockquote className="mt-8 text-balance text-4xl italic leading-[1.1] tracking-tight sm:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
-          « {dict.quote} »
-        </blockquote>
-        <p className="mt-10 flex items-center gap-4 text-sm">
-          <span className="h-px w-10 bg-ink/40" />
-          <span>
-            <span className="font-semibold">{dict.author}</span>
-            <span className="text-muted"> · {dict.role}</span>
-          </span>
-        </p>
-      </Reveal>
-    </section>
-  );
-}
-
 const blockIcons = [BoltIcon, DropIcon, WrenchIcon];
+// Trois cadrages différents de la même photo, un par pilier.
+const blockCrops = [
+  { pos: "10% 40%", zoom: 1.9 },
+  { pos: "90% 80%", zoom: 2 },
+  { pos: "50% 5%", zoom: 2.2 },
+];
 const typeIcons: Record<Slug, typeof BoltIcon> = {
   "100-autonome": HomeIcon,
   hybride: BatteryIcon,
@@ -78,6 +40,7 @@ const typeIcons: Record<Slug, typeof BoltIcon> = {
   "acces-a-eau": DropIcon,
 };
 
+/** Bande teal pleine largeur : « Nos solutions sur mesure ». */
 export function Solutions({
   lang,
   dict,
@@ -88,30 +51,33 @@ export function Solutions({
   categories: Dictionary["categories"];
 }) {
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-28">
+    <section className="bg-teal px-4 py-24 text-white sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
-        <SectionHead eyebrow={dict.eyebrow} title={dict.title} subtitle={dict.subtitle} />
+        <SectionHead eyebrow={dict.eyebrow} title={dict.title} subtitle={dict.subtitle} light />
 
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
+        <div className="mt-16 grid gap-5 md:grid-cols-3">
           {dict.blocks.map((b, i) => {
             const Icon = blockIcons[i];
             return (
               <Reveal key={b.title} delay={i * 0.08}>
-                <HoverLift className="glass relative h-full overflow-hidden rounded-2xl p-8">
-                  <span className="relative grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
-                    <Icon className="size-6" />
-                  </span>
-                  <h3 className="relative mt-6 text-2xl tracking-tight">{b.title}</h3>
-                  <p className="relative mt-2 leading-relaxed text-muted">{b.text}</p>
+                <HoverLift className="flex h-full flex-col overflow-hidden rounded-3xl bg-canvas text-ink">
+                  <Photo {...blockCrops[i]} className="h-56" sizes="(min-width: 768px) 380px, 100vw" />
+                  <div className="flex flex-1 flex-col p-8">
+                    <span className="grid size-11 place-items-center rounded-full bg-lime text-teal">
+                      <Icon className="size-5" />
+                    </span>
+                    <h3 className="mt-5 text-2xl leading-tight tracking-tight">{b.title}</h3>
+                    <p className="mt-2 leading-relaxed text-muted">{b.text}</p>
+                  </div>
                 </HoverLift>
               </Reveal>
             );
           })}
         </div>
 
-        <Reveal className="mt-16">
-          <p className="eyebrow">{dict.typesTitle}</p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <Reveal className="mt-14">
+          <p className="mb-5 text-center text-sm font-medium text-white/70">{dict.typesTitle}</p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {slugs.map((slug) => {
               const Icon = typeIcons[slug];
               const c = categories[slug];
@@ -119,12 +85,12 @@ export function Solutions({
                 <Link
                   key={slug}
                   href={`/${lang}/realisations/${slug}`}
-                  className="glass group flex flex-col rounded-3xl p-5 transition-transform hover:-translate-y-1"
+                  className="group flex flex-col rounded-2xl bg-white/10 p-5 transition-colors hover:bg-white/20"
                 >
-                  <Icon className="size-6 text-accent" />
+                  <Icon className="size-6 text-lime" />
                   <span className="mt-4 font-semibold leading-snug">{c.name}</span>
-                  <span className="mt-1.5 flex-1 text-sm leading-relaxed text-muted">{c.short}</span>
-                  <ArrowIcon className="mt-4 size-4 text-accent transition-transform group-hover:translate-x-1" />
+                  <span className="mt-1.5 flex-1 text-sm leading-relaxed text-white/70">{c.short}</span>
+                  <ArrowIcon className="mt-4 size-4 text-lime transition-transform group-hover:translate-x-1" />
                 </Link>
               );
             })}
@@ -135,50 +101,40 @@ export function Solutions({
   );
 }
 
+/** Bande noire façon page produit Apple : titre centré, visuel XXL. */
 export function EcooterTeaser({ lang, dict }: { lang: Locale; dict: Home["ecooter"] }) {
   return (
-    <section className="px-4 py-12 sm:px-6">
-      <Reveal className="mx-auto max-w-6xl">
-        <div className="grid items-center gap-10 overflow-hidden rounded-3xl bg-teal p-8 text-white sm:p-14 lg:grid-cols-2">
-          <div>
-            <p className="eyebrow !text-lime">{dict.eyebrow}</p>
-            <h2 className="mt-5 text-balance text-5xl leading-[1] tracking-tight sm:text-6xl">{dict.title}</h2>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-white/75">{dict.subtitle}</p>
-            <div className="mt-9">
-              <ButtonLink href={`/${lang}/ecooter`} variant="lime" arrow>
-                {dict.cta}
-              </ButtonLink>
-            </div>
-          </div>
-          <div className="rounded-2xl bg-white/[0.07] p-6 sm:p-10">
-            <MotoArt className="w-full [--moto-a:#c8e0a2] [--moto-b:#f6f8f0] [--moto-line:#f6f8f0]" />
-          </div>
-        </div>
-      </Reveal>
+    <section className="bg-[#050d0c] px-4 pt-24 text-white sm:px-6 sm:pt-32">
+      <div className="mx-auto max-w-6xl">
+        <SectionHead eyebrow={dict.eyebrow} title={dict.title} subtitle={dict.subtitle} light />
+        <Reveal className="mt-8 flex justify-center">
+          <ButtonLink href={`/${lang}/ecooter`} variant="lime" arrow>
+            {dict.cta}
+          </ButtonLink>
+        </Reveal>
+        <Reveal y={40} delay={0.1} className="mx-auto mt-14 max-w-4xl">
+          <MotoArt className="w-full [--moto-a:#c8e0a2] [--moto-b:#ffffff] [--moto-line:#f5f8f1]" />
+        </Reveal>
+      </div>
     </section>
   );
 }
 
+/** Méthode en 5 étapes sur fond tuile. */
 export function Steps({ dict }: { dict: Home["steps"] }) {
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-28">
+    <section className="bg-panel px-4 py-24 sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {dict.items.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.08}>
-              <div className="glass relative h-full overflow-hidden rounded-2xl p-6">
-                <span
-                  aria-hidden="true"
-                  className="absolute right-4 top-2 font-display text-[5.5rem] leading-none text-accent opacity-25"
-                >
+              <div className="flex h-full flex-col rounded-3xl bg-canvas p-6">
+                <span className="grid size-10 place-items-center rounded-full bg-accent text-lg font-semibold text-on-accent">
                   {i + 1}
                 </span>
-                <LeafIcon className="relative size-6 text-accent" />
-                <h3 className="relative mt-5 text-2xl leading-snug tracking-tight">
-                  {item.title}
-                </h3>
-                <p className="relative mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+                <h3 className="mt-6 text-xl leading-snug tracking-tight">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
               </div>
             </Reveal>
           ))}
@@ -190,52 +146,66 @@ export function Steps({ dict }: { dict: Home["steps"] }) {
 
 const advIcons = [ShieldIcon, BoltIcon, BatteryIcon, PanelIcon];
 
+/** Grande tuile photo avec quatre cartes blanches, comme l'ancien site. */
 export function SolarAdvantages({ dict }: { dict: Home["advantages"] }) {
   return (
-    <section className="px-4 py-12 sm:px-6">
-      <div className="mx-auto max-w-6xl">
-        <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <div className="mt-14 grid gap-5 sm:grid-cols-2">
-          {dict.items.map((item, i) => {
-            const Icon = advIcons[i];
-            return (
-              <Reveal key={item.title} delay={(i % 2) * 0.1}>
-                <div className="glass flex h-full gap-5 rounded-2xl p-7">
-                  <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
+    <section className="px-4 py-12 sm:px-6 sm:py-20">
+      <Reveal className="mx-auto max-w-6xl">
+        <div className="relative isolate overflow-hidden rounded-3xl px-5 py-20 text-white sm:px-10 sm:py-28">
+          <Photo pos="50% 40%" className="absolute inset-0 -z-20" />
+          <div className="absolute inset-0 -z-10 bg-[#0b2b27]/75" />
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="eyebrow !text-lime">{dict.eyebrow}</p>
+            <h2 className="mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-7xl">
+              {dict.title}
+            </h2>
+          </div>
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {dict.items.map((item, i) => {
+              const Icon = advIcons[i];
+              return (
+                <div key={item.title} className="rounded-2xl bg-canvas p-7 text-ink">
+                  <span className="grid size-12 place-items-center rounded-full bg-accent-soft text-accent">
                     <Icon className="size-6" />
                   </span>
-                  <div>
-                    <h3 className="text-2xl tracking-tight">{item.title}</h3>
-                    <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
-                  </div>
+                  <h3 className="mt-6 text-xl leading-snug tracking-tight">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
                 </div>
-              </Reveal>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
 
 const audIcons = [HomeIcon, BuildingIcon, FactoryIcon];
+const audCrops = [
+  { pos: "0% 15%", zoom: 2.1 },
+  { pos: "55% 55%", zoom: 2.4 },
+  { pos: "100% 90%", zoom: 2.1 },
+];
 
 export function Audiences({ dict }: { dict: Home["audiences"] }) {
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-28">
+    <section className="px-4 py-24 sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
+        <div className="mt-16 grid gap-5 md:grid-cols-3">
           {dict.items.map((item, i) => {
             const Icon = audIcons[i];
             return (
               <Reveal key={item.title} delay={i * 0.1}>
-                <HoverLift className="glass h-full rounded-2xl p-8 text-center">
-                  <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-accent text-on-accent">
-                    <Icon className="size-7" />
-                  </span>
-                  <h3 className="mt-6 text-2xl tracking-tight">{item.title}</h3>
-                  <p className="mt-2 text-muted">{item.text}</p>
+                <HoverLift className="h-full overflow-hidden rounded-3xl bg-panel">
+                  <Photo {...audCrops[i]} className="h-48" sizes="(min-width: 768px) 380px, 100vw" />
+                  <div className="p-8">
+                    <span className="-mt-14 mb-5 grid size-12 place-items-center rounded-full bg-lime text-teal ring-4 ring-panel relative">
+                      <Icon className="size-6" />
+                    </span>
+                    <h3 className="text-2xl tracking-tight">{item.title}</h3>
+                    <p className="mt-2 text-muted">{item.text}</p>
+                  </div>
                 </HoverLift>
               </Reveal>
             );
@@ -246,23 +216,34 @@ export function Audiences({ dict }: { dict: Home["audiences"] }) {
   );
 }
 
+/** Bande lime pleine largeur avec les portraits des clients. */
 export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimonials"] }) {
   return (
-    <section className="px-4 py-12 sm:px-6">
+    <section className="bg-lime px-4 py-24 text-[#10201e] sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
-        <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <p className="eyebrow !text-teal">{dict.eyebrow}</p>
+          <h2 className="mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] text-teal sm:text-6xl lg:text-7xl">
+            {dict.title}
+          </h2>
+        </Reveal>
+        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.08}>
-              <figure className="glass flex h-full flex-col rounded-2xl p-7">
-                <QuoteIcon className="size-7 text-accent" />
-                <blockquote className="mt-4 flex-1 font-display text-2xl leading-snug">{tr(t.text, lang)}</blockquote>
-                <figcaption className="mt-6 flex items-center gap-3">
-                  <span className="grid size-9 place-items-center rounded-full bg-accent text-sm font-semibold text-on-accent">
-                    {t.name[0]}
-                  </span>
-                  <span className="text-sm font-medium">{t.name}</span>
-                </figcaption>
+              <figure className="flex h-full flex-col rounded-3xl bg-teal p-7 text-white">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={t.photo}
+                    alt={t.name}
+                    width={96}
+                    height={96}
+                    className="size-12 rounded-full object-cover"
+                  />
+                  <figcaption className="text-sm font-semibold">{t.name}</figcaption>
+                </div>
+                <blockquote className="mt-6 flex-1 text-lg leading-snug tracking-tight">
+                  {tr(t.text, lang)}
+                </blockquote>
               </figure>
             </Reveal>
           ))}
@@ -274,12 +255,12 @@ export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimo
 
 export function Partners({ dict }: { dict: Home["partners"] }) {
   return (
-    <section className="px-4 py-20 sm:px-6">
+    <section className="px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <Reveal className="mt-10 flex flex-wrap justify-center gap-3">
+        <Reveal className="mt-12 flex flex-wrap justify-center gap-3">
           {partners.map((p) => (
-            <span key={p} className="glass rounded-full px-6 py-3 text-[15px] font-semibold">
+            <span key={p} className="rounded-full bg-panel px-7 py-3.5 text-lg font-semibold tracking-tight">
               {p}
             </span>
           ))}
@@ -293,22 +274,20 @@ const whyIcons = [WrenchIcon, ShieldIcon, LampIcon, MapPinIcon];
 
 export function Why({ dict }: { dict: Home["why"] }) {
   return (
-    <section className="px-4 py-12 sm:px-6">
+    <section className="bg-panel px-4 py-24 sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <div className="mt-14 grid gap-5 sm:grid-cols-2">
+        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {dict.items.map((item, i) => {
             const Icon = whyIcons[i];
             return (
-              <Reveal key={item.title} delay={(i % 2) * 0.1}>
-                <div className="glass flex h-full gap-5 rounded-2xl p-7">
-                  <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
+              <Reveal key={item.title} delay={i * 0.08}>
+                <div className="flex h-full flex-col rounded-3xl bg-canvas p-8">
+                  <span className="grid size-12 place-items-center rounded-full bg-accent text-on-accent">
                     <Icon className="size-6" />
                   </span>
-                  <div>
-                    <h3 className="text-2xl tracking-tight">{item.title}</h3>
-                    <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
-                  </div>
+                  <h3 className="mt-6 text-2xl leading-snug tracking-tight">{item.title}</h3>
+                  <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
                 </div>
               </Reveal>
             );

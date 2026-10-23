@@ -60,16 +60,24 @@
       "title": "Lighting the future",
       "titleAccent": "with green energy.",
       "subtitle": "Solar, water and electric mobility: sustainable, universal access to electricity and water, everywhere in Madagascar.",
-      "primary": "Get a quote",
-      "secondary": "See our projects",
-      "chips": ["Zero outages", "Zero bills", "Up to 10-year warranty"]
+      "primary": "Contact us",
+      "secondary": "Get a quote",
+      "chips": [
+        "Zero outages",
+        "Zero bills",
+        "Up to 10-year warranty"
+      ]
     },
-    "stats": ["kWp installed", "Customers equipped", "Tonnes of CO₂ avoided"],
+    "stats": [
+      "Total installed capacity",
+      "Customers equipped",
+      "CO₂ avoided"
+    ],
     "message": {
       "eyebrow": "Our mission",
       "quote": "At Prowatt, we work for sustainable, universal access to electricity and water in Madagascar.",
       "author": "Sultanhoussen Alishane",
-      "role": "Chief Executive Officer"
+      "role": "CEO"
     },
     "solutions": {
       "eyebrow": "Our solutions",
@@ -251,7 +259,12 @@
       }
     ],
     "productsTitle": "The equipment we supply",
-    "products": ["Solar panels", "Lithium batteries", "Cabling", "Inverters"]
+    "products": [
+      "Solar panels",
+      "Lithium batteries",
+      "Cabling",
+      "Inverters"
+    ]
   },
   "realisations": {
     "eyebrow": "Our projects",
@@ -313,9 +326,18 @@
     "subtitle": "Six electric scooters designed for everyday trips, work and delivery. Quiet, economical and rechargeable with your own solar energy.",
     "techTitle": "Built-in technology",
     "tech": [
-      { "title": "Central motor", "text": "A motor placed at the centre of the vehicle." },
-      { "title": "BMS system", "text": "Battery management and protection." },
-      { "title": "Rotary controller", "text": "Control of acceleration and power." }
+      {
+        "title": "Central motor",
+        "text": "A motor placed at the centre of the vehicle."
+      },
+      {
+        "title": "BMS system",
+        "text": "Battery management and protection."
+      },
+      {
+        "title": "Rotary controller",
+        "text": "Control of acceleration and power."
+      }
     ],
     "onRequest": "Specifications and price on request",
     "cta": "Request a test ride",

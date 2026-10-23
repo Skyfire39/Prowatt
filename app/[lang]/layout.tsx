@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk, Instrument_Serif } from "next/font/google";
+import { Hanken_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
@@ -14,12 +14,6 @@ const hanken = Hanken_Grotesk({
   subsets: ["latin"],
 });
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-});
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -52,7 +46,7 @@ export default async function RootLayout({
     <html
       lang={lang}
       suppressHydrationWarning
-      className={`${hanken.variable} ${instrument.variable} antialiased`}
+      className={`${hanken.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />

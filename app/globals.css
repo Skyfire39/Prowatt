@@ -3,38 +3,39 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Design flat : aplats de couleur, filets fins, aucune ombre, aucun flou.
+ * Design inspiré d'apple.com : grands titres serrés, tuiles très arrondies,
+ * bandes de couleur pleine largeur, photos plein cadre.
  * Palette Prowatt : #c8e0a2 (lime) et #175c55 (teal).
  */
 :root {
   --brand-lime: #c8e0a2;
   --brand-teal: #175c55;
 
-  --canvas: #f6f8f0;
-  --panel: #ffffff;
-  --ink: #0e2724;
-  --muted: #526b67;
-  --line: rgb(14 39 36 / 0.14);
+  --canvas: #ffffff;
+  --panel: #f4f7ee;
+  --ink: #10201e;
+  --muted: #5e6f6b;
+  --line: rgb(16 32 30 / 0.1);
   --accent: #175c55;
   --on-accent: #ffffff;
-  --accent-soft: #e3eecf;
+  --accent-soft: #e6f0d3;
   --band: #c8e0a2;
-  --on-band: #0e2724;
+  --on-band: #10201e;
 
   color-scheme: light;
 }
 
 .dark {
-  --canvas: #0a1d1b;
-  --panel: #0f2825;
-  --ink: #eef4e3;
-  --muted: #94afa9;
-  --line: rgb(238 244 227 / 0.14);
+  --canvas: #050d0c;
+  --panel: #101f1d;
+  --ink: #f5f8f1;
+  --muted: #9db0ab;
+  --line: rgb(245 248 241 / 0.12);
   --accent: #c8e0a2;
   --on-accent: #0a2321;
-  --accent-soft: #153531;
+  --accent-soft: #17312d;
   --band: #175c55;
-  --on-band: #eef4e3;
+  --on-band: #f5f8f1;
 
   color-scheme: dark;
 }
@@ -52,10 +53,13 @@
   --color-on-band: var(--on-band);
   --color-lime: var(--brand-lime);
   --color-teal: var(--brand-teal);
-  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-instrument), "Times New Roman", serif;
-  --radius-2xl: 0.75rem;
-  --radius-3xl: 1rem;
+  /* SF Pro sur les appareils Apple, Hanken Grotesk ailleurs. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-hanken), system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-hanken), system-ui, sans-serif;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
 }
 
 html {
@@ -71,13 +75,13 @@ body {
     color 0.3s ease;
 }
 
-/* Titres en serif d'affichage, sans graisse : l'élégance vient du tracé. */
+/* Titres : gras moyen, interlettrage serré, comme les titres produit d'Apple. */
 h1,
 h2,
 h3 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.015em;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.03em;
 }
 
 ::selection {
@@ -90,29 +94,18 @@ section[id] {
 }
 
 @layer components {
-  /* Surface plate : aplat + filet. Aucun flou, aucune ombre. */
+  /* Tuile : aplat arrondi sans bordure, comme les tuiles d'apple.com. */
   .glass,
   .glass-strong {
     background: var(--panel);
-    border: 1px solid var(--line);
   }
 
   .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.75rem;
+    display: inline-block;
+    font-size: 1.0625rem;
     font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    letter-spacing: -0.01em;
     color: var(--accent);
-  }
-
-  .eyebrow::before {
-    content: "";
-    width: 2rem;
-    height: 1px;
-    background: currentColor;
   }
 }
 

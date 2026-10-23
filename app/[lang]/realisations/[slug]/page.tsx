@@ -6,9 +6,18 @@ import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/motion";
 import { CtaBand, PageHero } from "@/components/ui";
 import { isSlug, projectsBySlug, slugs } from "@/lib/data";
+import type { Slug } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
 import { getDictionary } from "../../dictionaries";
+
+const crops: Record<Slug, { pos: string; zoom: number }> = {
+  "100-autonome": { pos: "20% 30%", zoom: 1.4 },
+  hybride: { pos: "55% 60%", zoom: 1.4 },
+  ongrid: { pos: "85% 30%", zoom: 1.5 },
+  "anti-delestage": { pos: "15% 75%", zoom: 1.5 },
+  "acces-a-eau": { pos: "70% 90%", zoom: 1.6 },
+};
 
 export function generateStaticParams() {
   return locales.flatMap((lang) => slugs.map((slug) => ({ lang, slug })));
@@ -40,7 +49,7 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
 
   return (
     <>
-      <PageHero eyebrow={dict.realisations.eyebrow} title={c.name} subtitle={c.intro} />
+      <PageHero eyebrow={dict.realisations.eyebrow} title={c.name} subtitle={c.intro} photo={crops[slug]} />
 
       <section className="px-4 pb-12 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">

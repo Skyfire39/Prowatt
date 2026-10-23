@@ -60,16 +60,24 @@
       "title": "Éclairons l'avenir",
       "titleAccent": "avec l'énergie verte.",
       "subtitle": "Solaire, eau et mobilité électrique : un accès durable et universel à l'électricité et à l'eau, partout à Madagascar.",
-      "primary": "Demander un devis",
-      "secondary": "Voir les réalisations",
-      "chips": ["Zéro coupure", "Zéro facture", "Garantie jusqu'à 10 ans"]
+      "primary": "Nous contacter",
+      "secondary": "Demander un devis",
+      "chips": [
+        "Zéro coupure",
+        "Zéro facture",
+        "Garantie jusqu'à 10 ans"
+      ]
     },
-    "stats": ["kWc installés", "Clients équipés", "Tonnes de CO₂ évitées"],
+    "stats": [
+      "Capacité totale installée",
+      "Clients équipés",
+      "CO₂ évités"
+    ],
     "message": {
       "eyebrow": "Notre mission",
       "quote": "Chez Prowatt, nous œuvrons pour un accès durable et universel à l'électricité et à l'eau à Madagascar.",
       "author": "Sultanhoussen Alishane",
-      "role": "Directeur général"
+      "role": "DG"
     },
     "solutions": {
       "eyebrow": "Nos solutions",
@@ -251,7 +259,12 @@
       }
     ],
     "productsTitle": "Les équipements que nous proposons",
-    "products": ["Panneaux solaires", "Batteries au lithium", "Câblages", "Convertisseurs"]
+    "products": [
+      "Panneaux solaires",
+      "Batteries au lithium",
+      "Câblages",
+      "Convertisseurs"
+    ]
   },
   "realisations": {
     "eyebrow": "Nos réalisations",
@@ -313,9 +326,18 @@
     "subtitle": "Six scooters électriques conçus pour les trajets du quotidien, le travail et la livraison. Silencieux, économiques et rechargeables avec votre énergie solaire.",
     "techTitle": "Technologies embarquées",
     "tech": [
-      { "title": "Moteur central", "text": "Un moteur placé au centre du véhicule." },
-      { "title": "Système BMS", "text": "Gestion et protection de la batterie." },
-      { "title": "Contrôleur rotatif", "text": "Contrôle de l'accélération et de la puissance." }
+      {
+        "title": "Moteur central",
+        "text": "Un moteur placé au centre du véhicule."
+      },
+      {
+        "title": "Système BMS",
+        "text": "Gestion et protection de la batterie."
+      },
+      {
+        "title": "Contrôleur rotatif",
+        "text": "Contrôle de l'accélération et de la puissance."
+      }
     ],
     "onRequest": "Caractéristiques et prix sur demande",
     "cta": "Demander un essai",

@@ -26,7 +26,7 @@ export default async function RealisationsPage({ params }: PageProps<"/[lang]/re
 
   return (
     <>
-      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} />
+      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} photo={{ pos: "35% 30%", zoom: 1.2 }} />
       <section className="px-4 pb-12 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {slugs.map((slug, i) => {

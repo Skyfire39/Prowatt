@@ -3,11 +3,9 @@ import { Hero } from "@/components/hero";
 import {
   Audiences,
   EcooterTeaser,
-  Mission,
   Partners,
   SolarAdvantages,
   Solutions,
-  Stats,
   Steps,
   Testimonials,
   Why,
@@ -23,9 +21,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
   return (
     <>
-      <Hero lang={lang} dict={home.hero} />
-      <Stats lang={lang} labels={home.stats} />
-      <Mission dict={home.message} />
+      <Hero lang={lang} dict={home.hero} message={home.message} statLabels={home.stats} />
       <Solutions lang={lang} dict={home.solutions} categories={categories} />
       <EcooterTeaser lang={lang} dict={home.ecooter} />
       <Steps dict={home.steps} />

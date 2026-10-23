@@ -24,15 +24,15 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
   ];
 
   return (
-    <footer className="px-4 pb-8 sm:px-6">
-      <div className="mx-auto max-w-6xl border-t border-line pt-14">
+    <footer className="mt-12 bg-panel px-4 pb-10 pt-14 sm:px-6">
+      <div className="mx-auto max-w-6xl">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Logo />
-            <p className="mt-5 max-w-xs text-2xl italic leading-snug" style={{ fontFamily: "var(--font-display)" }}>{footer.tagline}</p>
+            <Logo className="h-12 w-auto" />
+            <p className="mt-5 max-w-xs text-lg leading-snug text-muted">{footer.tagline}</p>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{footer.explore}</p>
+            <p className="text-xs font-semibold text-ink">{footer.explore}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               {explore.map((l) => (
                 <li key={l.href}>
@@ -44,7 +44,7 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
             </ul>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{footer.solutions}</p>
+            <p className="text-xs font-semibold text-ink">{footer.solutions}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               {slugs.map((s) => (
                 <li key={s}>
@@ -56,7 +56,7 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
             </ul>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{footer.contact}</p>
+            <p className="text-xs font-semibold text-ink">{footer.contact}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               <li>
                 <a href={site.phoneHref} className="transition-colors hover:text-ink">

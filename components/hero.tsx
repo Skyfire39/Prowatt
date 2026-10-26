@@ -10,6 +10,43 @@ import { BoltIcon, GlobeIcon, QuoteIcon, UsersIcon } from "./icons";
 import { ButtonLink } from "./ui";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+/** Remplissage (décoratif) de l'anneau de chaque chiffre clé. */
+const FILLS = [0.78, 0.9, 0.66];
+
+/** Anneau qui se trace à l'apparition, avec un point lumineux qui orbite lentement. */
+function Ring({
+  Icon,
+  fill,
+  delay,
+}: {
+  Icon: typeof BoltIcon;
+  fill: number;
+  delay: number;
+}) {
+  return (
+    <span className="relative grid size-11 place-items-center text-accent sm:size-14">
+      <svg viewBox="0 0 56 56" className="absolute inset-0 -rotate-90" aria-hidden="true">
+        <circle cx="28" cy="28" r="24" fill="none" stroke="currentColor" strokeOpacity="0.16" strokeWidth="4" />
+        <motion.circle
+          cx="28"
+          cy="28"
+          r="24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: fill }}
+          transition={{ duration: 1.8, ease, delay }}
+        />
+      </svg>
+      <span aria-hidden="true" className="stat-orbit absolute inset-0">
+        <span className="absolute left-1/2 top-[2px] size-2 -translate-x-1/2 rounded-full bg-lime shadow-[0_0_10px_2px_var(--brand-lime)]" />
+      </span>
+      <Icon className="relative size-5 sm:size-6" />
+    </span>
+  );
+}
 
 export function Hero({
   lang,
@@ -84,23 +121,32 @@ export function Hero({
             </ButtonLink>
           </motion.div>
 
-          <motion.dl
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease, delay: 0.55 }}
-            className="mt-12 grid max-w-xl grid-cols-3 gap-4"
-          >
+          <dl className="mt-12 grid max-w-2xl grid-cols-3 gap-2.5 sm:gap-4">
             {stats.map((s, i) => (
-              <div key={statLabels[i]}>
-                <s.icon className="size-7 text-accent" />
-                <dd className="mt-3 text-3xl font-medium tracking-tight tabular-nums sm:text-4xl">
+              <motion.div
+                key={statLabels[i]}
+                initial={{ opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.7, ease, delay: 0.55 + i * 0.12 }}
+                className="glass group relative overflow-hidden rounded-2xl p-3 sm:p-5"
+              >
+                {/* Reflet qui traverse la carte au survol */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 -left-2/3 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/60 to-transparent transition-transform duration-1000 ease-out group-hover:translate-x-[420%]"
+                />
+                <Ring Icon={s.icon} fill={FILLS[i]} delay={0.9 + i * 0.15} />
+                <dd className="relative mt-3 text-2xl font-medium leading-none tracking-tight tabular-nums sm:mt-4 sm:text-4xl">
                   <Counter value={s.value} display={nf.format(s.value)} locale={lang} />
-                  {s.unit && <span className="ml-0.5 text-lg text-muted sm:text-xl">{s.unit}</span>}
+                  {s.unit && <span className="mt-1 block text-xs text-muted sm:ml-0.5 sm:mt-0 sm:inline sm:text-xl">{s.unit}</span>}
                 </dd>
-                <dt className="mt-1 text-xs leading-snug text-muted sm:text-sm">{statLabels[i]}</dt>
-              </div>
+                <dt className="relative mt-1.5 text-[11px] leading-snug text-muted sm:mt-2 sm:text-sm">
+                  {statLabels[i]}
+                </dt>
+              </motion.div>
             ))}
-          </motion.dl>
+          </dl>
         </div>
 
         <motion.aside

@@ -33,7 +33,7 @@ export function FloatingContact({ dict }: { dict: Dictionary["floating"] }) {
     <div
       role="group"
       aria-label={dict.group}
-      className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6"
+      className="floating-contact fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6"
     >
       {items.map((item, i) => (
         <motion.div

@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 /*
  * Design inspiré d'apple.com : grands titres serrés, tuiles très arrondies,
  * bandes de couleur pleine largeur, photos plein cadre.
@@ -26,21 +24,6 @@
   color-scheme: light;
 }
 
-.dark {
-  --canvas: color-mix(in srgb, var(--brand-teal) 24%, #000);
-  --panel: color-mix(in srgb, var(--brand-teal) 40%, #000);
-  --ink: var(--brand-lime);
-  --muted: color-mix(in srgb, var(--brand-lime) 68%, var(--canvas));
-  --line: color-mix(in srgb, var(--brand-lime) 18%, transparent);
-  --accent: var(--brand-lime);
-  --on-accent: var(--brand-teal);
-  --accent-soft: color-mix(in srgb, var(--brand-teal) 60%, #000);
-  --band: var(--brand-teal);
-  --on-band: var(--brand-lime);
-
-  color-scheme: dark;
-}
-
 @theme inline {
   --color-canvas: var(--canvas);
   --color-panel: var(--panel);
@@ -54,11 +37,9 @@
   --color-on-band: var(--on-band);
   --color-lime: var(--brand-lime);
   --color-teal: var(--brand-teal);
-  /* SF Pro sur les appareils Apple, Hanken Grotesk ailleurs. */
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    var(--font-hanken), system-ui, sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    var(--font-hanken), system-ui, sans-serif;
+  /* Reddit Sans, comme sur prowattmadagascar.com. */
+  --font-sans: var(--font-reddit), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-reddit), system-ui, -apple-system, "Segoe UI", sans-serif;
   --radius-2xl: 1.25rem;
   --radius-3xl: 1.75rem;
 }
@@ -135,14 +116,6 @@ h3 {
   animation-delay: -15s;
 }
 
-.dark .ambient span {
-  opacity: 0.2;
-}
-
-.dark .ambient span:nth-child(2) {
-  opacity: 0.45;
-}
-
 @keyframes drift {
   from {
     transform: translate3d(0, 0, 0) scale(1);
@@ -174,19 +147,6 @@ section[id] {
     background: color-mix(in srgb, var(--canvas) 72%, transparent);
   }
 
-  .dark .glass,
-  .dark .glass-strong {
-    background: rgb(255 255 255 / 0.07);
-    border-color: rgb(255 255 255 / 0.14);
-    box-shadow:
-      0 8px 32px rgb(0 0 0 / 0.35),
-      inset 0 1px 0 rgb(255 255 255 / 0.08);
-  }
-
-  .dark .glass-strong {
-    background: rgb(255 255 255 / 0.1);
-  }
-
   /* Verre teinté #175c55, texte clair. */
   .glass-teal {
     background: color-mix(in srgb, var(--brand-teal) 84%, transparent);
@@ -211,11 +171,6 @@ section[id] {
     color: var(--brand-teal);
   }
 
-  .dark .glass-lime {
-    background: color-mix(in srgb, var(--brand-lime) 80%, transparent);
-    border-color: rgb(255 255 255 / 0.3);
-  }
-
   /* Carte de verre posée sur une surface teintée. */
   .glass-on-teal {
     background: rgb(255 255 255 / 0.12);
@@ -237,14 +192,6 @@ section[id] {
       inset 0 1px 0 rgb(255 255 255 / 0.55);
   }
 
-  .dark .glass-nav {
-    background: color-mix(in srgb, var(--canvas) 45%, transparent);
-    border-color: rgb(255 255 255 / 0.14);
-    box-shadow:
-      0 8px 32px rgb(0 0 0 / 0.4),
-      inset 0 1px 0 rgb(255 255 255 / 0.08);
-  }
-
   .glass-chip {
     background: color-mix(in srgb, var(--ink) 8%, transparent);
     border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
@@ -252,16 +199,129 @@ section[id] {
     backdrop-filter: blur(12px);
   }
 
+  /* Pastille de rubrique, légèrement inclinée comme une étiquette collée sur le titre. */
   .eyebrow {
-    display: inline-block;
-    font-size: 1.0625rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.42rem 1.05rem;
+    border-radius: 9999px;
+    font-size: 0.9375rem;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
     color: var(--accent);
+    background: rgb(255 255 255 / 0.62);
+    border: 1px solid rgb(255 255 255 / 0.85);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--brand-teal) 16%, transparent);
+    transform: rotate(-3deg);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 9999px;
+    background: currentColor;
+  }
+  /* Sur fond teal ou photo sombre : pastille lime. */
+  .eyebrow-on-dark {
+    background: var(--brand-lime);
+    color: var(--brand-teal);
+    border-color: rgb(255 255 255 / 0.5);
+  }
+  /* Sur fond lime : pastille teal. */
+  .eyebrow-on-lime {
+    background: var(--brand-teal);
+    color: var(--brand-lime);
+    border-color: rgb(255 255 255 / 0.18);
   }
 }
 
+/* Pastille d'icône qui « pop » à l'ouverture d'un panneau, et reflet qui le balaie. */
+.animate-pop {
+  animation: pop 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ps-sheen {
+  animation: sheen 1.6s ease-out 0.15s both;
+}
+
+.stat-orbit {
+  animation: orbit 7s linear infinite;
+}
+
+@keyframes orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.7) rotate(-14deg); }
+  60% { transform: scale(1.14) rotate(6deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes sheen {
+  from { transform: translateX(0); }
+  to { transform: translateX(380%); }
+}
+
+/* Bandeau de logos : défilement infini vers la gauche, en pause au survol. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 42s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Rangée défilante sur mobile (slider tactile avec accroche), qui reprend sa mise en page normale dès `sm`. */
+@media (max-width: 639.98px) {
+  .swipe-row {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 1rem;
+    margin-inline: -1rem;
+    padding: 0.75rem 1rem;
+    margin-block: -0.75rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .swipe-row::-webkit-scrollbar {
+    display: none;
+  }
+  .swipe-row > * {
+    flex: none;
+    scroll-snap-align: start;
+  }
+  .swipe-row.swipe-cards > * {
+    width: 78%;
+  }
+}
+
+/* Quand la barre d'achat mobile est visible, les bulles de contact passent au-dessus. */
+body:has([data-sticky-buy]) .floating-contact {
+  bottom: 6rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .animate-pop,
+  .ps-sheen,
+  .stat-orbit,
+  .marquee-track {
+    animation: none;
+  }
+
   html {
     scroll-behavior: auto;
   }

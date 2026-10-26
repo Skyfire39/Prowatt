@@ -1,0 +1,397 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ps-svg" viewBox="0 0 1600 900"
+     preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <!--
+    SCÈNE SOLAIRE — parallax au scroll.
+    Un seul <svg>, des groupes nommés par couche. Les attributs data-* pilotent l'animation
+    (voir README.md) :
+      data-speed   parallax continu (0 = fixe, 1 = monte de 1000 unités sur tout le scroll)
+      data-show    "a b c d" : fondu d'entrée a→b, plein b→c, fondu de sortie c→d (progression 0-1)
+      data-y       "de vers a b" : translation verticale entre les progressions a et b
+      data-x       "de vers a b" : translation horizontale
+      data-scale   "de vers a b" : zoom autour de data-origin ("x y")
+      data-scalex  "de vers a b" : étirement horizontal (jauge de batterie)
+      data-x-portrait  idem data-x, appliqué seulement sur écran en hauteur (mobile)
+      data-flow    id d'un tracé : y fait circuler des particules
+    Les couleurs viennent de parallax-solar.css (variables CSS ps-*).
+  -->
+
+  <defs>
+    <!-- Ciel 1 : bleu clair → jaune doré à l'horizon -->
+    <linearGradient id="g-sky-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" class="ps-stop-sky"/>
+      <stop offset="0.45" class="ps-stop-sky-low"/>
+      <stop offset="0.8" class="ps-stop-cream"/>
+      <stop offset="1" class="ps-stop-sun"/>
+    </linearGradient>
+    <!-- Ciel 2 : plus pâle, derrière les nuages -->
+    <linearGradient id="g-sky-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" class="ps-stop-sky"/>
+      <stop offset="1" class="ps-stop-mist"/>
+    </linearGradient>
+    <!-- Ciel 3 : plus chaud, pour les toits et la maison -->
+    <linearGradient id="g-sky-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" class="ps-stop-sky"/>
+      <stop offset="0.55" class="ps-stop-peach"/>
+      <stop offset="1" class="ps-stop-orange"/>
+    </linearGradient>
+    <radialGradient id="g-sun">
+      <stop offset="0" class="ps-stop-sun-core"/>
+      <stop offset="0.6" class="ps-stop-sun"/>
+      <stop offset="1" class="ps-stop-orange"/>
+    </radialGradient>
+    <radialGradient id="g-halo">
+      <stop offset="0" class="ps-stop-sun" stop-opacity="0.8"/>
+      <stop offset="0.55" class="ps-stop-sun" stop-opacity="0.2"/>
+      <stop offset="1" class="ps-stop-sun" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="g-panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" class="ps-stop-panel-hi"/>
+      <stop offset="1" class="ps-stop-panel"/>
+    </linearGradient>
+    <linearGradient id="g-shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#fff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="g-beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" class="ps-stop-sun" stop-opacity="0"/>
+      <stop offset="1" class="ps-stop-sun" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="g-grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" class="ps-stop-grass-hi"/>
+      <stop offset="1" class="ps-stop-green"/>
+    </linearGradient>
+    <!-- Zone des panneaux : sert à découper le reflet qui balaie -->
+    <clipPath id="clip-panels">
+      <polygon points="520.0,538.0 1080.0,538.0 1000.0,392.0 600.0,392.0"/>
+    </clipPath>
+    <!-- Nuages réutilisables (<use href="#cloud-a">) -->
+    <g id="cloud-a">
+      <ellipse cx="0" cy="8" rx="128" ry="30" class="ps-cloud-shade"/>
+      <ellipse cx="0" cy="0" rx="124" ry="30" class="ps-cloud"/>
+      <circle cx="-56" cy="-24" r="40" class="ps-cloud"/>
+      <circle cx="8" cy="-44" r="54" class="ps-cloud"/>
+      <circle cx="68" cy="-22" r="38" class="ps-cloud"/>
+    </g>
+    <g id="cloud-b">
+      <ellipse cx="0" cy="8" rx="104" ry="26" class="ps-cloud-shade"/>
+      <ellipse cx="0" cy="0" rx="100" ry="26" class="ps-cloud"/>
+      <circle cx="-34" cy="-22" r="38" class="ps-cloud"/>
+      <circle cx="30" cy="-30" r="44" class="ps-cloud"/>
+    </g>
+    <g id="cloud-c">
+      <ellipse cx="0" cy="8" rx="170" ry="24" class="ps-cloud-shade"/>
+      <ellipse cx="0" cy="0" rx="166" ry="24" class="ps-cloud"/>
+      <circle cx="-90" cy="-14" r="30" class="ps-cloud"/>
+      <circle cx="-20" cy="-30" r="42" class="ps-cloud"/>
+      <circle cx="70" cy="-18" r="34" class="ps-cloud"/>
+      <circle cx="122" cy="-6" r="22" class="ps-cloud"/>
+    </g>
+  </defs>
+
+  <!-- ============================ CIEL ============================
+       Trois dégradés superposés : le 1 est toujours là, le 2 et le 3 fondent par-dessus. -->
+  <g id="sky">
+    <rect id="sky-1" width="1600" height="900" fill="url(#g-sky-1)"/>
+    <rect id="sky-2" width="1600" height="900" fill="url(#g-sky-2)" data-show="0.16 0.3 0.5 0.62"/>
+    <rect id="sky-3" width="1600" height="900" fill="url(#g-sky-3)" data-show="0.4 0.6 1 1"/>
+  </g>
+  <!-- ====================== NUAGES LOINTAINS ======================
+       Derrière le soleil. Vitesse faible = loin. -->
+  <g id="clouds-back" data-speed="0.25" data-show="0 0 0.7 0.85">
+    <g class="ps-drift ps-drift--slow">
+        <use href="#cloud-a" transform="translate(220 180) scale(0.7)"/>
+        <use href="#cloud-b" transform="translate(1250 140) scale(0.6)"/>
+        <use href="#cloud-c" transform="translate(1470 330) scale(0.65)"/>
+        <use href="#cloud-a" transform="translate(520 400) scale(0.55)"/>
+        <use href="#cloud-b" transform="translate(960 350) scale(0.75)"/>
+        <use href="#cloud-a" transform="translate(690 320) scale(0.85)"/>
+        <use href="#cloud-c" transform="translate(300 640) scale(0.7)"/>
+        <use href="#cloud-b" transform="translate(1200 700) scale(0.65)"/>
+        <use href="#cloud-a" transform="translate(780 860) scale(0.6)"/>
+        <use href="#cloud-c" transform="translate(1450 980) scale(0.7)"/>
+        <use href="#cloud-a" transform="translate(150 1000) scale(0.6)"/>
+        <use href="#cloud-b" transform="translate(620 1100) scale(0.7)"/>
+    </g>
+  </g>
+  <!-- =========================== SOLEIL ===========================
+       Monte très vite (data-speed élevé) et sort du cadre vers 0,3. -->
+  <g id="sun" data-speed="2.1" data-show="0 0 0.28 0.4" data-origin="800 300">
+    <g class="ps-halo"><circle cx="800" cy="300" r="440" fill="url(#g-halo)"/></g>
+    <g class="ps-rays ps-sun-ray">
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(0 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(20 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(40 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(60 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(80 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(100 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(120 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(140 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(160 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(180 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(200 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(220 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(240 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(260 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(280 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(300 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(320 800 300)"/>
+        <path d="M785 136 L815 136 L800 58 Z" transform="rotate(340 800 300)"/>
+    </g>
+    <circle cx="800" cy="300" r="120" fill="url(#g-sun)"/>
+    <circle cx="800" cy="300" r="94" class="ps-sun-core" opacity="0.45"/>
+  </g>
+  <!-- ======================= NUAGES MOYENS ======================= -->
+  <g id="clouds-mid" data-speed="0.7" data-show="0 0 0.8 0.92">
+    <g class="ps-drift ps-drift--mid">
+        <use href="#cloud-b" transform="translate(560 470) scale(1.0)"/>
+        <use href="#cloud-c" transform="translate(1040 450) scale(1.1)"/>
+        <use href="#cloud-a" transform="translate(240 560) scale(1.0)"/>
+        <use href="#cloud-a" transform="translate(1380 590) scale(0.95)"/>
+        <use href="#cloud-c" transform="translate(700 720) scale(1.0)"/>
+        <use href="#cloud-b" transform="translate(1150 800) scale(1.05)"/>
+        <use href="#cloud-a" transform="translate(420 900) scale(1.1)"/>
+        <use href="#cloud-c" transform="translate(900 1010) scale(1.0)"/>
+        <use href="#cloud-b" transform="translate(200 1110) scale(1.0)"/>
+        <use href="#cloud-a" transform="translate(1350 1160) scale(1.05)"/>
+    </g>
+  </g>
+  <!-- ===================== NUAGES PROCHES =====================
+       Les plus rapides. À l'étape 3 ils s'écartent (data-x) pour dégager les toits. -->
+  <g id="clouds-front" data-speed="1.25" data-show="0 0 0.5 0.68">
+    <g id="clouds-front-left" data-x="0 -460 0.36 0.6">
+      <g class="ps-drift ps-drift--fast">
+        <use href="#cloud-a" transform="translate(120 640) scale(1.9)"/>
+        <use href="#cloud-b" transform="translate(380 840) scale(1.7)"/>
+        <use href="#cloud-c" transform="translate(150 1010) scale(1.8)"/>
+        <use href="#cloud-a" transform="translate(520 1170) scale(1.6)"/>
+      </g>
+    </g>
+    <g id="clouds-front-right" data-x="0 460 0.36 0.6">
+      <g class="ps-drift ps-drift--fast ps-drift--rev">
+        <use href="#cloud-b" transform="translate(1480 660) scale(1.8)"/>
+        <use href="#cloud-a" transform="translate(1230 920) scale(1.9)"/>
+        <use href="#cloud-c" transform="translate(1500 1060) scale(1.7)"/>
+        <use href="#cloud-b" transform="translate(1100 1270) scale(1.7)"/>
+      </g>
+    </g>
+  </g>
+  <!-- ====================== TOITS DU QUARTIER ======================
+       Deux rangées de silhouettes qui montent du bas à l'étape 3 (data-y). -->
+  <g id="rooftops" data-y="380 0 0.34 0.56" data-show="0.32 0.44 0.58 0.7">
+    <g id="rooftops-far" data-speed="0.15" class="ps-roof-far">
+        <polygon points="-40,1150 -40,690 45,640 130,690 130,1150"/>
+        <polygon points="150,1150 150,660 220,614 290,660 290,1150"/>
+        <polygon points="310,1150 310,700 405,645 500,700 500,1150"/>
+        <polygon points="520,1150 520,650 595,600 670,650 670,1150"/>
+        <polygon points="690,1150 690,685 790,627 890,685 890,1150"/>
+        <polygon points="910,1150 910,665 985,617 1060,665 1060,1150"/>
+        <polygon points="1080,1150 1080,695 1175,643 1270,695 1270,1150"/>
+        <polygon points="1290,1150 1290,655 1370,605 1450,655 1450,1150"/>
+        <polygon points="1470,1150 1470,685 1565,630 1660,685 1660,1150"/>
+    </g>
+    <g id="rooftops-near" data-speed="0.3">
+      <g class="ps-roof-near">
+        <polygon points="-90,1150 -90,710 25,640 140,710 140,1150"/>
+        <rect x="-39" y="736" width="41" height="30" rx="4" class="ps-roof-window"/>
+        <rect x="48" y="736" width="41" height="30" rx="4" class="ps-roof-window"/>
+        <polygon points="160,1150 160,670 250,606 340,670 340,1150"/>
+        <rect x="200" y="696" width="32" height="30" rx="4" class="ps-roof-window"/>
+        <rect x="268" y="696" width="32" height="30" rx="4" class="ps-roof-window"/>
+        <polygon points="360,1150 360,720 480,648 600,720 600,1150"/>
+        <rect x="413" y="746" width="43" height="30" rx="4" class="ps-roof-window"/>
+        <rect x="504" y="746" width="43" height="30" rx="4" class="ps-roof-window"/>
+        <polygon points="630,1150 630,660 730,590 830,660 830,1150"/>
+        <rect x="674" y="686" width="36" height="30" rx="4" class="ps-roof-window"/>
+        <rect x="750" y="686" width="36" height="30" rx="4" class="ps-roof-window"/>
+        <polygon points="860,1150 860,705 990,631 1120,705 1120,1150"/>
+        <rect x="917" y="731" width="47" height="30" rx="4" class="ps-roof-window"/>
+        <rect x="1016" y="731" width="47" height="30" rx="4" class="ps-roof-window"/>
+        <polygon points="1150,1150 1150,675 1250,609 1350,675 1350,1150"/>
+        <rect x="1194" y="701" width="36" height="30" rx="4" class="ps-roof-window"/>
+        <rect x="1270" y="701" width="36" height="30" rx="4" class="ps-roof-window"/>
+        <polygon points="1370,1150 1370,710 1500,638 1630,710 1630,1150"/>
+        <rect x="1427" y="736" width="47" height="30" rx="4" class="ps-roof-window"/>
+        <rect x="1526" y="736" width="47" height="30" rx="4" class="ps-roof-window"/>
+      </g>
+        <path d="M330 930 C344 850 316 750 338 690" class="ps-palm-trunk"/>
+        <g class="ps-roof-near">
+          <ellipse cx="338" cy="690" rx="74" ry="12" transform="rotate(-160 338 690) translate(52 0)"/>
+          <ellipse cx="338" cy="690" rx="74" ry="12" transform="rotate(-120 338 690) translate(52 0)"/>
+          <ellipse cx="338" cy="690" rx="74" ry="12" transform="rotate(-80 338 690) translate(52 0)"/>
+          <ellipse cx="338" cy="690" rx="74" ry="12" transform="rotate(-40 338 690) translate(52 0)"/>
+          <ellipse cx="338" cy="690" rx="74" ry="12" transform="rotate(-10 338 690) translate(52 0)"/>
+          <ellipse cx="338" cy="690" rx="74" ry="12" transform="rotate(-200 338 690) translate(52 0)"/>
+        </g>
+        <path d="M1110 930 C1124 850 1096 760 1118 700" class="ps-palm-trunk"/>
+        <g class="ps-roof-near">
+          <ellipse cx="1118" cy="700" rx="74" ry="12" transform="rotate(-160 1118 700) translate(52 0)"/>
+          <ellipse cx="1118" cy="700" rx="74" ry="12" transform="rotate(-120 1118 700) translate(52 0)"/>
+          <ellipse cx="1118" cy="700" rx="74" ry="12" transform="rotate(-80 1118 700) translate(52 0)"/>
+          <ellipse cx="1118" cy="700" rx="74" ry="12" transform="rotate(-40 1118 700) translate(52 0)"/>
+          <ellipse cx="1118" cy="700" rx="74" ry="12" transform="rotate(-10 1118 700) translate(52 0)"/>
+          <ellipse cx="1118" cy="700" rx="74" ry="12" transform="rotate(-200 1118 700) translate(52 0)"/>
+        </g>
+        <path d="M1535 930 C1549 850 1521 780 1543 720" class="ps-palm-trunk"/>
+        <g class="ps-roof-near">
+          <ellipse cx="1543" cy="720" rx="74" ry="12" transform="rotate(-160 1543 720) translate(52 0)"/>
+          <ellipse cx="1543" cy="720" rx="74" ry="12" transform="rotate(-120 1543 720) translate(52 0)"/>
+          <ellipse cx="1543" cy="720" rx="74" ry="12" transform="rotate(-80 1543 720) translate(52 0)"/>
+          <ellipse cx="1543" cy="720" rx="74" ry="12" transform="rotate(-40 1543 720) translate(52 0)"/>
+          <ellipse cx="1543" cy="720" rx="74" ry="12" transform="rotate(-10 1543 720) translate(52 0)"/>
+          <ellipse cx="1543" cy="720" rx="74" ry="12" transform="rotate(-200 1543 720) translate(52 0)"/>
+        </g>
+    </g>
+  </g>
+  <!-- ====================== SCÈNE DE LA MAISON ======================
+       Tout ce qui est dans ce groupe zoome ensemble (data-scale) et monte du bas (data-y). -->
+  <g id="house-stage" data-show="0.54 0.66 1 1" data-y="140 0 0.54 0.72"
+     data-scale="0.8 1.1 0.55 0.86" data-origin="800 700" data-x-portrait="0 440 0.78 0.95">
+
+    <!-- Colline derrière la maison -->
+    <path id="hill" d="M-300 770 C150 690 560 700 800 735 S1400 690 1900 745 V1300 H-300Z" class="ps-hill"/>
+
+    <!-- Maison -->
+    <g id="house">
+      <rect x="520" y="545" width="560" height="260" class="ps-house"/>
+      <rect x="1040" y="545" width="40" height="260" class="ps-house-shade"/>
+      <!-- toiture : plan avant + faîtage + débord -->
+      <polygon points="470,552 1130,552 1030,372 570,372" class="ps-roof"/>
+      <line x1="570" y1="372" x2="1030" y2="372" class="ps-ridge"/>
+      <rect x="470" y="552" width="660" height="14" rx="3" class="ps-eave"/>
+      <!-- fenêtres -->
+      <g class="ps-window">
+        <rect x="565" y="605" width="125" height="92" rx="8"/>
+        <rect x="910" y="605" width="125" height="92" rx="8"/>
+      </g>
+      <g class="ps-window-frame">
+        <path d="M627 605 V697 M565 651 H690 M972 605 V697 M910 651 H1035"/>
+      </g>
+      <path d="M580 618 L640 618 L600 690 L580 690Z M925 618 L985 618 L945 690 L925 690Z" fill="#fff" opacity="0.35"/>
+      <!-- porte -->
+      <rect x="765" y="655" width="70" height="150" rx="8" class="ps-door"/>
+      <circle cx="820" cy="735" r="5" class="ps-door-knob"/>
+    </g>
+
+    <!-- Panneaux solaires -->
+    <g id="solar-panels">
+      <polygon points="528.2,535.2 607.7,535.2 624.0,492.1 551.2,492.1" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M567.9,535.2 L587.6,492.1 M539.7,513.7 L615.8,513.7" class="ps-panel-line"/>
+      <polygon points="621.0,535.2 700.5,535.2 708.9,492.1 636.2,492.1" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M660.8,535.2 L672.6,492.1 M628.6,513.7 L704.7,513.7" class="ps-panel-line"/>
+      <polygon points="713.9,535.2 793.3,535.2 793.9,492.1 721.2,492.1" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M753.6,535.2 L757.5,492.1 M717.5,513.7 L793.6,513.7" class="ps-panel-line"/>
+      <polygon points="806.7,535.2 886.1,535.2 878.8,492.1 806.1,492.1" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M846.4,535.2 L842.5,492.1 M806.4,513.7 L882.5,513.7" class="ps-panel-line"/>
+      <polygon points="899.5,535.2 979.0,535.2 963.8,492.1 891.1,492.1" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M939.2,535.2 L927.4,492.1 M895.3,513.7 L971.4,513.7" class="ps-panel-line"/>
+      <polygon points="992.3,535.2 1071.8,535.2 1048.8,492.1 976.0,492.1" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M1032.1,535.2 L1012.4,492.1 M984.2,513.7 L1060.3,513.7" class="ps-panel-line"/>
+      <polygon points="554.2,486.5 626.1,486.5 642.4,443.5 577.3,443.5" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M590.2,486.5 L609.8,443.5 M565.8,465.0 L634.2,465.0" class="ps-panel-line"/>
+      <polygon points="638.2,486.5 710.0,486.5 718.5,443.5 653.3,443.5" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M674.1,486.5 L685.9,443.5 M645.8,465.0 L714.2,465.0" class="ps-panel-line"/>
+      <polygon points="722.1,486.5 794.0,486.5 794.5,443.5 729.4,443.5" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M758.0,486.5 L762.0,443.5 M725.8,465.0 L794.2,465.0" class="ps-panel-line"/>
+      <polygon points="806.0,486.5 877.9,486.5 870.6,443.5 805.5,443.5" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M842.0,486.5 L838.0,443.5 M805.8,465.0 L874.2,465.0" class="ps-panel-line"/>
+      <polygon points="890.0,486.5 961.8,486.5 946.7,443.5 881.5,443.5" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M925.9,486.5 L914.1,443.5 M885.8,465.0 L954.2,465.0" class="ps-panel-line"/>
+      <polygon points="973.9,486.5 1045.8,486.5 1022.7,443.5 957.6,443.5" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M1009.8,486.5 L990.2,443.5 M965.8,465.0 L1034.2,465.0" class="ps-panel-line"/>
+      <polygon points="580.3,437.9 644.5,437.9 660.8,394.8 603.3,394.8" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M612.4,437.9 L632.1,394.8 M591.8,416.3 L652.7,416.3" class="ps-panel-line"/>
+      <polygon points="655.3,437.9 719.6,437.9 728.0,394.8 670.5,394.8" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M687.4,437.9 L699.2,394.8 M662.9,416.3 L723.8,416.3" class="ps-panel-line"/>
+      <polygon points="730.4,437.9 794.6,437.9 795.2,394.8 737.7,394.8" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M762.5,437.9 L766.4,394.8 M734.0,416.3 L794.9,416.3" class="ps-panel-line"/>
+      <polygon points="805.4,437.9 869.6,437.9 862.3,394.8 804.8,394.8" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M837.5,437.9 L833.6,394.8 M805.1,416.3 L866.0,416.3" class="ps-panel-line"/>
+      <polygon points="880.4,437.9 944.7,437.9 929.5,394.8 872.0,394.8" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M912.6,437.9 L900.8,394.8 M876.2,416.3 L937.1,416.3" class="ps-panel-line"/>
+      <polygon points="955.5,437.9 1019.7,437.9 996.7,394.8 939.2,394.8" fill="url(#g-panel)" class="ps-panel"/>
+      <path d="M987.6,437.9 L967.9,394.8 M947.3,416.3 L1008.2,416.3" class="ps-panel-line"/>
+      <!-- reflet : balaie les panneaux au scroll -->
+      <g clip-path="url(#clip-panels)">
+        <g id="panel-shine" data-x="-640 640 0.58 0.92">
+          <polygon points="470,560 570,560 760,380 660,380" fill="url(#g-shine)"/>
+        </g>
+      </g>
+      <g class="ps-sparks">
+      <path d="M690 416 L693 427 L704 430 L693 433 L690 444 L687 433 L676 430 L687 427 Z" class="ps-spark" style="animation-delay:0s"/>
+      <path d="M880 401 L883 412 L894 415 L883 418 L880 429 L877 418 L866 415 L877 412 Z" class="ps-spark" style="animation-delay:1.2s"/>
+      <path d="M960 456 L963 467 L974 470 L963 473 L960 484 L957 473 L946 470 L957 467 Z" class="ps-spark" style="animation-delay:2.1s"/>
+      <path d="M640 486 L643 497 L654 500 L643 503 L640 514 L637 503 L626 500 L637 497 Z" class="ps-spark" style="animation-delay:0.6s"/>
+      </g>
+    </g>
+
+    <!-- Rayons du soleil sur les panneaux -->
+    <g id="sun-rays" data-show="0.6 0.7 1 1">
+      <polygon points="560,-80 594,-80 670,420 618,420" fill="url(#g-beam)" class="ps-beam ps-beam--0"/>
+      <polygon points="690,-80 724,-80 790,420 738,420" fill="url(#g-beam)" class="ps-beam ps-beam--1"/>
+      <polygon points="820,-80 854,-80 910,420 858,420" fill="url(#g-beam)" class="ps-beam ps-beam--2"/>
+      <polygon points="950,-80 984,-80 1030,420 978,420" fill="url(#g-beam)" class="ps-beam ps-beam--0"/>
+      <polygon points="1080,-80 1114,-80 1090,420 1038,420" fill="url(#g-beam)" class="ps-beam ps-beam--1"/>
+    </g>
+
+    <!-- Boîtier de charge (mur gauche) -->
+    <g id="wallbox">
+      <rect x="540" y="668" width="34" height="56" rx="8" class="ps-wallbox"/>
+      <circle cx="557" cy="684" r="5" class="ps-led"/>
+      <path d="M559 696 l-8 13 h7 l-3 10 l11 -14 h-7z" class="ps-bolt-mini"/>
+    </g>
+
+    <!-- Pelouse et allée devant la maison -->
+    <path id="driveway" d="M-200 826 L1250 826 L1420 1000 L-340 1000Z" class="ps-driveway"/>
+    <path id="lawn" d="M-300 800 C300 778 700 792 1000 802 S1500 790 1900 806 V826 H-300Z" fill="url(#g-grass)"/>
+
+    <!-- Moto électrique (tournée vers la gauche) -->
+    <g id="moto" data-show="0.78 0.9 1 1" data-x="-260 0 0.78 0.94">
+      <g transform="translate(360 818) scale(-1 1)">
+        <ellipse cx="5" cy="3" rx="150" ry="9" class="ps-shadow"/>
+        <!-- roues -->
+        <g class="ps-wheel">
+          <circle cx="-85" cy="-40" r="40"/><circle cx="95" cy="-40" r="40"/>
+        </g>
+        <g class="ps-rim">
+          <circle cx="-85" cy="-40" r="22"/><circle cx="95" cy="-40" r="22"/>
+        </g>
+        <g class="ps-hub">
+          <circle cx="-85" cy="-40" r="7"/><circle cx="95" cy="-40" r="7"/>
+        </g>
+        <!-- fourche et carrosserie -->
+        <path d="M104 -176 L96 -44" class="ps-fork"/>
+        <path d="M-130 -78 C-136 -128 -98 -146 -58 -144 L-6 -142 C22 -140 30 -116 30 -88 L-6 -82 Z" class="ps-moto-body"/>
+        <path d="M78 -82 L96 -176 C100 -190 118 -190 120 -176 L98 -80 Z" class="ps-moto-body"/>
+        <rect x="20" y="-90" width="70" height="14" rx="7" class="ps-moto-dark"/>
+        <path d="M-124 -146 C-84 -168 -20 -166 18 -148 L10 -134 C-30 -140 -90 -140 -122 -132 Z" class="ps-moto-dark"/>
+        <path d="M106 -194 L132 -204 L144 -200" class="ps-handlebar"/>
+        <circle cx="112" cy="-172" r="11" class="ps-headlight"/>
+        <!-- batterie visible et prise de charge -->
+        <rect x="-96" y="-120" width="62" height="30" rx="8" class="ps-battery-pack"/>
+        <path d="M-62 -116 l-12 18 h10 l-4 14 l16 -20 h-10z" class="ps-bolt-mini"/>
+        <circle cx="-128" cy="-98" r="7" class="ps-socket"/>
+      </g>
+    </g>
+
+    <!-- Câble : boîtier de charge → prise de la moto -->
+    <path id="cable" d="M557 724 C557 812 496 814 488 722" class="ps-cable" data-show="0.8 0.9 1 1"/>
+
+    <!-- Jauge de batterie qui se remplit -->
+    <g id="battery" data-show="0.84 0.92 1 1">
+      <rect x="306" y="540" width="108" height="50" rx="12" class="ps-batt-frame"/>
+      <rect x="414" y="554" width="9" height="22" rx="3" class="ps-batt-tip"/>
+      <rect id="battery-fill" x="314" y="548" width="92" height="34" rx="7" class="ps-batt-fill"
+            data-scalex="0.08 1 0.84 1" data-origin="314 565"/>
+      <path d="M362 548 l-14 20 h11 l-5 16 l18 -23 h-11 l4 -13z" class="ps-bolt ps-bolt-pulse"/>
+    </g>
+
+    <!-- Flux d'énergie : panneaux → maison → moto -->
+    <g id="energy-flow" data-show="0.8 0.9 1 1">
+      <path id="flow-a" d="M690 500 C660 560 590 600 560 668" class="ps-flow-line"/>
+      <path id="flow-b" d="M557 724 C557 812 496 814 488 722" class="ps-flow-line"/>
+      <g data-flow="flow-a" data-count="7" data-rate="0.2" data-r="6" class="ps-particle-sun"/>
+      <g data-flow="flow-b" data-count="6" data-rate="0.24" data-r="6" class="ps-particle-green"/>
+    </g>
+  </g>
+</svg>

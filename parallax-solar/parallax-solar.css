@@ -1,0 +1,161 @@
+/*
+ * Parallax solaire — styles du décor SVG.
+ * Toutes les couleurs sont des variables CSS : changez-les ici (ou surchargez-les
+ * sur .ps ou :root) sans toucher au SVG.
+ */
+
+.ps {
+  /* Ciel */
+  --ps-sky: #6ec6ff;
+  --ps-sky-low: #bfe9ff;
+  --ps-cream: #fff1c2;
+  --ps-mist: #e6f6ff;
+  --ps-peach: #ffe2b0;
+  /* Soleil */
+  --ps-sun: #ffc933;
+  --ps-sun-core: #fff3b0;
+  --ps-orange: #ff9f1c;
+  /* Énergie */
+  --ps-green: #2ecc71;
+  --ps-grass-hi: #7bd88f;
+  /* Nuages */
+  --ps-cloud: #ffffff;
+  --ps-cloud-shade: #dff0ff;
+  /* Panneaux et maison */
+  --ps-panel: #1b3a6b;
+  --ps-panel-hi: #2d5aa3;
+  --ps-house: #e9eef5;
+  --ps-house-shade: #d6dfec;
+  --ps-roof: #7a8cab;
+  --ps-hill: #9ae6b0;
+  --ps-driveway: #dfe6f0;
+  /* Quartier */
+  --ps-roof-far: #b9cde6;
+  --ps-roof-near: #8ea7c9;
+  /* Moto */
+  --ps-moto: #2ecc71;
+  --ps-dark: #22303f;
+
+  /* Position : plein écran fixe derrière le contenu. */
+  position: fixed;
+  inset: 0;
+  z-index: var(--ps-z, 0);
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--ps-sky-low);
+}
+
+/* Variante « sticky » : le décor reste collé en haut d'un conteneur de scroll. */
+.ps--sticky {
+  position: sticky;
+  top: 0;
+  inset: auto;
+  height: 100vh;
+}
+
+.ps-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ------------------------------------------------------------------ dégradés */
+.ps-stop-sky { stop-color: var(--ps-sky); }
+.ps-stop-sky-low { stop-color: var(--ps-sky-low); }
+.ps-stop-cream { stop-color: var(--ps-cream); }
+.ps-stop-mist { stop-color: var(--ps-mist); }
+.ps-stop-peach { stop-color: var(--ps-peach); }
+.ps-stop-sun { stop-color: var(--ps-sun); }
+.ps-stop-sun-core { stop-color: var(--ps-sun-core); }
+.ps-stop-orange { stop-color: var(--ps-orange); }
+.ps-stop-panel { stop-color: var(--ps-panel); }
+.ps-stop-panel-hi { stop-color: var(--ps-panel-hi); }
+.ps-stop-grass-hi { stop-color: var(--ps-grass-hi); }
+.ps-stop-green { stop-color: var(--ps-green); }
+
+/* -------------------------------------------------------------------- formes */
+.ps-cloud { fill: var(--ps-cloud); }
+.ps-cloud-shade { fill: var(--ps-cloud-shade); }
+.ps-sun-ray { fill: var(--ps-sun); opacity: 0.85; }
+.ps-sun-core { fill: var(--ps-sun-core); }
+
+.ps-roof-far { fill: var(--ps-roof-far); }
+.ps-roof-near { fill: var(--ps-roof-near); }
+.ps-roof-window { fill: #fff; opacity: 0.2; }
+.ps-palm-trunk { fill: none; stroke: var(--ps-roof-near); stroke-width: 10; stroke-linecap: round; }
+
+.ps-hill { fill: var(--ps-hill); }
+.ps-house { fill: var(--ps-house); }
+.ps-house-shade { fill: var(--ps-house-shade); }
+.ps-roof { fill: var(--ps-roof); }
+.ps-ridge { stroke: #62748f; stroke-width: 8; stroke-linecap: round; }
+.ps-eave { fill: #cfd9e8; }
+.ps-window rect { fill: var(--ps-sky-low); stroke: var(--ps-panel); stroke-width: 6; }
+.ps-window-frame path { stroke: var(--ps-panel); stroke-width: 5; fill: none; }
+.ps-door { fill: var(--ps-green); }
+.ps-door-knob { fill: var(--ps-sun); }
+
+.ps-panel { stroke: #fff; stroke-width: 1.4; stroke-opacity: 0.55; }
+.ps-panel-line { stroke: #fff; stroke-width: 1; opacity: 0.22; fill: none; }
+.ps-spark { fill: #fff; transform-box: fill-box; transform-origin: center; animation: ps-twinkle 3.2s ease-in-out infinite; }
+.ps-beam { mix-blend-mode: screen; animation: ps-shimmer 4s ease-in-out infinite; }
+.ps-beam--1 { animation-delay: -1.3s; }
+.ps-beam--2 { animation-delay: -2.6s; }
+
+.ps-wallbox { fill: var(--ps-panel); }
+.ps-led { fill: var(--ps-green); animation: ps-blink 2.4s ease-in-out infinite; }
+.ps-bolt-mini { fill: var(--ps-sun); }
+.ps-driveway { fill: var(--ps-driveway); }
+.ps-shadow { fill: #0b1d33; opacity: 0.18; }
+
+.ps-wheel circle { fill: var(--ps-dark); }
+.ps-rim circle { fill: var(--ps-house); }
+.ps-hub circle { fill: #9fb0c6; }
+.ps-fork { stroke: var(--ps-dark); stroke-width: 9; stroke-linecap: round; fill: none; }
+.ps-moto-body { fill: var(--ps-moto); }
+.ps-moto-dark { fill: var(--ps-panel); }
+.ps-handlebar { stroke: var(--ps-panel); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.ps-headlight { fill: var(--ps-sun); }
+.ps-battery-pack { fill: var(--ps-sky-low); }
+.ps-socket { fill: var(--ps-sun); stroke: var(--ps-panel); stroke-width: 3; }
+
+.ps-cable { fill: none; stroke: var(--ps-dark); stroke-width: 6; stroke-linecap: round; }
+.ps-batt-frame { fill: #fff; stroke: var(--ps-panel); stroke-width: 6; }
+.ps-batt-tip { fill: var(--ps-panel); }
+.ps-batt-fill { fill: var(--ps-green); }
+.ps-bolt { fill: var(--ps-sun); stroke: var(--ps-panel); stroke-width: 2; stroke-linejoin: round; }
+.ps-bolt-pulse { transform-box: fill-box; transform-origin: center; animation: ps-pulse 1.6s ease-in-out infinite; }
+
+.ps-flow-line { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 12; opacity: 0.55; }
+.ps-particle-sun circle { fill: var(--ps-sun); }
+.ps-particle-green circle { fill: var(--ps-green); }
+.ps-particle-sun circle,
+.ps-particle-green circle { filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.9)); }
+
+/* ----------------------------------------------- animations continues (sans scroll) */
+/* Ces animations tournent sur des groupes intérieurs : elles ne gênent jamais le parallax. */
+.ps-drift { animation: ps-drift 30s ease-in-out infinite alternate; }
+.ps-drift--slow { animation-duration: 42s; --ps-dx: 70px; }
+.ps-drift--mid { animation-duration: 28s; --ps-dx: 95px; }
+.ps-drift--fast { animation-duration: 20s; --ps-dx: 125px; }
+.ps-drift--rev { animation-direction: alternate-reverse; }
+
+.ps-rays { transform-box: view-box; transform-origin: 800px 300px; animation: ps-spin 90s linear infinite; }
+.ps-halo { transform-box: view-box; transform-origin: 800px 300px; animation: ps-breathe 6s ease-in-out infinite; }
+
+@keyframes ps-drift { from { transform: translateX(0); } to { transform: translateX(var(--ps-dx, 80px)); } }
+@keyframes ps-spin { to { transform: rotate(360deg); } }
+@keyframes ps-breathe { 0%, 100% { opacity: 0.75; transform: scale(0.96); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes ps-twinkle { 0%, 100% { opacity: 0; transform: scale(0.3); } 50% { opacity: 0.95; transform: scale(1); } }
+@keyframes ps-shimmer { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes ps-pulse { 0%, 100% { opacity: 0.8; transform: scale(0.94); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes ps-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ---------------------------------------------------- mouvement réduit : tout est figé */
+@media (prefers-reduced-motion: reduce) {
+  .ps *,
+  .ps-svg * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

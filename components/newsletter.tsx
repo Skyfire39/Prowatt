@@ -36,7 +36,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
         />
 
         <div>
-          <p className="text-[1.0625rem] font-semibold tracking-tight text-teal">{dict.eyebrow}</p>
+          <p className="eyebrow">{dict.eyebrow}</p>
           <h2
             id={`${id}-title`}
             className="mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] text-teal sm:text-6xl"

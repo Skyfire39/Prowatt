@@ -5,7 +5,7 @@ import { ModelCard } from "@/components/model-card";
 import { ModelSlider } from "@/components/model-slider";
 import { Reveal } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { ecooters, techs, tr } from "@/lib/data";
+import { ecooters, modelHref, techs, tr } from "@/lib/data";
 import { loadPage } from "@/lib/page";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/ecooter">): Promise<Metadata> {
@@ -24,7 +24,8 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
     name: m.name,
     tagline: tr(m.tagline, lang),
     photo: m.photo,
-    href: `/${lang}/contact`,
+    specs: m.specs,
+    href: modelHref(lang, m.id),
   }));
 
   return (
@@ -33,7 +34,7 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
 
       <section className="px-4 pb-12 sm:px-6">
         <Reveal className="mx-auto max-w-6xl">
-          <ModelSlider slides={slides} labels={{ ...d.slider, cta: d.cta }} />
+          <ModelSlider slides={slides} labels={{ ...d.slider, cta: d.model.view }} />
         </Reveal>
       </section>
 

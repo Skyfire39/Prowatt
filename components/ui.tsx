@@ -91,16 +91,16 @@ export function SectionHead({
   eyebrow: string;
   title: string;
   subtitle?: string;
-  tone?: "default" | "dark" | "lime";
+  tone?: "default" | "teal" | "lime";
 }) {
   return (
     <Reveal className="mx-auto max-w-3xl text-center">
-      <p className={`eyebrow ${tone === "dark" ? "!text-lime" : tone === "lime" ? "!text-teal" : ""}`}>{eyebrow}</p>
-      <h2 className={`mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-7xl ${tone === "dark" ? "text-white" : tone === "lime" ? "text-teal" : ""}`}>
+      <p className={`eyebrow ${tone === "teal" ? "eyebrow-on-dark" : tone === "lime" ? "eyebrow-on-lime" : ""}`}>{eyebrow}</p>
+      <h2 className={`mt-3 text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-7xl ${tone === "teal" ? "text-white" : tone === "lime" ? "text-teal" : ""}`}>
         {title}
       </h2>
       {subtitle && (
-        <p className={`mx-auto mt-5 max-w-2xl text-xl leading-relaxed ${tone === "dark" ? "text-white/75" : tone === "lime" ? "text-teal/75" : "text-muted"}`}>
+        <p className={`mx-auto mt-5 max-w-2xl text-xl leading-relaxed ${tone === "teal" ? "text-white/75" : tone === "lime" ? "text-teal/75" : "text-muted"}`}>
           {subtitle}
         </p>
       )}

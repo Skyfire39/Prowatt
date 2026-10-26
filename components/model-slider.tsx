@@ -3,11 +3,43 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { useCallback, useEffect, useState } from "react";
-import { ArrowIcon } from "./icons";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { GlassBubble } from "./glass-bubble";
+import { ArrowIcon, BatteryIcon, BoltIcon, GaugeIcon, RouteIcon } from "./icons";
 
-type Slide = { id: string; name: string; tagline: string; photo: string; href: string };
-type Labels = { prev: string; next: string; goTo: string; label: string; cta: string };
+type Slide = {
+  id: string;
+  name: string;
+  tagline: string;
+  photo: string;
+  href: string;
+  specs?: { power?: string; speed?: string; range?: string };
+};
+type Labels = {
+  prev: string;
+  next: string;
+  goTo: string;
+  label: string;
+  cta: string;
+  power: string;
+  speed: string;
+  range: string;
+  battery: string;
+  onRequest: string;
+  batteryBoth: string;
+};
+
+const subscribeDesktop = (cb: () => void) => {
+  const mq = window.matchMedia("(min-width: 768px)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const useIsDesktop = () =>
+  useSyncExternalStore(
+    subscribeDesktop,
+    () => window.matchMedia("(min-width: 768px)").matches,
+    () => false,
+  );
 
 const variants = {
   enter: (d: number) => ({ x: d > 0 ? 80 : -80, opacity: 0 }),
@@ -25,13 +57,17 @@ export function ModelSlider({
   labels,
   circle = "bg-lime/60",
   interval = 6000,
+  battery,
 }: {
   slides: Slide[];
   labels: Labels;
   /** Classe de couleur du disque placé derrière la moto. */
   circle?: string;
   interval?: number;
+  /** Type de batterie à afficher ; par défaut, les deux technologies proposées. */
+  battery?: string;
 }) {
+  const desktop = useIsDesktop();
   const [[index, dir], setState] = useState<[number, number]>([0, 0]);
   const [paused, setPaused] = useState(false);
   const count = slides.length;
@@ -51,6 +87,12 @@ export function ModelSlider({
   }, [index, paused, next, interval]);
 
   const slide = slides[index];
+  const specs = [
+    { key: "power", icon: BoltIcon, label: labels.power, value: slide.specs?.power ?? labels.onRequest },
+    { key: "speed", icon: GaugeIcon, label: labels.speed, value: slide.specs?.speed ?? labels.onRequest },
+    { key: "range", icon: RouteIcon, label: labels.range, value: slide.specs?.range ?? labels.onRequest },
+    { key: "battery", icon: BatteryIcon, label: labels.battery, value: battery ?? labels.batteryBoth },
+  ];
 
   return (
     <section
@@ -81,53 +123,83 @@ export function ModelSlider({
           role="group"
           aria-roledescription="slide"
           aria-label={`${slide.name} — ${index + 1} / ${count}`}
-          className="relative mx-auto flex max-w-5xl cursor-grab flex-col items-center active:cursor-grabbing md:block md:min-h-[34rem]"
+          className="relative mx-auto flex max-w-5xl cursor-grab flex-col items-center gap-3 active:cursor-grabbing md:grid md:min-h-[32rem] md:grid-cols-[1.12fr_1fr] md:items-center md:gap-4"
         >
-          {/* Disque d'ancrage derrière la moto */}
-          <div
-            aria-hidden="true"
-            className={`absolute left-1/2 top-[3%] size-[17rem] -translate-x-1/2 rounded-full sm:size-[24rem] md:top-[5%] md:size-[27rem] ${circle}`}
-          />
-
-          {/* La moto : seule, grande, centrée */}
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="relative mx-auto w-full max-w-[22rem] sm:max-w-[30rem] md:max-w-[36rem]"
-          >
-            <Image
-              src={slide.photo}
-              alt={slide.name}
-              width={1100}
-              height={1100}
-              priority={index === 0}
-              sizes="(min-width: 768px) 576px, 90vw"
-              draggable={false}
-              className="h-auto w-full select-none drop-shadow-[0_28px_28px_rgb(10_35_32/0.28)]"
-            />
-          </motion.div>
-
-          {/* Bulle de message : sa pointe désigne la moto */}
-          <div className="relative mt-3 w-full max-w-sm md:absolute md:left-0 md:top-12 md:mt-0 md:w-[19rem]">
-            <span
+          {/* La moto, en grand, posée sur un disque */}
+          <div className="relative flex w-full justify-center">
+            <div
               aria-hidden="true"
-              className="bg-white/85 backdrop-blur-xl dark:bg-[#0f2825]/85 absolute -top-4 left-1/2 h-5 w-10 -translate-x-1/2 [clip-path:polygon(50%_0,100%_100%,0_100%)] md:-right-6 md:left-auto md:top-[46%] md:h-11 md:w-7 md:translate-x-0 md:-translate-y-1/2 md:[clip-path:polygon(0_0,100%_50%,0_100%)]"
+              className={`absolute left-1/2 top-1/2 size-[17rem] -translate-x-1/2 -translate-y-1/2 rounded-full sm:size-[22rem] md:size-[25rem] ${circle}`}
             />
-            <div className="bg-white/85 backdrop-blur-xl dark:bg-[#0f2825]/85 relative rounded-3xl border border-white/80 p-6 shadow-[0_14px_36px_rgb(23_92_85/0.2)] dark:border-white/15 dark:shadow-[0_14px_36px_rgb(0_0_0/0.45)]">
-              <p className="text-sm font-semibold tabular-nums text-accent">
-                {String(index + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
-              </p>
-              <h2 className="mt-1 text-4xl leading-none tracking-[-0.04em]">{slide.name}</h2>
-              <p className="mt-3 leading-relaxed text-muted">{slide.tagline}</p>
-              <Link
-                href={slide.href}
-                className="group mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-sm font-medium text-on-accent transition-opacity hover:opacity-85"
-              >
-                {labels.cta}
-                <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative w-full max-w-[22rem] sm:max-w-[28rem] md:max-w-[33rem]"
+            >
+              <Image
+                src={slide.photo}
+                alt={slide.name}
+                width={1100}
+                height={1100}
+                priority={index === 0}
+                sizes="(min-width: 768px) 528px, 90vw"
+                draggable={false}
+                className="h-auto w-full select-none drop-shadow-[0_28px_28px_rgb(10_35_32/0.28)]"
+              />
+            </motion.div>
           </div>
+
+          {/* Une seule carte de verre à droite : identité, caractéristiques, action. Sa pointe désigne la moto. */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-md md:max-w-none"
+          >
+            <GlassBubble tail={desktop ? "left" : "top"} tailPos={desktop ? 0.4 : 0.5} radius={32}>
+              <div className="p-6 sm:p-7">
+                <p className="text-sm font-semibold tabular-nums text-accent">
+                  {String(index + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+                </p>
+                <h2 className="mt-1 text-4xl leading-none tracking-[-0.04em] md:text-5xl">{slide.name}</h2>
+                <p className="mt-3 leading-relaxed text-muted">{slide.tagline}</p>
+
+                <dl className="mt-6 grid grid-cols-2 overflow-hidden rounded-2xl bg-white/45 ring-1 ring-white/70">
+                  {specs.map((sp, i) => (
+                    <motion.div
+                      key={sp.key}
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.25 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                      className={`p-4 ${i % 2 === 0 ? "border-r border-ink/10" : ""} ${i < 2 ? "border-b border-ink/10" : ""}`}
+                    >
+                      <div className="flex items-center gap-2 text-accent">
+                        <span className="grid size-7 place-items-center rounded-full bg-accent/10">
+                          <sp.icon className="size-3.5" />
+                        </span>
+                        <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted">{sp.label}</dt>
+                      </div>
+                      <dd
+                        className={`mt-2 font-semibold leading-tight tracking-tight ${
+                          sp.value === labels.onRequest ? "text-sm text-muted" : "text-lg"
+                        }`}
+                      >
+                        {sp.value}
+                      </dd>
+                    </motion.div>
+                  ))}
+                </dl>
+
+                <Link
+                  href={slide.href}
+                  className="group mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition-opacity hover:opacity-85"
+                >
+                  {labels.cta}
+                  <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </GlassBubble>
+          </motion.div>
         </motion.div>
       </AnimatePresence>
 

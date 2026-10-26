@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk } from "next/font/google";
+import { Reddit_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
+import { CartDrawer } from "@/components/cart-drawer";
 import { FloatingContact } from "@/components/floating-contact";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
 import { Navbar } from "@/components/navbar";
-import { themeInitScript } from "@/components/theme-toggle";
 import { hasLocale, locales } from "@/lib/i18n";
 import { getDictionary } from "./dictionaries";
 import "../globals.css";
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
+// Même police que prowattmadagascar.com (titres, menu et texte).
+const reddit = Reddit_Sans({
+  variable: "--font-reddit",
   subsets: ["latin"],
+  display: "swap",
 });
 
 
@@ -46,12 +48,8 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
-      suppressHydrationWarning
-      className={`${hanken.variable} antialiased`}
+      className={`${reddit.variable} antialiased`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
       <body className="min-h-dvh overflow-x-hidden">
         <div className="ambient" aria-hidden="true">
           <span />
@@ -63,6 +61,13 @@ export default async function RootLayout({
           <main>{children}</main>
           <Footer lang={lang} dict={dict} />
           <FloatingContact dict={dict.floating} />
+          <CartDrawer
+            lang={lang}
+            dict={dict.cart}
+            currency={dict.shop.currency}
+            checkoutHref={`/${lang}/commande`}
+            shopHref={`/${lang}/boutique`}
+          />
         </MotionProvider>
       </body>
     </html>

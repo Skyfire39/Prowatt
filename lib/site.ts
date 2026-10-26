@@ -15,7 +15,20 @@ export const site = {
     en: ["Monday – Friday: 8am – 6:30pm", "Saturday: 8am – 12:30pm", "Sunday: closed"],
   },
   stats: { kwc: 5200, clients: 1200, co2: 22500 },
+  /**
+   * Coordonnées de paiement affichées dans la commande. À RENSEIGNER par Prowatt : tant qu'un champ
+   * est vide, il n'est pas affiché et le client est prévenu que l'équipe lui communique les
+   * coordonnées à la confirmation. Ne jamais mettre ici de clé secrète.
+   */
+  payment: {
+    mvola: { number: "", holder: "" },
+    bank: { bank: "", holder: "", account: "" },
+    // Lien de paiement hébergé par le prestataire de cartes (page de paiement du prestataire).
+    card: { url: "" },
+  },
 };
+
+export type PaymentConfig = typeof site.payment;
 
 export const mailto = (subject: string, body = "") =>
   `mailto:${site.email}?subject=${encodeURIComponent(subject)}${

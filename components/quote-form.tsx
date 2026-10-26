@@ -7,10 +7,33 @@ import { mailto } from "@/lib/site";
 import { ArrowIcon } from "./icons";
 
 export const fieldClass =
-  "w-full rounded-2xl border border-line bg-white/50 px-4 py-3 backdrop-blur-md dark:bg-white/5 text-[15px] outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-4 focus:ring-accent/20";
+  "w-full rounded-2xl border border-line bg-white/50 px-4 py-3 backdrop-blur-md text-[15px] outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-4 focus:ring-accent/20";
 
 const pill =
-  "cursor-pointer select-none rounded-full border border-line bg-white/50 px-4 py-2 backdrop-blur-md dark:bg-white/5 text-sm transition peer-checked:border-accent peer-checked:bg-accent peer-checked:text-on-accent peer-focus-visible:ring-4 peer-focus-visible:ring-accent/30 hover:border-accent";
+  "cursor-pointer select-none border border-line bg-white/50 text-sm backdrop-blur-md transition peer-checked:border-accent peer-checked:bg-accent peer-checked:text-on-accent peer-focus-visible:ring-4 peer-focus-visible:ring-accent/30 hover:border-accent";
+
+/**
+ * Disposition des options d'un choix :
+ *  - list   : libellés longs, deux colonnes de cartes de même largeur
+ *  - grid   : quatre options ou plus, pastilles de même largeur alignées en colonnes
+ *  - inline : peu d'options courtes (Oui / Non…), pastilles côte à côte
+ */
+function layoutFor(options: string[]) {
+  const longest = Math.max(...options.map((o) => o.length));
+  if (longest > 24) return "list" as const;
+  return options.length >= 4 ? ("grid" as const) : ("inline" as const);
+}
+
+const wrapClass = {
+  list: "grid gap-2.5 sm:grid-cols-2",
+  grid: "grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4",
+  inline: "flex flex-wrap gap-2.5",
+};
+const pillClass = {
+  list: `${pill} flex min-h-12 w-full items-center rounded-2xl px-4 py-2.5 text-left leading-snug`,
+  grid: `${pill} flex min-h-11 w-full items-center justify-center rounded-full px-3 py-2 text-center`,
+  inline: `${pill} inline-block rounded-full px-4 py-2`,
+};
 
 type Labels = { submit: string; required: string; note: string };
 
@@ -86,15 +109,16 @@ function Field({
 }) {
   if (f.kind === "choice" || f.kind === "multi") {
     const type = f.kind === "choice" ? "radio" : "checkbox";
+    const layout = layoutFor(f.options);
     return (
       <div className="grid gap-3 sm:col-span-2">
         <span className="text-sm font-medium">
           {f.label}
           {f.required && <span className="text-accent"> *</span>}
         </span>
-        <div className="flex flex-wrap gap-2.5">
+        <div className={wrapClass[layout]}>
           {f.options.map((opt, i) => (
-            <label key={opt}>
+            <label key={opt} className="block">
               <input
                 type={type}
                 name={f.name}
@@ -102,11 +126,11 @@ function Field({
                 required={f.kind === "choice" && f.required && i === 0}
                 className="peer sr-only"
               />
-              <span className={pill}>{opt}</span>
+              <span className={pillClass[layout]}>{opt}</span>
             </label>
           ))}
         </div>
-        {missing && <span className="text-sm text-red-600 dark:text-red-400">{requiredLabel}</span>}
+        {missing && <span className="text-sm text-red-600">{requiredLabel}</span>}
       </div>
     );
   }

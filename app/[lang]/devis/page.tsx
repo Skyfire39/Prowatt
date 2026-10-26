@@ -21,8 +21,8 @@ export default async function QuotesPage({ params }: PageProps<"/[lang]/devis">)
   return (
     <>
       <PageHero eyebrow={q.eyebrow} title={q.title} subtitle={q.subtitle} />
-      <section className="px-4 pb-20 pt-4 sm:px-6 sm:pb-28">
-        <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+      <section className="px-4 pb-4 pt-4 sm:px-6 sm:pb-8">
+        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
           {cards.map((c, i) => (
             <Reveal key={c.href} delay={i * 0.1}>
               <HoverLift className="h-full">

@@ -203,3 +203,76 @@ export const WhatsAppIcon = (p: IconProps) => (
     <path d="M9.200 8.500c-.4.500-.5 1.300 0 2.300.8 1.700 2.200 3 3.900 3.700 1 .4 1.800.3 2.300-.2l.4-.7-1.900-1-.8.8c-.9-.4-1.600-1.100-2-2l.8-.8-.9-2-.6.1-.5.1Z" />
   </svg>
 );
+
+export const SearchIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <circle cx="11" cy="11" r="6.500" />
+    <path d="m20 20-4.200-4.200" />
+  </svg>
+);
+
+export const PlusIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+);
+
+export const MinusIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M5 12h14" />
+  </svg>
+);
+
+export const TrashIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6" />
+  </svg>
+);
+
+export const BagIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M5 8h14l-1 12H6L5 8ZM9 8V6a3 3 0 0 1 6 0v2" />
+  </svg>
+);
+
+export const ChevronLeftIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="m15 6-6 6 6 6" />
+  </svg>
+);
+
+export const ChevronRightIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="m9 6 6 6-6 6" />
+  </svg>
+);
+
+export const GaugeIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M4.5 17a8.5 8.5 0 1 1 15 0" />
+    <path d="m12 13 4-4" />
+    <circle cx="12" cy="13.5" r="1" />
+  </svg>
+);
+
+export const RouteIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <circle cx="6" cy="18" r="2" />
+    <circle cx="18" cy="6" r="2" />
+    <path d="M8 18h6.5a3.5 3.5 0 0 0 0-7h-5a3.5 3.5 0 0 1 0-7H16" />
+  </svg>
+);
+
+export const CardIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="3" y="5" width="18" height="14" rx="2.5" />
+    <path d="M3 10h18M7 15h4" />
+  </svg>
+);
+
+export const CopyIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="9" y="9" width="11" height="11" rx="2.5" />
+    <path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15" />
+  </svg>
+);

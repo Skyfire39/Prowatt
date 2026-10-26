@@ -3,6 +3,7 @@ import { Hero } from "@/components/hero";
 import {
   Audiences,
   EcooterTeaser,
+  FeaturedSection,
   Partners,
   SolarAdvantages,
   Solutions,
@@ -10,7 +11,7 @@ import {
   Testimonials,
   Why,
 } from "@/components/sections";
-import { ScrollScene } from "@/components/scroll-scene";
+import { SolarParallax } from "@/components/solar-parallax";
 import { CtaBand } from "@/components/ui";
 import { hasLocale } from "@/lib/i18n";
 import { getDictionary } from "./dictionaries";
@@ -18,13 +19,14 @@ import { getDictionary } from "./dictionaries";
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const { home, categories, ecooter } = await getDictionary(lang);
+  const { home, categories, ecooter, realisations, shop } = await getDictionary(lang);
 
   return (
     <>
-      <ScrollScene />
+      <SolarParallax />
       <Hero lang={lang} dict={home.hero} message={home.message} statLabels={home.stats} />
-      <Solutions lang={lang} dict={home.solutions} categories={categories} />
+      <Solutions lang={lang} dict={home.solutions} categories={categories} explore={realisations.explore} />
+      <FeaturedSection lang={lang} dict={home.featured} shop={shop} />
       <EcooterTeaser lang={lang} dict={home.ecooter} models={ecooter} />
       <Steps dict={home.steps} />
       <SolarAdvantages dict={home.advantages} />

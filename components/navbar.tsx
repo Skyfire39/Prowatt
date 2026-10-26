@@ -8,9 +8,9 @@ import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { slugs } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { CartIcon, ChevronIcon, CloseIcon, MenuIcon } from "./icons";
+import { cart, useCart } from "@/lib/cart";
 import { LangSwitch } from "./lang-switch";
 import { Logo } from "./logo";
-import { ThemeToggle } from "./theme-toggle";
 
 type Item = {
   href: string;
@@ -29,6 +29,7 @@ export function Navbar({
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { count } = useCart();
 
   const base = `/${lang}`;
   const items: Item[] = [
@@ -115,15 +116,26 @@ export function Navbar({
 
         <div className="flex items-center gap-1.5 sm:gap-2">
           <LangSwitch lang={lang} label={nav.language} />
-          <Link
-            href={`${base}/boutique`}
-            aria-label={nav.cart}
+          <button
+            type="button"
+            onClick={() => cart.open()}
+            aria-label={count > 0 ? `${nav.cart} (${count})` : nav.cart}
             title={nav.cart}
-            className="glass-chip grid size-9 place-items-center rounded-full text-ink transition-opacity hover:opacity-70 sm:size-10"
+            className="glass-chip relative grid size-9 place-items-center rounded-full text-ink transition-opacity hover:opacity-70 sm:size-10"
           >
             <CartIcon className="size-5" />
-          </Link>
-          <ThemeToggle label={nav.theme} />
+            {count > 0 && (
+              <motion.span
+                key={count}
+                initial={{ scale: 0.4, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 520, damping: 14 }}
+                className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold leading-5 text-on-accent tabular-nums"
+              >
+                {count > 99 ? "99+" : count}
+              </motion.span>
+            )}
+          </button>
           <button
             type="button"
             className="glass-chip grid size-9 place-items-center rounded-full sm:size-10 lg:hidden"

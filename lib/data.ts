@@ -256,22 +256,60 @@ export const categories: { id: string; name: L10n }[] = [
   { id: "accessoire", name: { fr: "Accessoire", en: "Accessory" } },
 ];
 
-export type Product = { id: string; category: string; name: L10n; price: number };
+/**
+ * addedAt (AAAA-MM-JJ) sert au tri « plus récents ». Dates provisoires : l'ancienne boutique
+ * listait les produits du plus récent au plus ancien, on a espacé les dates d'une semaine.
+ * À remplacer par les vraies dates d'ajout.
+ */
+export type Product = {
+  id: string;
+  category: string;
+  name: L10n;
+  price: number;
+  addedAt: string;
+  /** Mis en avant dans « Meilleures ventes » sur l'accueil. */
+  bestSeller?: boolean;
+  /** Ancien prix : le produit est alors en promotion (price est le prix remisé). */
+  oldPrice?: number;
+};
 
+// PROVISOIRE : « bestSeller » et « oldPrice » (promotions) sont des valeurs d'essai pour la maquette de
+// l'accueil, à remplacer par les vraies ventes et remises de Prowatt avant mise en ligne.
 export const products: Product[] = [
-  { id: "cosse-terre-20", category: "structure-aluminium", price: 9000, name: { fr: "Structure panneaux cosse mise à la terre pour toit plat 20 mm", en: "Panel mounting earthing lug for flat roof, 20 mm" } },
-  { id: "clip-terre-25", category: "structure-aluminium", price: 1000, name: { fr: "Structure panneaux clip mise à la terre pour toit plat 25 mm", en: "Panel mounting earthing clip for flat roof, 25 mm" } },
-  { id: "tube-675", category: "structure-aluminium", price: 53000, name: { fr: "Structure panneaux tube pour toit plat 675 mm", en: "Panel mounting tube for flat roof, 675 mm" } },
-  { id: "base-40", category: "structure-aluminium", price: 53000, name: { fr: "Structure panneaux base pour toit plat 40 mm", en: "Panel mounting base for flat roof, 40 mm" } },
-  { id: "front-base", category: "structure-aluminium", price: 25000, name: { fr: "Structure panneaux front base pour toit plat", en: "Panel mounting front base for flat roof" } },
-  { id: "mid-clamp-30", category: "structure-aluminium", price: 5000, name: { fr: "Structure mid clamp 30 mm", en: "Mounting mid clamp, 30 mm" } },
-  { id: "l-feet-40", category: "structure-aluminium", price: 12000, name: { fr: "Structure panneaux L feet 40 mm", en: "Panel mounting L feet, 40 mm" } },
-  { id: "rail-connector", category: "structure-aluminium", price: 12000, name: { fr: "Structure panneaux rail connector alu CR1 150 mm", en: "Panel mounting aluminium rail connector CR1, 150 mm" } },
-  { id: "rail-cr20", category: "structure-aluminium", price: 98000, name: { fr: "Structure panneau rail alu CR20 2400 mm", en: "Panel mounting aluminium rail CR20, 2400 mm" } },
+  { id: "cosse-terre-20", oldPrice: 11000, category: "structure-aluminium", price: 9000, addedAt: "2025-09-30", name: { fr: "Structure panneaux cosse mise à la terre pour toit plat 20 mm", en: "Panel mounting earthing lug for flat roof, 20 mm" } },
+  { id: "clip-terre-25", category: "structure-aluminium", price: 1000, addedAt: "2025-09-23", name: { fr: "Structure panneaux clip mise à la terre pour toit plat 25 mm", en: "Panel mounting earthing clip for flat roof, 25 mm" } },
+  { id: "tube-675", oldPrice: 62000, category: "structure-aluminium", price: 53000, addedAt: "2025-09-16", name: { fr: "Structure panneaux tube pour toit plat 675 mm", en: "Panel mounting tube for flat roof, 675 mm" } },
+  { id: "base-40", oldPrice: 62000, category: "structure-aluminium", price: 53000, addedAt: "2025-09-09", name: { fr: "Structure panneaux base pour toit plat 40 mm", en: "Panel mounting base for flat roof, 40 mm" } },
+  { id: "front-base", oldPrice: 30000, category: "structure-aluminium", price: 25000, addedAt: "2025-09-02", name: { fr: "Structure panneaux front base pour toit plat", en: "Panel mounting front base for flat roof" } },
+  { id: "mid-clamp-30", bestSeller: true, category: "structure-aluminium", price: 5000, addedAt: "2025-08-26", name: { fr: "Structure mid clamp 30 mm", en: "Mounting mid clamp, 30 mm" } },
+  { id: "l-feet-40", bestSeller: true, category: "structure-aluminium", price: 12000, addedAt: "2025-08-19", name: { fr: "Structure panneaux L feet 40 mm", en: "Panel mounting L feet, 40 mm" } },
+  { id: "rail-connector", bestSeller: true, category: "structure-aluminium", price: 12000, addedAt: "2025-08-12", name: { fr: "Structure panneaux rail connector alu CR1 150 mm", en: "Panel mounting aluminium rail connector CR1, 150 mm" } },
+  { id: "rail-cr20", bestSeller: true, category: "structure-aluminium", price: 98000, addedAt: "2025-08-05", name: { fr: "Structure panneau rail alu CR20 2400 mm", en: "Panel mounting aluminium rail CR20, 2400 mm" } },
 ];
 
 // Ecooter
-export const ecooters: { id: string; name: string; tagline: L10n; photo: string }[] = [
+/**
+ * Fiche technique affichée dans les bulles du slider. Les valeurs sont des textes libres
+ * (« 3 000 W », « 75 km/h », « 120 km »). Tant qu'une valeur manque, la bulle affiche « Sur demande » :
+ * ni l'ancien site ni la page Ecooter ne publient ces caractéristiques, à renseigner avec Prowatt.
+ */
+export type EcooterSpecs = {
+  power?: string;
+  speed?: string;
+  range?: string;
+  /** Lignes facultatives de la fiche : n'apparaissent que si elles sont renseignées. */
+  charge?: string;
+  brakes?: string;
+  tires?: string;
+  dimensions?: string;
+  weight?: string;
+  load?: string;
+  seat?: string;
+};
+
+export const modelHref = (lang: string, id: string) => `/${lang}/ecooter/modeles/${id}`;
+
+export const ecooters: { id: string; name: string; tagline: L10n; photo: string; specs?: EcooterSpecs }[] = [
   { id: "aura", name: "AURA", tagline: { fr: "Confort, style et performance pour la ville.", en: "Comfort, style and performance for the city." }, photo: "/images/ecooter/aura.webp" },
   { id: "cargox", name: "CARGOX", tagline: { fr: "Le compagnon robuste des pros de la livraison et du terrain.", en: "The rugged companion for delivery and field professionals." }, photo: "/images/ecooter/cargox.webp" },
   { id: "alta", name: "ALTA", tagline: { fr: "L'électrique pour les actifs pressés et connectés.", en: "The electric ride for busy, connected people." }, photo: "/images/ecooter/alta.webp" },
@@ -285,7 +323,15 @@ export type Tech = (typeof techs)[number];
 export const isTech = (v: string): v is Tech => (techs as readonly string[]).includes(v);
 
 // Accueil
-export const partners = ["Rapide Service", "Jovena", "Jiro Ve", "Vision"];
+// Logos repris de l'ancien site (public/images/partners), dans le même ordre.
+export const partners: { name: string; logo: string }[] = [
+  { name: "Rapide Service", logo: "/images/partners/rapide-service.png" },
+  { name: "Jovena", logo: "/images/partners/jovena.png" },
+  { name: "Jiro Ve", logo: "/images/partners/jiro-ve.png" },
+  { name: "SQ Vision", logo: "/images/partners/sq-vision.png" },
+  { name: "Fadintseranana", logo: "/images/partners/fadintseranana.png" },
+  { name: "Chine – Madagascar, 50 ans de relations diplomatiques", logo: "/images/partners/chine-madagascar-50.png" },
+];
 
 export const testimonials: { name: string; photo: string; text: L10n }[] = [
   {

@@ -7,7 +7,7 @@ import { ModelCard } from "@/components/model-card";
 import { ModelSlider } from "@/components/model-slider";
 import { Reveal } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { ecooters, isTech, techs, tr } from "@/lib/data";
+import { ecooters, isTech, modelHref, techs, tr } from "@/lib/data";
 import type { Tech } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
@@ -53,7 +53,8 @@ async function TechContent({ params }: { params: PageProps<"/[lang]/ecooter/[tec
     name: m.name,
     tagline: tr(m.tagline, lang),
     photo: m.photo,
-    href: `/${lang}/contact`,
+    specs: m.specs,
+    href: modelHref(lang, m.id),
   }));
 
   return (
@@ -70,7 +71,7 @@ async function TechContent({ params }: { params: PageProps<"/[lang]/ecooter/[tec
 
       <section className="px-4 pb-12 sm:px-6">
         <Reveal className="mx-auto max-w-6xl">
-          <ModelSlider slides={slides} labels={{ ...d.slider, cta: d.cta }} />
+          <ModelSlider slides={slides} labels={{ ...d.slider, cta: d.model.view }} battery={t.name} />
         </Reveal>
       </section>
 

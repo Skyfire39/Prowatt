@@ -11,7 +11,15 @@ import { Stepper } from "./add-to-cart";
 import { ArrowIcon, BagIcon, CloseIcon, TrashIcon } from "./icons";
 
 /** Miniature d'un produit : le montage de panneau, en trait. */
-export function ProductThumb({ className = "" }: { className?: string }) {
+export function ProductThumb({ className = "", src }: { className?: string; src?: string | null }) {
+  if (src) {
+    return (
+      <span className={`relative block overflow-hidden rounded-2xl bg-white ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt="" loading="lazy" className="absolute inset-0 size-full object-contain p-2" />
+      </span>
+    );
+  }
   return (
     <span className={`grid place-items-center rounded-2xl bg-accent-soft/70 text-accent ${className}`}>
       <svg viewBox="0 0 120 60" className="w-3/4" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" aria-hidden="true">
@@ -135,7 +143,7 @@ export function CartDrawer({
                           transition={{ duration: 0.3 }}
                           className="glass flex gap-4 rounded-2xl p-3"
                         >
-                          <ProductThumb className="size-20 shrink-0" />
+                          <ProductThumb src={product.image} className="size-20 shrink-0" />
                           <div className="flex min-w-0 flex-1 flex-col">
                             <Link
                               href={`/${lang}/boutique/${product.id}`}

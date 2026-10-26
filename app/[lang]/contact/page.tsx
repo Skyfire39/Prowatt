@@ -4,7 +4,8 @@ import { ClockIcon, MailIcon, MapPinIcon, PhoneIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/ui";
 import { loadPage } from "@/lib/page";
-import { site } from "@/lib/site";
+import { getSettings } from "@/lib/content";
+import { toSiteInfo } from "@/lib/site-info";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/contact">): Promise<Metadata> {
   const { dict } = await loadPage(params);
@@ -14,6 +15,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/contact">)
 export default async function ContactPage({ params }: PageProps<"/[lang]/contact">) {
   const { lang, dict } = await loadPage(params);
   const d = dict.contact;
+  const site = toSiteInfo(await getSettings());
 
   const infos = [
     { icon: PhoneIcon, label: d.phone, value: site.phone, href: site.phoneHref },

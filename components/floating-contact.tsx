@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { mailto, whatsappHref } from "@/lib/site";
+import { useSite } from "./catalog-provider";
 import { MailIcon, WhatsAppIcon } from "./icons";
 
 /**
@@ -10,10 +11,11 @@ import { MailIcon, WhatsAppIcon } from "./icons";
  * dans le même langage que la barre de navigation.
  */
 export function FloatingContact({ dict }: { dict: Dictionary["floating"] }) {
+  const site = useSite();
   const items = [
     {
       key: "mail",
-      href: mailto(dict.mailSubject),
+      href: mailto(dict.mailSubject, "", site.email),
       label: dict.mail,
       tone: "glass-lime",
       icon: MailIcon,
@@ -21,7 +23,7 @@ export function FloatingContact({ dict }: { dict: Dictionary["floating"] }) {
     },
     {
       key: "whatsapp",
-      href: whatsappHref(dict.message),
+      href: whatsappHref(dict.message, site.whatsappNumber),
       label: dict.whatsapp,
       tone: "glass-teal",
       icon: WhatsAppIcon,

@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import { Reddit_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { CartDrawer } from "@/components/cart-drawer";
+import { CatalogProvider } from "@/components/catalog-provider";
 import { FloatingContact } from "@/components/floating-contact";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
 import { Navbar } from "@/components/navbar";
+import { getProducts, getSettings } from "@/lib/content";
 import { hasLocale, locales } from "@/lib/i18n";
+import { toSiteInfo } from "@/lib/site-info";
 import { getDictionary } from "./dictionaries";
 import "../globals.css";
 
@@ -43,7 +46,7 @@ export default async function RootLayout({
 }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const dict = await getDictionary(lang);
+  const [dict, products, settings] = await Promise.all([getDictionary(lang), getProducts(), getSettings()]);
 
   return (
     <html
@@ -57,17 +60,19 @@ export default async function RootLayout({
           <span />
         </div>
         <MotionProvider>
-          <Navbar lang={lang} nav={dict.nav} categories={dict.categories} />
-          <main>{children}</main>
-          <Footer lang={lang} dict={dict} />
-          <FloatingContact dict={dict.floating} />
-          <CartDrawer
-            lang={lang}
-            dict={dict.cart}
-            currency={dict.shop.currency}
-            checkoutHref={`/${lang}/commande`}
-            shopHref={`/${lang}/boutique`}
-          />
+          <CatalogProvider products={products.map(({ description: _description, ...p }) => p)} site={toSiteInfo(settings)}>
+            <Navbar lang={lang} nav={dict.nav} categories={dict.categories} />
+            <main>{children}</main>
+            <Footer lang={lang} dict={dict} />
+            <FloatingContact dict={dict.floating} />
+            <CartDrawer
+              lang={lang}
+              dict={dict.cart}
+              currency={dict.shop.currency}
+              checkoutHref={`/${lang}/commande`}
+              shopHref={`/${lang}/boutique`}
+            />
+          </CatalogProvider>
         </MotionProvider>
       </body>
     </html>

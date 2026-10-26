@@ -2,6 +2,7 @@
 
 import type { FormEvent } from "react";
 import { mailto } from "@/lib/site";
+import { useSite } from "./catalog-provider";
 import { ArrowIcon } from "./icons";
 import { fieldClass } from "./quote-form";
 
@@ -12,11 +13,12 @@ export function ContactForm({
   labels: { name: string; email: string; message: string; send: string };
   subject: string;
 }) {
+  const site = useSite();
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const d = new FormData(e.currentTarget);
     const body = `${labels.name} : ${d.get("name")}\n${labels.email} : ${d.get("email")}\n\n${d.get("message")}`;
-    window.location.href = mailto(subject, body);
+    window.location.href = mailto(subject, body, site.email);
   }
 
   return (

@@ -5,7 +5,8 @@ import { ModelCard } from "@/components/model-card";
 import { ModelSlider } from "@/components/model-slider";
 import { Reveal } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { ecooters, modelHref, techs, tr } from "@/lib/data";
+import { getEcooters } from "@/lib/content";
+import { modelHref, techs, tr } from "@/lib/data";
 import { loadPage } from "@/lib/page";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/ecooter">): Promise<Metadata> {
@@ -18,6 +19,7 @@ const techIcons = [BoltIcon, BatteryIcon, WrenchIcon];
 export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter">) {
   const { lang, dict } = await loadPage(params);
   const d = dict.ecooter;
+  const ecooters = await getEcooters();
 
   const slides = ecooters.map((m) => ({
     id: m.id,

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Shop } from "@/components/shop";
 import { PageHero } from "@/components/ui";
-import { categories, ecooters, modelHref, products, tr } from "@/lib/data";
+import { getEcooters, getProducts, getSettings } from "@/lib/content";
+import { categories, modelHref, tr } from "@/lib/data";
 import { loadPage } from "@/lib/page";
 import { mailto } from "@/lib/site";
 
@@ -14,6 +15,7 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">
   const { lang, dict } = await loadPage(params);
   const d = dict.shop;
   const nf = new Intl.NumberFormat(lang);
+  const [products, ecooters, settings] = await Promise.all([getProducts(), getEcooters(), getSettings()]);
 
   return (
     <>
@@ -37,6 +39,8 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">
                 priceValue: p.price as number | null,
                 addedAt: p.addedAt,
                 href: `/${lang}/boutique/${p.id}`,
+                image: p.image,
+                oldPrice: p.oldPrice ? `${nf.format(p.oldPrice)} ${d.currency}` : undefined,
               })),
               // Les motos Ecooter : fiche dédiée, prix sur demande. Date d'ajout provisoire.
               ...ecooters.map((m) => ({
@@ -61,7 +65,7 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">
               max: nf.format(Math.max(...products.map((p) => p.price))),
             }}
             labels={d}
-            contactHref={mailto(d.mailSubject)}
+            contactHref={mailto(d.mailSubject, "", settings.company.email)}
           />
         </div>
       </section>

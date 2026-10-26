@@ -30,10 +30,11 @@ export const site = {
 
 export type PaymentConfig = typeof site.payment;
 
-export const mailto = (subject: string, body = "") =>
-  `mailto:${site.email}?subject=${encodeURIComponent(subject)}${
-    body ? `&body=${encodeURIComponent(body)}` : ""
-  }`;
+/** Coordonnées utilisées pour les liens e-mail et WhatsApp (celles de l'administration, ou celles par défaut). */
+export type Contact = { email: string; whatsappNumber: string };
 
-export const whatsappHref = (text: string) =>
-  `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(text)}`;
+export const mailto = (subject: string, body = "", email: string = site.email) =>
+  `mailto:${email}?subject=${encodeURIComponent(subject)}${body ? `&body=${encodeURIComponent(body)}` : ""}`;
+
+export const whatsappHref = (text: string, number: string = site.whatsappNumber) =>
+  `https://wa.me/${number}?text=${encodeURIComponent(text)}`;

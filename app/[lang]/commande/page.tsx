@@ -3,7 +3,7 @@ import { Checkout } from "@/components/checkout";
 import { PageHero } from "@/components/ui";
 import { isMvolaConfigured } from "@/lib/mvola";
 import { loadPage } from "@/lib/page";
-import { site } from "@/lib/site";
+import { getSettings } from "@/lib/content";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/commande">): Promise<Metadata> {
   const { dict } = await loadPage(params);
@@ -13,6 +13,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/commande">
 export default async function CheckoutPage({ params }: PageProps<"/[lang]/commande">) {
   const { lang, dict } = await loadPage(params);
   const d = dict.checkout;
+  const settings = await getSettings();
 
   return (
     <>
@@ -24,8 +25,8 @@ export default async function CheckoutPage({ params }: PageProps<"/[lang]/comman
             dict={d}
             currency={dict.shop.currency}
             shopHref={`/${lang}/boutique`}
-            pickupAddress={site.address[lang]}
-            payment={site.payment}
+            pickupAddress={settings.company.address[lang]}
+            payment={settings.payment}
             mvolaLive={isMvolaConfigured()}
           />
         </div>

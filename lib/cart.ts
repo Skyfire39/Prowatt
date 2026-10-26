@@ -1,8 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { products } from "./data";
-import type { Product } from "./data";
+import type { CartProduct } from "./content";
 
 /**
  * Panier côté navigateur : un petit store externe persisté dans localStorage.
@@ -20,7 +19,14 @@ let state: State = EMPTY;
 let loaded = false;
 const listeners = new Set<() => void>();
 
-const known = new Set(products.map((p) => p.id));
+// Catalogue courant, injecté par <CatalogProvider> (le même sur le serveur et dans le navigateur).
+let catalog: CartProduct[] = [];
+let derivedCache = new WeakMap<CartLine[], { views: CartLineView[]; count: number; subtotal: number }>();
+export function setCatalog(list: CartProduct[]) {
+  if (catalog === list) return;
+  catalog = list;
+  derivedCache = new WeakMap();
+}
 
 function load() {
   if (loaded || typeof window === "undefined") return;
@@ -29,7 +35,7 @@ function load() {
     const raw = JSON.parse(window.localStorage.getItem(KEY) ?? "[]");
     if (Array.isArray(raw)) {
       const lines = raw
-        .filter((l): l is CartLine => l && typeof l.id === "string" && known.has(l.id))
+        .filter((l): l is CartLine => l && typeof l.id === "string")
         .map((l) => ({ id: l.id, qty: Math.min(MAX_QTY, Math.max(1, Math.floor(Number(l.qty) || 1))) }));
       state = { ...state, lines };
     }
@@ -73,7 +79,6 @@ const getServerSnapshot = () => EMPTY;
 
 export const cart = {
   add(id: string, qty = 1) {
-    if (!known.has(id)) return;
     const existing = state.lines.find((l) => l.id === id);
     const lines = existing
       ? state.lines.map((l) => (l.id === id ? { ...l, qty: Math.min(MAX_QTY, l.qty + qty) } : l))
@@ -103,21 +108,19 @@ export const cart = {
   },
 };
 
-export type CartLineView = { product: Product; qty: number; total: number };
+export type CartLineView = { product: CartProduct; qty: number; total: number };
 
 /** Lignes du panier résolues dans le catalogue, avec le total de chaque ligne. */
 function resolve(lines: CartLine[]): CartLineView[] {
   return lines.flatMap((l) => {
-    const product = products.find((p) => p.id === l.id);
+    const product = catalog.find((p) => p.id === l.id);
     return product ? [{ product, qty: l.qty, total: product.price * l.qty }] : [];
   });
 }
 
-const cache = new WeakMap<CartLine[], { views: CartLineView[]; count: number; subtotal: number }>();
-
 export function useCart() {
   const s = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  let derived = cache.get(s.lines);
+  let derived = derivedCache.get(s.lines);
   if (!derived) {
     const views = resolve(s.lines);
     derived = {
@@ -125,7 +128,7 @@ export function useCart() {
       count: views.reduce((n, v) => n + v.qty, 0),
       subtotal: views.reduce((n, v) => n + v.total, 0),
     };
-    cache.set(s.lines, derived);
+    derivedCache.set(s.lines, derived);
   }
   return { ...derived, open: s.open, lines: s.lines };
 }

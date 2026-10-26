@@ -7,7 +7,8 @@ import { ModelCard } from "@/components/model-card";
 import { ModelSlider } from "@/components/model-slider";
 import { Reveal } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { ecooters, isTech, modelHref, techs, tr } from "@/lib/data";
+import { getEcooters } from "@/lib/content";
+import { isTech, modelHref, techs, tr } from "@/lib/data";
 import type { Tech } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
@@ -47,6 +48,7 @@ async function TechContent({ params }: { params: PageProps<"/[lang]/ecooter/[tec
   const d = dict.ecooter;
   const t = d.techs[tech];
   const other = techs.find((x) => x !== tech)!;
+  const ecooters = await getEcooters();
 
   const slides = ecooters.map((m) => ({
     id: m.id,

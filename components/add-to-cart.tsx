@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { cart, formatPrice, useCart } from "@/lib/cart";
 import { BagIcon, CheckIcon, MinusIcon, PlusIcon } from "./icons";
@@ -46,7 +46,12 @@ export function AddToCart({
   const [qty, setQty] = useState(1);
   const [done, setDone] = useState(false);
   const [stuck, setStuck] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // Vrai uniquement dans le navigateur : le portail de la barre fixe n'existe pas au rendu serveur.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const boxRef = useRef<HTMLDivElement>(null);
   const timer = useRef<number | undefined>(undefined);
   const { lines } = useCart();
@@ -54,7 +59,6 @@ export function AddToCart({
 
   // Barre mobile : visible quand le bloc d'achat n'est plus à l'écran.
   useEffect(() => {
-    setMounted(true);
     const el = boxRef.current;
     if (!el) return;
     const io = new IntersectionObserver(([e]) => setStuck(!e.isIntersecting && e.boundingClientRect.top < 0));
@@ -95,7 +99,7 @@ export function AddToCart({
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 sm:max-lg:flex-row xl:flex-row">
           <motion.button
             type="button"
             onClick={add}

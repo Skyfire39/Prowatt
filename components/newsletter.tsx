@@ -5,11 +5,13 @@ import { useId, useState } from "react";
 import type { FormEvent } from "react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { mailto } from "@/lib/site";
+import { useSite } from "./catalog-provider";
 import { ArrowIcon, CheckIcon } from "./icons";
 import { Logo } from "./logo";
 
 export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
   const id = useId();
+  const site = useSite();
   const [sent, setSent] = useState(false);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -17,7 +19,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
     const email = String(new FormData(e.currentTarget).get("email") ?? "").trim();
     if (!email) return;
     setSent(true);
-    window.location.href = mailto(dict.mailSubject, `${dict.mailBody}${email}`);
+    window.location.href = mailto(dict.mailSubject, `${dict.mailBody}${email}`, site.email);
   }
 
   return (

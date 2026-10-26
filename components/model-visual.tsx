@@ -51,6 +51,7 @@ export function ModelVisual({ photo, name }: { photo: string; name: string }) {
         >
           <Image
             src={photo}
+            unoptimized={photo.startsWith("/api/")}
             alt={name}
             width={1100}
             height={1100}

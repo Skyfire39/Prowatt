@@ -3,18 +3,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { ArrowIcon, ChevronIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
+import { ArrowIcon, CheckIcon, ChevronIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { ModelFeature } from "@/components/model-feature";
 import { ModelVisual } from "@/components/model-visual";
 import { Reveal } from "@/components/motion";
 import { CtaBand } from "@/components/ui";
-import { ecooters, modelHref, techs, tr } from "@/lib/data";
+import { getEcooters, getSettings } from "@/lib/content";
+import { modelHref, techs, tr } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
-import { mailto, site, whatsappHref } from "@/lib/site";
-import { getDictionary } from "../../../dictionaries";
+import { mailto, whatsappHref } from "@/lib/site";
+import { toSiteInfo } from "@/lib/site-info";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const ecooters = await getEcooters();
   return locales.flatMap((lang) => ecooters.map((m) => ({ lang, id: m.id })));
 }
 
@@ -22,6 +24,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/[lang]/ecooter/modeles/[id]">): Promise<Metadata> {
   const { lang, id } = await params;
+  const ecooters = await getEcooters();
   const model = ecooters.find((m) => m.id === id);
   if (!hasLocale(lang) || !model) return {};
   return { title: `Ecooter ${model.name}`, description: tr(model.tagline, lang) };
@@ -39,10 +42,12 @@ const pill = "inline-flex h-12 items-center justify-center gap-2 rounded-full px
 
 async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/modeles/[id]">["params"] }) {
   const { id } = await params;
+  const ecooters = await getEcooters();
   const index = ecooters.findIndex((m) => m.id === id);
   if (index < 0) notFound();
   const model = ecooters[index];
   const { lang, dict } = await loadPage(params);
+  const site = toSiteInfo(await getSettings());
   const d = dict.ecooter;
   const m = d.model;
   const base = `/${lang}`;
@@ -55,10 +60,13 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
     { label: m.power, value: specs.power ?? onRequest },
     { label: m.speed, value: specs.speed ?? onRequest },
     { label: m.range, value: specs.range ?? onRequest },
-    { label: m.battery, value: d.slider.batteryBoth },
+    { label: m.battery, value: specs.battery ?? d.slider.batteryBoth },
     ...(
       [
+        [m.batteryPower, specs.batteryPower],
         [m.charge, specs.charge],
+        [m.warranty, specs.warranty],
+        [m.trunk, specs.trunk],
         [m.brakes, specs.brakes],
         [m.tires, specs.tires],
         [m.dimensions, specs.dimensions],
@@ -118,6 +126,22 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                 </p>
                 <h1 className="mt-3 text-6xl leading-none tracking-[-0.05em] sm:text-7xl">{model.name}</h1>
                 <p className="mt-4 text-xl leading-relaxed text-muted">{tagline}</p>
+                {model.description?.[lang]?.trim() && <p className="mt-3 whitespace-pre-line leading-relaxed text-muted">{model.description[lang]}</p>}
+                {model.price ? (
+                  <p className="mt-4 text-3xl font-semibold tabular-nums tracking-tight text-accent">
+                    {new Intl.NumberFormat(lang).format(model.price)} <span className="text-lg text-muted">{dict.shop.currency}</span>
+                  </p>
+                ) : null}
+                {model.highlights.length > 0 && (
+                  <ul className="mt-5 grid gap-2">
+                    {model.highlights.map((h, i) => (
+                      <li key={i} className="flex gap-2.5 text-[15px] leading-snug">
+                        <CheckIcon className="mt-0.5 size-4 shrink-0 text-accent" />
+                        {tr(h, lang)}
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
                 <div className="mt-5 flex flex-wrap items-center gap-2">
                   <span className="text-xs font-semibold uppercase tracking-wider text-muted">{d.battery}</span>
@@ -148,12 +172,12 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                 <p className="mt-4 text-sm leading-relaxed text-muted">{m.paramsNote}</p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <a href={mailto(subject)} className={`${pill} bg-accent text-on-accent`}>
+                  <a href={mailto(subject, "", site.email)} className={`${pill} bg-accent text-on-accent`}>
                     <MailIcon className="size-5" />
                     {m.trial}
                   </a>
                   <a
-                    href={whatsappHref(m.whatsappMsg.replace("{name}", model.name))}
+                    href={whatsappHref(m.whatsappMsg.replace("{name}", model.name), site.whatsappNumber)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${pill} bg-teal text-white`}
@@ -256,6 +280,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                   <div className="overflow-hidden rounded-2xl bg-accent-soft/60 p-2">
                     <Image
                       src={o.photo}
+                      unoptimized={o.photo.startsWith("/api/")}
                       alt=""
                       width={400}
                       height={400}
@@ -279,7 +304,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
       <CtaBand
         title={m.ctaTitle}
         subtitle={m.ctaSubtitle}
-        primary={{ href: mailto(subject), label: m.trial }}
+        primary={{ href: mailto(subject, "", site.email), label: m.trial }}
         secondary={{ href: `${base}/contact`, label: dict.nav.contact }}
       />
     </>

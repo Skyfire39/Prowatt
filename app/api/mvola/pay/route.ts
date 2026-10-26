@@ -1,4 +1,6 @@
-import { products } from "@/lib/data";
+import { attachPaymentToOrder } from "@/lib/admin/orders";
+import { getProducts } from "@/lib/content";
+import { dbConfigured } from "@/lib/db";
 import { isMvolaConfigured, MvolaError, startPayment } from "@/lib/mvola";
 
 const REF = /^PW-\d{6}-[A-Z0-9]{4}$/;
@@ -44,6 +46,7 @@ export async function POST(request: Request) {
   if (typeof msisdn !== "string" || !MSISDN.test(msisdn)) return json({ error: "bad_phone" }, 400);
   if (!Array.isArray(lines) || lines.length === 0 || lines.length > MAX_LINES) return json({ error: "bad_cart" }, 400);
 
+  const products = await getProducts();
   let amount = 0;
   for (const l of lines as { id?: unknown; qty?: unknown }[]) {
     const product = typeof l?.id === "string" ? products.find((p) => p.id === l.id) : undefined;
@@ -65,6 +68,8 @@ export async function POST(request: Request) {
       customerMsisdn: msisdn,
       callbackUrl: process.env.MVOLA_CALLBACK_URL || undefined,
     });
+    // Rattache le paiement à la commande enregistrée (le statut sera confirmé côté serveur auprès de MVola).
+    if (dbConfigured()) await attachPaymentToOrder(ref, started.serverCorrelationId).catch(() => {});
     return json({ id: started.serverCorrelationId, status: started.status, amount });
   } catch (e) {
     // On journalise le code HTTP seulement : ni jeton, ni clés, ni numéro de téléphone.

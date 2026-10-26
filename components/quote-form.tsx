@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import type { ResolvedField, ResolvedSection } from "@/lib/forms";
 import { mailto } from "@/lib/site";
+import { useSite } from "./catalog-provider";
 import { ArrowIcon } from "./icons";
 
 export const fieldClass =
@@ -46,6 +47,7 @@ export function QuoteForm({
   labels: Labels;
   subject: string;
 }) {
+  const site = useSite();
   const [missing, setMissing] = useState<string | null>(null);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -66,7 +68,7 @@ export function QuoteForm({
       lines.push("");
     }
     setMissing(null);
-    window.location.href = mailto(subject, lines.join("\n"));
+    window.location.href = mailto(subject, lines.join("\n"), site.email);
   }
 
   return (

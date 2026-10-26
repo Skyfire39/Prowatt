@@ -37,6 +37,7 @@ export function ModelFeature({
           <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/25" />
           <Image
             src={photo}
+            unoptimized={photo.startsWith("/api/")}
             alt={name}
             width={1100}
             height={1100}

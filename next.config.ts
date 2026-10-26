@@ -25,8 +25,15 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Postgres embarqué du développement : chargé tel quel par Node, jamais empaqueté.
+  serverExternalPackages: ["@electric-sql/pglite"],
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // L'administration et les API ne doivent jamais être indexées.
+      { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+    ];
   },
   /* config options here */
   experimental: {

@@ -1,6 +1,6 @@
-import Link from "next/link";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
-import { ecooters, modelHref, partners, products, slugs, testimonials, tr } from "@/lib/data";
+import type { CatalogEcooter, CatalogPartner, CatalogProduct, CatalogTestimonial } from "@/lib/content";
+import { modelHref, slugs, tr } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { FeaturedProducts } from "./featured-products";
 import { LogoMarquee } from "./logo-marquee";
@@ -34,6 +34,9 @@ const blockCrops = [
 ];
 
 /** Bande teal pleine largeur : « Nos solutions sur mesure ». */
+/** Plus récents d'abord, puis ordre alphabétique : le même ordre que la page « Mise en avant » de l'admin. */
+const byNewest = (a: CatalogProduct, b: CatalogProduct) => b.addedAt.localeCompare(a.addedAt) || a.name.fr.localeCompare(b.name.fr, "fr");
+
 export function Solutions({
   lang,
   dict,
@@ -92,21 +95,24 @@ export function FeaturedSection({
   lang,
   dict,
   shop,
+  products,
 }: {
   lang: Locale;
   dict: Home["featured"];
   shop: Dictionary["shop"];
+  products: CatalogProduct[];
 }) {
   const money = (n: number) => `${new Intl.NumberFormat(lang).format(n)} ${shop.currency}`;
-  const toItem = (p: (typeof products)[number], badge: { label: string; tone: "lime" | "teal" | "accent" }) => ({
+  const toItem = (p: CatalogProduct, badge: { label: string; tone: "lime" | "teal" | "accent" }) => ({
     id: p.id,
     name: tr(p.name, lang),
     price: money(p.price),
     oldPrice: p.oldPrice ? money(p.oldPrice) : undefined,
     href: `/${lang}/boutique/${p.id}`,
+    image: p.image,
     badge,
   });
-  const discount = (p: (typeof products)[number]) => Math.round((1 - p.price / (p.oldPrice ?? p.price)) * 100);
+  const discount = (p: CatalogProduct) => Math.round((1 - p.price / (p.oldPrice ?? p.price)) * 100);
 
   const tabs = [
     {
@@ -121,7 +127,7 @@ export function FeaturedSection({
       id: "new",
       label: dict.new,
       items: [...products]
-        .sort((a, b) => b.addedAt.localeCompare(a.addedAt))
+        .sort(byNewest)
         .slice(0, 4)
         .map((p) => toItem(p, { label: dict.badgeNew, tone: "lime" })),
     },
@@ -157,10 +163,12 @@ export function EcooterTeaser({
   lang,
   dict,
   models,
+  ecooters,
 }: {
   lang: Locale;
   dict: Home["ecooter"];
   models: Dictionary["ecooter"];
+  ecooters: CatalogEcooter[];
 }) {
   const slides = ecooters.map((m) => ({
     id: m.id,
@@ -279,7 +287,7 @@ export function Audiences({ dict }: { dict: Home["audiences"] }) {
 }
 
 /** Bande lime pleine largeur avec les portraits des clients. */
-export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimonials"] }) {
+export function Testimonials({ lang, dict, items }: { lang: Locale; dict: Home["testimonials"]; items: CatalogTestimonial[] }) {
   return (
     <section className="px-4 py-12 sm:px-6 sm:py-20">
       <div className="glass-lime mx-auto max-w-6xl rounded-3xl px-5 py-16 sm:px-12 sm:py-24">
@@ -291,7 +299,7 @@ export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimo
         </Reveal>
         <div className="mt-16">
           <TestimonialSlider
-            items={testimonials.map((t) => ({ name: t.name, photo: t.photo, text: tr(t.text, lang) }))}
+            items={items.map((t) => ({ name: t.name, photo: t.photo, text: tr(t.text, lang) }))}
             labels={dict}
           />
         </div>
@@ -300,7 +308,7 @@ export function Testimonials({ lang, dict }: { lang: Locale; dict: Home["testimo
   );
 }
 
-export function Partners({ dict }: { dict: Home["partners"] }) {
+export function Partners({ dict, items }: { dict: Home["partners"]; items: CatalogPartner[] }) {
   return (
     <section className="py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -308,7 +316,7 @@ export function Partners({ dict }: { dict: Home["partners"] }) {
       </div>
       {/* Même gabarit que la navbar : max-w-6xl avec les mêmes marges latérales */}
       <Reveal className="mx-auto mt-12 w-[calc(100%-1.5rem)] max-w-6xl sm:w-[calc(100%-3rem)]">
-        <LogoMarquee items={partners} label={dict.title} />
+        <LogoMarquee items={items} label={dict.title} />
       </Reveal>
     </section>
   );

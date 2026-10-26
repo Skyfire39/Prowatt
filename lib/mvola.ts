@@ -80,6 +80,7 @@ function commonHeaders(token: string) {
   return {
     Authorization: `Bearer ${token}`,
     Version: "1.0",
+    UserLanguage: "FR",
     "X-CorrelationID": crypto.randomUUID(),
     "Content-Type": "application/json",
     "Cache-Control": "no-cache",
@@ -119,7 +120,8 @@ export async function startPayment(req: PaymentRequest): Promise<PaymentStarted>
     originalTransactionReference: "",
     debitParty: [{ key: "msisdn", value: req.customerMsisdn }],
     creditParty: [{ key: "msisdn", value: env.merchant }],
-    metadata: [{ key: "partnerName", value: env.partner }],
+    // Le sandbox exige ici le numéro marchand (et non le nom du partenaire, qui reste dans l'en-tête) : sinon « Missing field ».
+    metadata: [{ key: "partnerName", value: env.merchant }],
   };
   const res = await fetch(`${env.base}${MERCHANT_PATH}/`, {
     method: "POST",

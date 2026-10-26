@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
-import { ecooters, modelHref, techs, tr } from "@/lib/data";
+import type { CatalogEcooter } from "@/lib/content";
+import { modelHref, techs, tr } from "@/lib/data";
 import type { Tech } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { ArrowIcon } from "./icons";
 import { HoverLift, Reveal } from "./motion";
 
-type Model = (typeof ecooters)[number];
+type Model = CatalogEcooter;
 
 export function ModelCard({
   model,
@@ -28,6 +29,7 @@ export function ModelCard({
         <Link href={modelHref(lang, model.id)} aria-label={`${dict.model.view} : ${model.name}`} className="group block overflow-hidden rounded-2xl bg-accent-soft/60 p-4">
           <Image
             src={model.photo}
+            unoptimized={model.photo.startsWith("/api/")}
             alt={model.name}
             width={700}
             height={700}

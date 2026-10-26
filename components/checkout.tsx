@@ -11,6 +11,7 @@ import type { Locale } from "@/lib/i18n";
 import { mailto, whatsappHref, type PaymentConfig } from "@/lib/site";
 import { ProductThumb } from "./cart-drawer";
 import { ArrowIcon, BagIcon, CheckIcon, MailIcon, WhatsAppIcon } from "./icons";
+import { useSite } from "./catalog-provider";
 import { MvolaPay } from "./mvola-pay";
 import { PaymentPanel, payMethods, type PayMethod } from "./payment-panel";
 import { fieldClass } from "./quote-form";
@@ -63,6 +64,7 @@ export function Checkout({
   mvolaLive?: boolean;
 }) {
   const { views, subtotal } = useCart();
+  const site = useSite();
   const [step, setStep] = useState<Step>("form");
   const [mode, setMode] = useState<"pickup" | "ship">("pickup");
   const [pay, setPay] = useState<PayMethod>("mvola");
@@ -81,9 +83,40 @@ export function Checkout({
   const set = (k: keyof typeof draft) => (e: { target: { value: string } }) =>
     setDraft((d) => ({ ...d, [k]: e.target.value }));
 
-  function submit(e: FormEvent) {
+  const [saving, setSaving] = useState(false);
+
+  async function submit(e: FormEvent) {
     e.preventDefault();
-    setOrder({ ...draft, mode, pay, total: subtotal, ref: order?.ref ?? newRef() });
+    const ref = order?.ref ?? newRef();
+    setSaving(true);
+    // La commande est enregistrée côté serveur avant l'étape de paiement, pour que MVola puisse s'y rattacher.
+    // Si l'enregistrement échoue ou tarde, le client peut quand même envoyer sa commande par WhatsApp ou e-mail.
+    try {
+      await Promise.race([
+        fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ref,
+            lang,
+            name: draft.name,
+            phone: draft.phone,
+            email: draft.email,
+            mode,
+            address: draft.address,
+            city: draft.city,
+            note: draft.note,
+            pay,
+            lines: views.map((v) => ({ id: v.product.id, qty: v.qty })),
+          }),
+        }),
+        new Promise((resolve) => setTimeout(resolve, 4000)),
+      ]);
+    } catch {
+      /* hors ligne : on continue */
+    }
+    setSaving(false);
+    setOrder({ ...draft, mode, pay, total: subtotal, ref });
     setStep("review");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -204,7 +237,7 @@ export function Checkout({
         {views.map(({ product, qty, total }) => (
           <li key={product.id} className="flex gap-3">
             <div className="relative">
-              <ProductThumb className="size-16" />
+              <ProductThumb src={product.image} className="size-16" />
               <span className="absolute -right-1.5 -top-1.5 grid min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold leading-5 text-on-accent tabular-nums">
                 {qty}
               </span>
@@ -345,7 +378,8 @@ export function Checkout({
 
               <button
                 type="submit"
-                className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-accent px-8 text-base font-semibold text-on-accent transition-opacity hover:opacity-90 sm:w-fit"
+                disabled={saving}
+                className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-accent px-8 text-base font-semibold text-on-accent transition-opacity hover:opacity-90 disabled:opacity-60 sm:w-fit"
               >
                 {dict.place}
                 <ArrowIcon className="size-5 transition-transform group-hover:translate-x-1" />
@@ -390,7 +424,7 @@ export function Checkout({
 
                 <div className="grid gap-3 sm:grid-cols-2">
                   <a
-                    href={whatsappHref(message(order))}
+                    href={whatsappHref(message(order), site.whatsappNumber)}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={sent}
@@ -400,7 +434,7 @@ export function Checkout({
                     {dict.sendWhatsapp}
                   </a>
                   <a
-                    href={mailto(dict.subject.replace("{ref}", order.ref), message(order))}
+                    href={mailto(dict.subject.replace("{ref}", order.ref), message(order), site.email)}
                     onClick={sent}
                     className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-lime px-6 text-base font-semibold text-teal transition-opacity hover:opacity-90"
                   >

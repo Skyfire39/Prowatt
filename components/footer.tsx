@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { slugs } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
-import { site } from "@/lib/site";
+import { getSettings } from "@/lib/content";
+import { toSiteInfo } from "@/lib/site-info";
 import { ArrowUpIcon, ClockIcon, MailIcon, MapPinIcon, PhoneIcon } from "./icons";
 import { Logo } from "./logo";
 import { Newsletter } from "./newsletter";
@@ -17,6 +18,7 @@ const headClass = "text-sm font-semibold text-white";
 
 export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const year = await getYear();
+  const site = toSiteInfo(await getSettings());
   const base = `/${lang}`;
   const { nav, footer, categories } = dict;
   const explore = [

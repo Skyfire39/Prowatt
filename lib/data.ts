@@ -1,3 +1,4 @@
+import projectMedia from "./realisations-media.json";
 import type { Locale } from "./i18n";
 
 export type L10n = { fr: string; en: string };
@@ -33,9 +34,15 @@ export type Project = {
   capacityL?: number;
   warrantyYears?: number;
   note?: L10n;
+  /** Nom ou profil du client (repris de l'ancien site). */
+  client?: string;
+  /** Présentation du projet (repris de l'ancien site). */
+  description?: L10n;
+  /** Photos du chantier, dans /public/images/realisations. */
+  images?: string[];
 };
 
-export const projects: Project[] = [
+const rawProjects: Project[] = [
   // 100 % autonome
   {
     slug: "100-autonome",
@@ -234,70 +241,64 @@ export const projects: Project[] = [
   },
 ];
 
+// Photos, clients et descriptions des chantiers : scripts/import-realisations.mjs → lib/realisations-media.json.
+// Clé : type de solution | date | rang parmi les projets de même date (dans l'ordre de ce fichier).
+const media = projectMedia as Record<string, Pick<Project, "client" | "description" | "images">>;
+const rank = new Map<string, number>();
+export const projects: Project[] = rawProjects.map((p) => {
+  const base = `${p.slug}|${p.date}`;
+  const k = rank.get(base) ?? 0;
+  rank.set(base, k + 1);
+  return { ...p, ...media[`${base}|${k}`] };
+});
+
 export const projectsBySlug = (slug: Slug) => projects.filter((p) => p.slug === slug);
 
-// Boutique
-export const categories: { id: string; name: L10n }[] = [
-  { id: "structure-aluminium", name: { fr: "Structure aluminium", en: "Aluminium mounting" } },
-  { id: "panneau-solaire", name: { fr: "Panneau solaire", en: "Solar panel" } },
-  { id: "batterie-lithium", name: { fr: "Batterie lithium", en: "Lithium battery" } },
-  { id: "batterie-gel", name: { fr: "Batterie gel", en: "Gel battery" } },
-  { id: "convertisseur", name: { fr: "Convertisseur", en: "Inverter" } },
-  { id: "regulateur", name: { fr: "Régulateur", en: "Charge controller" } },
-  { id: "stabilisateur", name: { fr: "Stabilisateur", en: "Stabiliser" } },
-  { id: "disjoncteur", name: { fr: "Disjoncteur", en: "Circuit breaker" } },
-  { id: "cable-electrique", name: { fr: "Câble électrique", en: "Electric cable" } },
-  { id: "chauffe-eau-solaire", name: { fr: "Chauffe-eau solaire", en: "Solar water heater" } },
-  { id: "pompe-solaire", name: { fr: "Pompe solaire", en: "Solar pump" } },
-  { id: "luminaire-solaire", name: { fr: "Luminaire solaire", en: "Solar light" } },
-  { id: "mini-kit-solaire", name: { fr: "Mini kit solaire", en: "Mini solar kit" } },
-  { id: "powerbank", name: { fr: "Powerbank", en: "Power bank" } },
-  { id: "motos-electriques", name: { fr: "Motos électriques", en: "Electric motorbikes" } },
-  { id: "accessoire", name: { fr: "Accessoire", en: "Accessory" } },
-];
+// Boutique : catalogue importé de l'ancien site (voir scripts/import-woocommerce.mjs et lib/catalog.json).
+// Il alimente la boutique tant qu'aucune base n'est configurée, et sert de contenu initial à la base.
+import catalog from "./catalog.json";
 
-/**
- * addedAt (AAAA-MM-JJ) sert au tri « plus récents ». Dates provisoires : l'ancienne boutique
- * listait les produits du plus récent au plus ancien, on a espacé les dates d'une semaine.
- * À remplacer par les vraies dates d'ajout.
- */
+export const categories: { id: string; name: L10n }[] = catalog.categories.map((c) => ({ id: c.id, name: { fr: c.fr, en: c.en } }));
+
 export type Product = {
   id: string;
   category: string;
   name: L10n;
   price: number;
   addedAt: string;
+  sku?: string;
+  description?: L10n;
+  /** Image dans /public (ou /api/media/… une fois envoyée depuis l'admin). */
+  image?: string;
+  /** Masqué de la boutique (ex. prix non publié). */
+  active?: boolean;
   /** Mis en avant dans « Meilleures ventes » sur l'accueil. */
   bestSeller?: boolean;
   /** Ancien prix : le produit est alors en promotion (price est le prix remisé). */
   oldPrice?: number;
 };
 
-// PROVISOIRE : « bestSeller » et « oldPrice » (promotions) sont des valeurs d'essai pour la maquette de
-// l'accueil, à remplacer par les vraies ventes et remises de Prowatt avant mise en ligne.
-export const products: Product[] = [
-  { id: "cosse-terre-20", oldPrice: 11000, category: "structure-aluminium", price: 9000, addedAt: "2025-09-30", name: { fr: "Structure panneaux cosse mise à la terre pour toit plat 20 mm", en: "Panel mounting earthing lug for flat roof, 20 mm" } },
-  { id: "clip-terre-25", category: "structure-aluminium", price: 1000, addedAt: "2025-09-23", name: { fr: "Structure panneaux clip mise à la terre pour toit plat 25 mm", en: "Panel mounting earthing clip for flat roof, 25 mm" } },
-  { id: "tube-675", oldPrice: 62000, category: "structure-aluminium", price: 53000, addedAt: "2025-09-16", name: { fr: "Structure panneaux tube pour toit plat 675 mm", en: "Panel mounting tube for flat roof, 675 mm" } },
-  { id: "base-40", oldPrice: 62000, category: "structure-aluminium", price: 53000, addedAt: "2025-09-09", name: { fr: "Structure panneaux base pour toit plat 40 mm", en: "Panel mounting base for flat roof, 40 mm" } },
-  { id: "front-base", oldPrice: 30000, category: "structure-aluminium", price: 25000, addedAt: "2025-09-02", name: { fr: "Structure panneaux front base pour toit plat", en: "Panel mounting front base for flat roof" } },
-  { id: "mid-clamp-30", bestSeller: true, category: "structure-aluminium", price: 5000, addedAt: "2025-08-26", name: { fr: "Structure mid clamp 30 mm", en: "Mounting mid clamp, 30 mm" } },
-  { id: "l-feet-40", bestSeller: true, category: "structure-aluminium", price: 12000, addedAt: "2025-08-19", name: { fr: "Structure panneaux L feet 40 mm", en: "Panel mounting L feet, 40 mm" } },
-  { id: "rail-connector", bestSeller: true, category: "structure-aluminium", price: 12000, addedAt: "2025-08-12", name: { fr: "Structure panneaux rail connector alu CR1 150 mm", en: "Panel mounting aluminium rail connector CR1, 150 mm" } },
-  { id: "rail-cr20", bestSeller: true, category: "structure-aluminium", price: 98000, addedAt: "2025-08-05", name: { fr: "Structure panneau rail alu CR20 2400 mm", en: "Panel mounting aluminium rail CR20, 2400 mm" } },
-];
+// Les meilleures ventes et promotions viennent de valeurs d'essai reprises de la maquette : à remplacer
+// par les vraies ventes et remises de Prowatt depuis l'admin (Mise en avant).
+export const products: Product[] = catalog.products as Product[];
 
 // Ecooter
 /**
- * Fiche technique affichée dans les bulles du slider. Les valeurs sont des textes libres
- * (« 3 000 W », « 75 km/h », « 120 km »). Tant qu'une valeur manque, la bulle affiche « Sur demande » :
- * ni l'ancien site ni la page Ecooter ne publient ces caractéristiques, à renseigner avec Prowatt.
+ * Fiche technique d'une moto : textes libres (« 3 000 W », « 75 km/h »). Puissance, vitesse, autonomie,
+ * batterie et temps de charge viennent des fiches de l'ancien site ; les autres lignes sont facultatives
+ * et n'apparaissent que si elles sont renseignées.
  */
 export type EcooterSpecs = {
   power?: string;
   speed?: string;
   range?: string;
-  /** Lignes facultatives de la fiche : n'apparaissent que si elles sont renseignées. */
+  /** Type de batterie (Lithium, Acide…). Vide : « Lithium ou graphène ». */
+  battery?: string;
+  /** Capacité de la batterie (ex. 28A 74V). */
+  batteryPower?: string;
+  warranty?: string;
+  /** Caisse arrière (livraison). */
+  trunk?: string;
   charge?: string;
   brakes?: string;
   tires?: string;
@@ -309,7 +310,8 @@ export type EcooterSpecs = {
 
 export const modelHref = (lang: string, id: string) => `/${lang}/ecooter/modeles/${id}`;
 
-export const ecooters: { id: string; name: string; tagline: L10n; photo: string; specs?: EcooterSpecs }[] = [
+const woo = catalog.ecooters as Record<string, { price: number | null; specs: EcooterSpecs }>;
+const baseEcooters: { id: string; name: string; tagline: L10n; photo: string }[] = [
   { id: "aura", name: "AURA", tagline: { fr: "Confort, style et performance pour la ville.", en: "Comfort, style and performance for the city." }, photo: "/images/ecooter/aura.webp" },
   { id: "cargox", name: "CARGOX", tagline: { fr: "Le compagnon robuste des pros de la livraison et du terrain.", en: "The rugged companion for delivery and field professionals." }, photo: "/images/ecooter/cargox.webp" },
   { id: "alta", name: "ALTA", tagline: { fr: "L'électrique pour les actifs pressés et connectés.", en: "The electric ride for busy, connected people." }, photo: "/images/ecooter/alta.webp" },
@@ -317,6 +319,12 @@ export const ecooters: { id: string; name: string; tagline: L10n; photo: string;
   { id: "via-lite", name: "VIA Lite", tagline: { fr: "La citadine parfaite pour les petits trajets du quotidien.", en: "The perfect city bike for short everyday trips." }, photo: "/images/ecooter/via-lite.webp" },
   { id: "nova-lite", name: "NOVA lite", tagline: { fr: "Le bon compromis entre budget et liberté urbaine.", en: "The right balance between budget and urban freedom." }, photo: "/images/ecooter/nova-lite.webp" },
 ];
+
+export const ecooters: { id: string; name: string; tagline: L10n; photo: string; specs: EcooterSpecs; price: number | null }[] = baseEcooters.map((m) => ({
+  ...m,
+  specs: woo[m.id]?.specs ?? {},
+  price: woo[m.id]?.price ?? null,
+}));
 
 export const techs = ["lithium", "graphene"] as const;
 export type Tech = (typeof techs)[number];

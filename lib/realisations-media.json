@@ -1,0 +1,178 @@
+{
+ "acces-a-eau||0": {
+  "client": "Particulier à Ambohijanaka",
+  "description": {
+   "fr": "Cette installation apporte au client un confort thermique optimal grâce à une technologie pressurisée, garantissant une pression d’eau stable. Le contrôle de température assure un réglage précis, tandis que le système hybride permet une alimentation à la fois électrique et solaire. Un vrai choix d’avenir pour bénéficier d’une eau chaude fiable tout en réduisant son empreinte carbone.",
+   "en": "Cette installation apporte au client un confort thermique optimal grâce à une technologie pressurisée, garantissant une pression d’eau stable. Le contrôle de température assure un réglage précis, tandis que le système hybride permet une alimentation à la fois électrique et solaire. Un vrai choix d’avenir pour bénéficier d’une eau chaude fiable tout en réduisant son empreinte carbone."
+  },
+  "images": [
+   "/images/realisations/acces-a-eau-x-0-1.webp",
+   "/images/realisations/acces-a-eau-x-0-2.webp",
+   "/images/realisations/acces-a-eau-x-0-3.webp"
+  ]
+ },
+ "acces-a-eau||1": {
+  "client": "Particulier à Antsahabe – Ambohidratrimo",
+  "description": {
+   "fr": "Dans le but de sécuriser son approvisionnement en eau tout en réduisant ses coûts énergétiques, notre client a opté pour une pompe solaire dédiée à un forage de 120 mètres. Cette solution autonome et écologique lui permet de puiser l’eau de manière fiable, sans dépendre du réseau électrique ni du carburant.",
+   "en": "Dans le but de sécuriser son approvisionnement en eau tout en réduisant ses coûts énergétiques, notre client a opté pour une pompe solaire dédiée à un forage de 120 mètres. Cette solution autonome et écologique lui permet de puiser l’eau de manière fiable, sans dépendre du réseau électrique ni du carburant."
+  },
+  "images": [
+   "/images/realisations/acces-a-eau-x-1-1.webp"
+  ]
+ },
+ "anti-delestage|2024-09|0": {
+  "client": "Particulier - Maison",
+  "description": {
+   "fr": "Pour esquiver les coupures de courant, ce client a choisi le kit anti-délestage de Prowatt, garantissant une alimentation continue même lors des pannes du réseau.",
+   "en": "Pour esquiver les coupures de courant, ce client a choisi le kit anti-délestage de Prowatt, garantissant une alimentation continue même lors des pannes du réseau."
+  },
+  "images": [
+   "/images/realisations/anti-delestage-2024-09-0-1.webp"
+  ]
+ },
+ "anti-delestage|2025-02|0": {
+  "description": {
+   "fr": "Cette installation autonome à Antananarivo offre une solution fiable contre le délestage, grâce à une capacité de 22 kVA et un stockage sécurisé de 25 kWh. Elle assure une autonomie énergétique optimale pour un usage domestique.",
+   "en": "Cette installation autonome à Antananarivo offre une solution fiable contre le délestage, grâce à une capacité de 22 kVA et un stockage sécurisé de 25 kWh. Elle assure une autonomie énergétique optimale pour un usage domestique."
+  },
+  "images": [
+   "/images/realisations/anti-delestage-2025-02-0-1.webp",
+   "/images/realisations/anti-delestage-2025-02-0-2.webp",
+   "/images/realisations/anti-delestage-2025-02-0-3.webp"
+  ]
+ },
+ "anti-delestage|2023-12|0": {
+  "client": "SMMEC",
+  "description": {
+   "fr": "Cette installation offre à une solution robuste contre les délestages. Grâce à la puissance du kit et à la batterie lithium, elle bénéficie d’un confort électrique constant, même en cas de coupure prolongée jusqu'a 10heures. Être en anti-délestage facilite la transition vers une autonomie énergétique complète.",
+   "en": "Cette installation offre à une solution robuste contre les délestages. Grâce à la puissance du kit et à la batterie lithium, elle bénéficie d’un confort électrique constant, même en cas de coupure prolongée jusqu'a 10heures. Être en anti-délestage facilite la transition vers une autonomie énergétique complète."
+  },
+  "images": [
+   "/images/realisations/anti-delestage-2023-12-0-1.webp",
+   "/images/realisations/anti-delestage-2023-12-0-2.webp"
+  ]
+ },
+ "100-autonome|2025-04|0": {
+  "client": "Plateforme Logistique",
+  "description": {
+   "fr": "Cette solution autonome offre au bénéficiaire une électricité verte et 100% autonome avec une capacite de production journaliere moyenne de 550Kwh, libérée des coupures, des factures mensuelles et des instabilités de tension.",
+   "en": "Cette solution autonome offre au bénéficiaire une électricité verte et 100% autonome avec une capacite de production journaliere moyenne de 550Kwh, libérée des coupures, des factures mensuelles et des instabilités de tension."
+  },
+  "images": [
+   "/images/realisations/100-autonome-2025-04-0-1.webp"
+  ]
+ },
+ "100-autonome|2024-04|0": {
+  "client": "ONG Internationale",
+  "description": {
+   "fr": "Cette solution autonome offre au bénéficiaire une électricité verte et 100% autonome avec une capacite de production journaliere moyenne de 200Kw, libérée des coupures, des factures mensuelles et des instabilités de tension.",
+   "en": "Cette solution autonome offre au bénéficiaire une électricité verte et 100% autonome avec une capacite de production journaliere moyenne de 200Kw, libérée des coupures, des factures mensuelles et des instabilités de tension."
+  },
+  "images": [
+   "/images/realisations/100-autonome-2024-04-0-1.webp",
+   "/images/realisations/100-autonome-2024-04-0-2.webp",
+   "/images/realisations/100-autonome-2024-04-0-3.webp",
+   "/images/realisations/100-autonome-2024-04-0-4.webp"
+  ]
+ },
+ "100-autonome|2025-04|1": {
+  "client": "Commerciale - Immeuble 5 étages",
+  "description": {
+   "fr": "Cette solution offre au bénéficiaire 8 appartements totalement independant du reseau public",
+   "en": "Cette solution offre au bénéficiaire 8 appartements totalement independant du reseau public"
+  },
+  "images": [
+   "/images/realisations/100-autonome-2025-04-1-1.webp",
+   "/images/realisations/100-autonome-2025-04-1-2.webp"
+  ]
+ },
+ "100-autonome|2023-03|0": {
+  "client": "Particulier - Villa avec piscine",
+  "description": {
+   "fr": "Cette maison est située dans une zone isolée, sans accès au réseau électrique de la JIRAMA. Pour répondre à ses besoins en énergie, elle a été entièrement équipée d’un système solaire autonome. Grâce à cette solution durable, elle bénéficie désormais d’une électricité propre, fiable et indépendante.",
+   "en": "Cette maison est située dans une zone isolée, sans accès au réseau électrique de la JIRAMA. Pour répondre à ses besoins en énergie, elle a été entièrement équipée d’un système solaire autonome. Grâce à cette solution durable, elle bénéficie désormais d’une électricité propre, fiable et indépendante."
+  },
+  "images": [
+   "/images/realisations/100-autonome-2023-03-0-1.webp",
+   "/images/realisations/100-autonome-2023-03-0-2.webp",
+   "/images/realisations/100-autonome-2023-03-0-3.webp"
+  ]
+ },
+ "100-autonome|2022-02|0": {
+  "client": "Particulier - Appartement",
+  "description": {
+   "fr": "Cette solution permet de répondre aux besoins énergétiques essentiels tout en garantissant une autonomie face aux coupures et fluctuations de tension.",
+   "en": "Cette solution permet de répondre aux besoins énergétiques essentiels tout en garantissant une autonomie face aux coupures et fluctuations de tension."
+  },
+  "images": [
+   "/images/realisations/100-autonome-2022-02-0-1.webp",
+   "/images/realisations/100-autonome-2022-02-0-2.webp"
+  ]
+ },
+ "100-autonome|2025-03|0": {
+  "client": "Particulier - Villa",
+  "description": {
+   "fr": "Cette installation assure une alimentation fiable et continue, même en cas de coupure de réseau. Avec une production annuelle estimée à , elle couvre largement les besoins d’un foyer tout en réduisant l’empreinte carbone.",
+   "en": "Cette installation assure une alimentation fiable et continue, même en cas de coupure de réseau. Avec une production annuelle estimée à , elle couvre largement les besoins d’un foyer tout en réduisant l’empreinte carbone."
+  },
+  "images": [
+   "/images/realisations/100-autonome-2025-03-0-1.webp",
+   "/images/realisations/100-autonome-2025-03-0-2.webp",
+   "/images/realisations/100-autonome-2025-03-0-3.webp",
+   "/images/realisations/100-autonome-2025-03-0-4.webp"
+  ]
+ },
+ "100-autonome|2024-02|0": {
+  "images": [
+   "/images/realisations/100-autonome-2024-02-0-1.webp",
+   "/images/realisations/100-autonome-2024-02-0-2.webp"
+  ]
+ },
+ "hybride|2025-02|0": {
+  "client": "Hotel",
+  "description": {
+   "fr": "Cette installation hybride de haute capacité garantit une alimentation continue et stabilisée, tout en limitant la dépendance au réseau avec 12Heures d'autonomie.",
+   "en": "Cette installation hybride de haute capacité garantit une alimentation continue et stabilisée, tout en limitant la dépendance au réseau avec 12Heures d'autonomie."
+  },
+  "images": [
+   "/images/realisations/hybride-2025-02-0-1.webp",
+   "/images/realisations/hybride-2025-02-0-2.webp",
+   "/images/realisations/hybride-2025-02-0-3.webp"
+  ]
+ },
+ "ongrid|2025-11|0": {
+  "client": "Bureau - Immeuble 11 étages",
+  "description": {
+   "fr": "Dans une démarche de transition énergétique et de maîtrise des coûts, cette usine a opté pour l’installation d’une centrale solaire on-grid de 195 kWc. Cette solution permet de couvrir 20% de sa consommation électrique en journée, réduisant ainsi la dépendance au réseau public. En plus de générer des , cette installation permet d’éviter l’émission d’environ 275 tonnes de CO₂ par an. Grâce à un dimensionnement optimisé et à une bonne performance énergétique, l e retour sur investissement sera atteint en seulement 1.8 ans.",
+   "en": "Dans une démarche de transition énergétique et de maîtrise des coûts, cette usine a opté pour l’installation d’une centrale solaire on-grid de 195 kWc. Cette solution permet de couvrir 20% de sa consommation électrique en journée, réduisant ainsi la dépendance au réseau public. En plus de générer des , cette installation permet d’éviter l’émission d’environ 275 tonnes de CO₂ par an. Grâce à un dimensionnement optimisé et à une bonne performance énergétique, l e retour sur investissement sera atteint en seulement 1.8 ans."
+  },
+  "images": [
+   "/images/realisations/ongrid-2025-11-0-1.webp",
+   "/images/realisations/ongrid-2025-11-0-2.webp",
+   "/images/realisations/ongrid-2025-11-0-3.webp"
+  ]
+ },
+ "ongrid|2025-03|0": {
+  "client": "Industriel - Usine de glaçons",
+  "description": {
+   "fr": "Dans une démarche de transition énergétique et de maîtrise des coûts, cette usine a opté pour l’installation d’une centrale solaire on-grid de 33 kWc. Cette solution permet de couvrir 65% de sa consommation électrique en journée, réduisant ainsi la dépendance au réseau public. En plus de générer des , cette installation permet d’éviter l’émission d’environ 35 tonnes de CO₂ par an. Grâce à un dimensionnement optimisé et à une bonne performance énergétique, l e retour sur investissement a été atteint en seulement 2,5 ans.",
+   "en": "Dans une démarche de transition énergétique et de maîtrise des coûts, cette usine a opté pour l’installation d’une centrale solaire on-grid de 33 kWc. Cette solution permet de couvrir 65% de sa consommation électrique en journée, réduisant ainsi la dépendance au réseau public. En plus de générer des , cette installation permet d’éviter l’émission d’environ 35 tonnes de CO₂ par an. Grâce à un dimensionnement optimisé et à une bonne performance énergétique, l e retour sur investissement a été atteint en seulement 2,5 ans."
+  },
+  "images": [
+   "/images/realisations/ongrid-2025-03-0-1.webp",
+   "/images/realisations/ongrid-2025-03-0-2.webp"
+  ]
+ },
+ "ongrid|2023-07|0": {
+  "client": "Industriel",
+  "description": {
+   "fr": "Cette installation autonome à Antananarivo offre une solution fiable contre le délestage, grâce à une capacité de 22 kVA et un stockage sécurisé de 25 kWh. Elle assure une autonomie énergétique optimale pour un usage domestique.",
+   "en": "Cette installation autonome à Antananarivo offre une solution fiable contre le délestage, grâce à une capacité de 22 kVA et un stockage sécurisé de 25 kWh. Elle assure une autonomie énergétique optimale pour un usage domestique."
+  },
+  "images": [
+   "/images/realisations/ongrid-2023-07-0-1.webp",
+   "/images/realisations/ongrid-2023-07-0-2.webp"
+  ]
+ }
+}

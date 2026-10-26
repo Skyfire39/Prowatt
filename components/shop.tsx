@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { useRef, useState } from "react";
 import { ArrowIcon, SearchIcon } from "./icons";
 import { MotoCard, type MotoCardItem } from "./moto-card";
@@ -10,7 +10,21 @@ import { ProductCard } from "./product-card";
 const fold = (s: string) =>
   s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 12;
+
+/** Pages à afficher : première, dernière et les voisines de la page courante, séparées par « … ». */
+function pageWindow(current: number, total: number): (number | null)[] {
+  const keep = new Set([1, total, current - 1, current, current + 1]);
+  if (current <= 3) [2, 3, 4].forEach((n) => keep.add(n));
+  if (current >= total - 2) [total - 1, total - 2, total - 3].forEach((n) => keep.add(n));
+  const nums = [...keep].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b);
+  const out: (number | null)[] = [];
+  nums.forEach((n, i) => {
+    if (i > 0 && n - nums[i - 1] > 1) out.push(null);
+    out.push(n);
+  });
+  return out;
+}
 
 type Cat = { id: string; name: string; count: number };
 type Item = {
@@ -22,6 +36,8 @@ type Item = {
   priceValue: number | null;
   addedAt: string;
   href: string;
+  image?: string | null;
+  oldPrice?: string;
   /** Présent pour une moto : carte dédiée, sans panier. */
   moto?: MotoCardItem;
 };
@@ -239,7 +255,7 @@ export function Shop({
         </fieldset>
 
         <div className="flex w-full items-center justify-between gap-4 pb-0.5 sm:w-auto sm:justify-start">
-          <p className="text-sm text-muted" aria-live="polite">
+          <p className="order-2 text-sm text-muted" aria-live="polite">
             {filtered.length === 1
               ? labels.one
               : labels.count.replace("{n}", String(filtered.length))}
@@ -284,28 +300,24 @@ export function Shop({
         </div>
       ) : (
         <>
-        <motion.div ref={topRef} layout className="mt-12 scroll-mt-28 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
+        <div ref={topRef} className="mt-12 scroll-mt-28 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((p) => (
               <motion.article
-                layout
                 key={p.id}
                 initial={{ opacity: 0, scale: 0.94 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="glass flex flex-col rounded-2xl p-6"
               >
                 {p.moto ? <MotoCard item={p.moto} /> : <ProductCard item={p} labels={labels} />}
               </motion.article>
             ))}
-          </AnimatePresence>
-        </motion.div>
+        </div>
 
         {pages > 1 && (
           <nav
             aria-label={labels.pagination}
-            className="mt-12 flex flex-col items-center gap-5 sm:flex-row sm:justify-between"
+            className="mt-12 flex flex-col items-center gap-4"
           >
             <p className="text-sm text-muted" aria-live="polite">
               {labels.results
@@ -313,7 +325,7 @@ export function Shop({
                 .replace("{to}", String(start + shown.length))
                 .replace("{total}", String(filtered.length))}
             </p>
-            <div className="flex items-center gap-2">
+            <div className="order-1 flex items-center gap-2">
               <button
                 type="button"
                 aria-label={labels.prev}
@@ -324,21 +336,27 @@ export function Shop({
                 <ArrowIcon className="size-5 rotate-180" />
               </button>
               <ul className="flex items-center gap-1.5">
-                {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+                {pageWindow(current, pages).map((n, i) =>
+                  n === null ? (
+                    <li key={`gap${i}`} aria-hidden="true" className="px-1 text-muted">
+                      …
+                    </li>
+                  ) : (
                   <li key={n}>
                     <button
                       type="button"
                       aria-label={`${labels.goTo} ${n}`}
                       aria-current={n === current ? "page" : undefined}
                       onClick={() => goTo(n)}
-                      className={`grid size-11 place-items-center rounded-full text-sm font-semibold tabular-nums transition-colors ${
+                      className={`grid size-10 place-items-center rounded-full text-sm font-semibold tabular-nums transition-colors ${
                         n === current ? "bg-accent text-on-accent" : "glass-chip hover:bg-accent-soft"
                       }`}
                     >
                       {n}
                     </button>
                   </li>
-                ))}
+                  ),
+                )}
               </ul>
               <button
                 type="button"

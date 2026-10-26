@@ -13,7 +13,7 @@ type Slide = {
   tagline: string;
   photo: string;
   href: string;
-  specs?: { power?: string; speed?: string; range?: string };
+  specs?: { power?: string; speed?: string; range?: string; battery?: string };
 };
 type Labels = {
   prev: string;
@@ -91,7 +91,7 @@ export function ModelSlider({
     { key: "power", icon: BoltIcon, label: labels.power, value: slide.specs?.power ?? labels.onRequest },
     { key: "speed", icon: GaugeIcon, label: labels.speed, value: slide.specs?.speed ?? labels.onRequest },
     { key: "range", icon: RouteIcon, label: labels.range, value: slide.specs?.range ?? labels.onRequest },
-    { key: "battery", icon: BatteryIcon, label: labels.battery, value: battery ?? labels.batteryBoth },
+    { key: "battery", icon: BatteryIcon, label: labels.battery, value: slide.specs?.battery ?? battery ?? labels.batteryBoth },
   ];
 
   return (
@@ -138,6 +138,7 @@ export function ModelSlider({
             >
               <Image
                 src={slide.photo}
+                unoptimized={slide.photo.startsWith("/api/")}
                 alt={slide.name}
                 width={1100}
                 height={1100}

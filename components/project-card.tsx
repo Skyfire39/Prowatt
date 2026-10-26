@@ -3,6 +3,7 @@ import type { Project } from "@/lib/data";
 import { tr } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { MapPinIcon } from "./icons";
+import { ProjectGallery } from "./project-gallery";
 import { HoverLift, Reveal } from "./motion";
 
 const nf = (lang: Locale, n: number) =>
@@ -55,10 +56,16 @@ export function ProjectCard({
   return (
     <Reveal delay={(index % 3) * 0.08}>
       <HoverLift className="glass relative flex h-full flex-col overflow-hidden rounded-2xl p-7">
+        {project.images && project.images.length > 0 && <ProjectGallery images={project.images} alt={tr(project.title, lang)} />}
         <div className="relative">
           <h3 className="text-2xl leading-snug tracking-tight">
             {tr(project.title, lang)}
           </h3>
+          {project.client && (
+            <p className="mt-1 text-sm font-medium text-accent">
+              {dict.client} : {project.client}
+            </p>
+          )}
           {(project.city || when) && (
             <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
               {project.city && (
@@ -85,8 +92,10 @@ export function ProjectCard({
           ))}
         </dl>
 
-        {project.note && (
-          <p className="relative mt-5 text-sm leading-relaxed text-muted">{tr(project.note, lang)}</p>
+        {(project.note || project.description) && (
+          <p className="relative mt-5 text-sm leading-relaxed text-muted">
+            {project.note ? tr(project.note, lang) : tr(project.description!, lang)}
+          </p>
         )}
       </HoverLift>
     </Reveal>

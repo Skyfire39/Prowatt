@@ -13,6 +13,8 @@ export type CardItem = {
   name: string;
   price: string;
   href: string;
+  /** Image envoyée depuis l'administration (sinon l'illustration par défaut). */
+  image?: string | null;
   /** Pastille posée sur l'image (Nouveau, Top vente, -15 %…). */
   badge?: CardBadge;
   /** Ancien prix, barré, quand le produit est en promotion. */
@@ -43,7 +45,7 @@ export function ProductCard({ item, labels }: { item: CardItem; labels: CardLabe
     <>
       <div className="relative">
         <Link href={item.href} aria-label={`${labels.view} : ${item.name}`} className="group block overflow-hidden rounded-2xl">
-          <ProductThumb className="h-36 w-full transition-transform duration-500 group-hover:scale-[1.04]" />
+          <ProductThumb src={item.image} className="h-44 w-full transition-transform duration-500 group-hover:scale-[1.04]" />
         </Link>
         {item.badge && (
           <span
@@ -58,7 +60,7 @@ export function ProductCard({ item, labels }: { item: CardItem; labels: CardLabe
           {item.name}
         </Link>
       </h3>
-      <div className="mt-3 flex items-end justify-between gap-3">
+      <div className="mt-3 flex flex-wrap items-end justify-between gap-x-3 gap-y-3">
         <div className="min-w-0">
           {item.oldPrice && <p className="text-sm tabular-nums text-muted line-through">{item.oldPrice}</p>}
           <p className="whitespace-nowrap text-2xl tracking-tight text-accent">{item.price}</p>

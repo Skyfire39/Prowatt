@@ -329,3 +329,30 @@ body:has([data-sticky-buy]) .floating-contact {
     animation: none;
   }
 }
+
+/* Impression des devis et factures (« Imprimer / PDF » dans l'administration). */
+@page {
+  size: A4;
+  margin: 10mm;
+}
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  .ambient,
+  .no-print {
+    display: none !important;
+  }
+  .print-sheet {
+    box-shadow: none !important;
+    border: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+  .print-sheet * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

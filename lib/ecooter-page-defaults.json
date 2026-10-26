@@ -1,0 +1,125 @@
+{
+ "blocks": [
+  {
+   "id": "tech",
+   "enabled": true,
+   "side": "left",
+   "zoom": 1.5,
+   "originX": 24,
+   "originY": 40,
+   "title": {
+    "fr": "Une technologie pensée pour la route",
+    "en": "Technology built for the road"
+   },
+   "bullets": [
+    {
+     "fr": "**Moteur central.** Un moteur placé au centre du véhicule.",
+     "en": "**Central motor.** A motor placed at the centre of the vehicle."
+    },
+    {
+     "fr": "**Système BMS.** Gestion et protection de la batterie.",
+     "en": "**BMS system.** Battery management and protection."
+    },
+    {
+     "fr": "**Contrôleur rotatif.** Contrôle de l'accélération et de la puissance.",
+     "en": "**Rotary controller.** Control of acceleration and power."
+    }
+   ],
+   "buttons": []
+  },
+  {
+   "id": "battery",
+   "enabled": true,
+   "side": "right",
+   "zoom": 1,
+   "originX": 50,
+   "originY": 50,
+   "title": {
+    "fr": "Votre batterie, au choix",
+    "en": "Your battery, your choice"
+   },
+   "bullets": [
+    {
+     "fr": "**Lithium.** Légèreté, endurance et recharge rapide.",
+     "en": "**Lithium.** Lightweight, enduring and fast to charge."
+    },
+    {
+     "fr": "**Graphène.** Robustesse, performance et budget maîtrisé.",
+     "en": "**Graphene.** Robust, high-performing and budget-friendly."
+    },
+    {
+     "fr": "Capacité, autonomie, vitesse et prix précis varient selon le modèle : contactez-nous pour une fiche détaillée.",
+     "en": "Capacity, range, speed and exact price vary by model: contact us for a detailed data sheet."
+    }
+   ],
+   "buttons": [
+    {
+     "label": {
+      "fr": "Lithium",
+      "en": "Lithium"
+     },
+     "href": "/ecooter/lithium",
+     "style": "glass"
+    },
+    {
+     "label": {
+      "fr": "Graphène",
+      "en": "Graphene"
+     },
+     "href": "/ecooter/graphene",
+     "style": "glass"
+    }
+   ]
+  },
+  {
+   "id": "try",
+   "enabled": true,
+   "side": "left",
+   "zoom": 1.5,
+   "originX": 78,
+   "originY": 72,
+   "title": {
+    "fr": "Venez la voir et l'essayer",
+    "en": "Come and see it, try it"
+   },
+   "bullets": [
+    {
+     "fr": "Notre équipe vous conseille en magasin, à Antananarivo.",
+     "en": "Our team will advise you in store, in Antananarivo."
+    },
+    {
+     "fr": "**Adresse.** {address}",
+     "en": "**Address.** {address}"
+    },
+    {
+     "fr": "**Horaires.** {hours}",
+     "en": "**Opening hours.** {hours}"
+    }
+   ],
+   "buttons": [
+    {
+     "label": {
+      "fr": "Appeler {phone}",
+      "en": "Call {phone}"
+     },
+     "href": "{phoneHref}",
+     "style": "primary"
+    }
+   ]
+  }
+ ],
+ "paramsNote": {
+  "fr": "Pour la fiche technique complète et le prix, contactez-nous.",
+  "en": "For the full data sheet and price, contact us."
+ },
+ "cta": {
+  "title": {
+   "fr": "Prêt à rouler électrique ?",
+   "en": "Ready to ride electric?"
+  },
+  "subtitle": {
+   "fr": "Essai, prix, disponibilité : notre équipe vous répond rapidement.",
+   "en": "Test ride, price, availability: our team replies quickly."
+  }
+ }
+}

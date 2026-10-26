@@ -8,6 +8,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import * as data from "./data";
 import type { EcooterSpecs, L10n } from "./data";
 import { dbConfigured, getDb, schema } from "./db";
+import { defaultEcooterPage, parseEcooterPage, type EcooterPageContent } from "./ecooter-page";
 import { defaultSettings, mergeSettings, type AppSettings } from "./settings";
 
 export type CatalogProduct = {
@@ -159,5 +160,21 @@ export async function getSettings(): Promise<AppSettings> {
   } catch (e) {
     console.error("[content] réglages : repli statique", e instanceof Error ? e.message : e);
     return defaultSettings;
+  }
+}
+
+/** Contenu des blocs de la fiche d'un modèle Ecooter (modifiable dans l'admin). */
+export async function getEcooterPage(): Promise<EcooterPageContent> {
+  "use cache";
+  cacheTag("ecooter-page");
+  cacheLife("minutes");
+  if (!dbConfigured()) return defaultEcooterPage;
+  try {
+    const db = await getDb();
+    const [row] = await db.select().from(schema.settings).where(eq(schema.settings.key, "ecooterPage")).limit(1);
+    return row ? parseEcooterPage(row.value) : defaultEcooterPage;
+  } catch (e) {
+    console.error("[content] fiche Ecooter : repli statique", e instanceof Error ? e.message : e);
+    return defaultEcooterPage;
   }
 }

@@ -289,6 +289,7 @@ export function FilterBar({ children, action }: { children: ReactNode; action: s
 const flashMessages: Record<string, { tone: "ok" | "err"; text: string }> = {
   created: { tone: "ok", text: "Élément créé avec succès." },
   saved: { tone: "ok", text: "Modifications enregistrées." },
+  reset: { tone: "ok", text: "Contenu d'origine rétabli." },
   deleted: { tone: "ok", text: "Élément supprimé." },
   converted: { tone: "ok", text: "Conversion effectuée." },
   paid: { tone: "ok", text: "Paiement enregistré." },

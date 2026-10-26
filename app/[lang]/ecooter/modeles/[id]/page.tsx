@@ -5,10 +5,11 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowIcon, CheckIcon, ChevronIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { ModelFeature } from "@/components/model-feature";
+import { RichText } from "@/components/rich-text";
 import { ModelVisual } from "@/components/model-visual";
 import { Reveal } from "@/components/motion";
 import { CtaBand } from "@/components/ui";
-import { getEcooters, getSettings } from "@/lib/content";
+import { getEcooterPage, getEcooters, getSettings } from "@/lib/content";
 import { modelHref, techs, tr } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
@@ -48,6 +49,12 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
   const model = ecooters[index];
   const { lang, dict } = await loadPage(params);
   const site = toSiteInfo(await getSettings());
+  const page = await getEcooterPage();
+  // Jetons des textes de l'admin : coordonnées de l'entreprise et adresses relatives au site.
+  const fill = (t: string) =>
+    t.replaceAll("{address}", site.address[lang]).replaceAll("{hours}", site.hours[lang][0] ?? "").replaceAll("{phone}", site.phone);
+  const href = (h: string) =>
+    h === "{phoneHref}" ? site.phoneHref : h === "{emailHref}" ? mailto(subject, "", site.email) : h.startsWith("/") ? `/${lang}${h}` : h;
   const d = dict.ecooter;
   const m = d.model;
   const base = `/${lang}`;
@@ -169,7 +176,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                     </div>
                   ))}
                 </dl>
-                <p className="mt-4 text-sm leading-relaxed text-muted">{m.paramsNote}</p>
+                <p className="mt-4 text-sm leading-relaxed text-muted">{page.paramsNote[lang]}</p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
                   <a href={mailto(subject, "", site.email)} className={`${pill} bg-accent text-on-accent`}>
@@ -195,65 +202,34 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
       {/* Blocs image + texte en alternance */}
       <section className="px-4 py-10 sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-col gap-20 lg:gap-32">
-          <ModelFeature
-            photo={model.photo}
-            name={model.name}
-            side="left"
-            zoom={1.5}
-            origin="24% 40%"
-            title={m.techBlock}
-            bullets={d.tech.map((t) => (
-              <span key={t.title}>
-                <strong className="font-semibold text-ink">{t.title}.</strong> {t.text}
-              </span>
+          {page.blocks
+            .filter((b) => b.enabled)
+            .map((b) => (
+              <ModelFeature
+                key={b.id}
+                photo={model.photo}
+                name={model.name}
+                side={b.side}
+                zoom={b.zoom}
+                origin={`${b.originX}% ${b.originY}%`}
+                title={fill(b.title[lang])}
+                bullets={b.bullets.map((t, k) => (
+                  <RichText key={k} text={fill(t[lang])} />
+                ))}
+              >
+                {b.buttons.map((btn, k) => (
+                  <a
+                    key={k}
+                    href={href(btn.href)}
+                    {...(btn.href.startsWith("https://") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className={`${pill} ${btn.style === "primary" ? "bg-accent text-on-accent" : "glass"}`}
+                  >
+                    {fill(btn.label[lang])}
+                    {btn.style === "primary" ? btn.href === "{phoneHref}" && <PhoneIcon className="size-5" /> : <ArrowIcon className="size-4" />}
+                  </a>
+                ))}
+              </ModelFeature>
             ))}
-          />
-
-          <ModelFeature
-            photo={model.photo}
-            name={model.name}
-            side="right"
-            zoom={1}
-            title={m.batteryBlock}
-            bullets={[
-              ...techs.map((t) => (
-                <span key={t}>
-                  <strong className="font-semibold text-ink">{d.techs[t].name}.</strong> {d.techs[t].tagline}
-                </span>
-              )),
-              d.note,
-            ]}
-          >
-            {techs.map((t) => (
-              <Link key={t} href={`${base}/ecooter/${t}`} className={`${pill} glass`}>
-                {d.techs[t].name}
-                <ArrowIcon className="size-4" />
-              </Link>
-            ))}
-          </ModelFeature>
-
-          <ModelFeature
-            photo={model.photo}
-            name={model.name}
-            side="left"
-            zoom={1.5}
-            origin="78% 72%"
-            title={m.tryBlock}
-            bullets={[
-              m.tryText,
-              <span key="a">
-                <strong className="font-semibold text-ink">{m.addressLabel}.</strong> {site.address[lang]}
-              </span>,
-              <span key="h">
-                <strong className="font-semibold text-ink">{m.hoursLabel}.</strong> {site.hours[lang][0]}
-              </span>,
-            ]}
-          >
-            <a href={site.phoneHref} className={`${pill} bg-accent text-on-accent`}>
-              <PhoneIcon className="size-5" />
-              {m.call} {site.phone}
-            </a>
-          </ModelFeature>
         </div>
       </section>
 
@@ -302,8 +278,8 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
       </section>
 
       <CtaBand
-        title={m.ctaTitle}
-        subtitle={m.ctaSubtitle}
+        title={page.cta.title[lang]}
+        subtitle={page.cta.subtitle[lang]}
         primary={{ href: mailto(subject, "", site.email), label: m.trial }}
         secondary={{ href: `${base}/contact`, label: dict.nav.contact }}
       />

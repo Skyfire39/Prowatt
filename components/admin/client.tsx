@@ -158,9 +158,9 @@ export function AdminFrame({
   return (
     <div className="min-h-dvh">
       {/* Barre latérale (≥ lg) */}
-      <aside className="glass-teal fixed bottom-4 left-4 top-4 z-30 hidden w-64 flex-col gap-6 overflow-y-auto rounded-[1.75rem] p-4 lg:flex">
+      <aside className="glass-teal fixed bottom-4 left-4 top-4 z-30 hidden w-64 flex-col gap-4 overflow-hidden rounded-[1.75rem] p-4 lg:flex">
         <Brand />
-        <div className="flex-1">
+        <div className="-mr-2 min-h-0 flex-1 overflow-y-auto pr-2 [scrollbar-width:thin]">
           <NavList groups={groups} />
         </div>
         <UserCard {...user} logout={logout} />
@@ -203,7 +203,7 @@ export function AdminFrame({
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 36 }}
-              className="glass-teal absolute bottom-3 left-3 top-3 flex w-[min(20rem,calc(100%-1.5rem))] flex-col gap-6 overflow-y-auto rounded-[1.75rem] p-4"
+              className="glass-teal absolute bottom-3 left-3 top-3 flex w-[min(20rem,calc(100%-1.5rem))] flex-col gap-4 overflow-hidden rounded-[1.75rem] p-4"
             >
               <div className="flex items-center justify-between">
                 <Brand />
@@ -211,7 +211,7 @@ export function AdminFrame({
                   <CloseIcon className="size-4" />
                 </button>
               </div>
-              <div className="flex-1">
+              <div className="min-h-0 flex-1 overflow-y-auto">
                 <NavList groups={groups} onNavigate={() => setOpen(false)} />
               </div>
               <UserCard {...user} logout={logout} />

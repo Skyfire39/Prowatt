@@ -1,6 +1,7 @@
 /**
  * Accès à la base de données (Postgres).
- *  - Production / hébergé : Neon via DATABASE_URL (pilote HTTP serverless).
+ *  - Production / hébergé : DATABASE_URL. Neon (adresse en neon.tech) passe par son pilote HTTP serverless ;
+ *    tout autre Postgres (Supabase, etc.) passe par le pilote `postgres`, compatible avec les poolers en mode transaction.
  *  - Développement sans DATABASE_URL : Postgres local embarqué (PGlite) dans .data/pglite, migré et
  *    rempli automatiquement. Jamais utilisé pendant `next build` ni en production.
  * Ce module ne doit être importé que côté serveur.
@@ -14,11 +15,12 @@ import * as schema from "./schema";
 export type Db = PgDatabase<any, typeof schema>;
 export { schema };
 
-type Kind = "neon" | "pglite";
+type Kind = "neon" | "postgres" | "pglite";
 type Holder = { db?: Db; kind?: Kind; ready?: Promise<void> };
 const g = globalThis as unknown as { __prowattDb?: Holder };
 const holder: Holder = (g.__prowattDb ??= {});
 
+const isNeon = (u: string) => /\.neon\.tech(:|\/|\?|$)/.test(u);
 const url = () => process.env.DATABASE_URL?.trim() || "";
 
 /** Une base est-elle utilisable ? Sinon l'admin affiche l'écran de configuration et le site reste statique. */
@@ -29,8 +31,15 @@ export const isLocalDb = () => !url() && process.env.NODE_ENV === "development";
 
 async function create(): Promise<Db> {
   if (url()) {
-    holder.kind = "neon";
-    return drizzleNeon(neon(url()), { schema }) as unknown as Db;
+    if (isNeon(url())) {
+      holder.kind = "neon";
+      return drizzleNeon(neon(url()), { schema }) as unknown as Db;
+    }
+    holder.kind = "postgres";
+    const [{ default: postgres }, { drizzle }] = await Promise.all([import("postgres"), import("drizzle-orm/postgres-js")]);
+    // prepare: false → compatible avec les poolers en mode transaction (Supabase, port 6543).
+    const client = postgres(url(), { prepare: false, max: 5, idle_timeout: 20, connect_timeout: 15, ssl: "require" });
+    return drizzle(client, { schema }) as unknown as Db;
   }
   if (process.env.NODE_ENV !== "development") throw new Error("DATABASE_URL manquant");
   holder.kind = "pglite";

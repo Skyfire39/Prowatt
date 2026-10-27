@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { startTransition, useActionState, useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useFormStatus } from "react-dom";
-import { BagIcon, CloseIcon, MenuIcon, UsersIcon } from "@/components/icons";
+import { BagIcon, CloseIcon, MailIcon, MenuIcon, UsersIcon } from "@/components/icons";
 import { Logo } from "@/components/logo";
 import {
   BoxIcon,
@@ -35,6 +35,7 @@ const icons = {
   motos: ScooterIcon,
   content: ImageIcon,
   featured: StarIcon,
+  newsletter: MailIcon,
   modelpage: EditIcon,
   users: UserCogIcon,
   settings: SlidersIcon,

@@ -43,4 +43,6 @@ export const LockIcon = make("M6 11h12v9H6z M8 11V8a4 4 0 0 1 8 0v3");
 export const UploadIcon = make("M12 16V4 M7 9l5-5 5 5 M5 20h14");
 export const ArrowLeftIcon = make("M19 12H5 M11 6l-6 6 6 6");
 export const FilterIcon = make("M4 5h16l-6 8v6l-4-2v-4z");
+export const MailOffIcon = make("M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z M3 7l9 6 3-2 M4 4l16 16");
+export const MailCheckIcon = make("M21 12V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h9 M3 7l9 6 9-6 M16 19l2 2 4-4");
 export const TruckIcon = make("M3 6h11v10H3z M14 10h4l3 3v3h-7 M7 19a1.5 1.5 0 1 0 0-.01 M17 19a1.5 1.5 0 1 0 0-.01");

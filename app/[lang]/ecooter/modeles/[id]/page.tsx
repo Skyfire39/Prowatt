@@ -87,7 +87,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
   ];
 
   const subject = `${d.mailSubject} — ${model.name}`;
-  const others = ecooters.filter((o) => o.id !== model.id);
+  const others = ecooters.filter((o) => o.id !== model.id).slice(0, 4);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -246,7 +246,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
             </div>
           </Reveal>
           <Reveal className="mt-10">
-            <div className="swipe-row swipe-cards grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="swipe-row swipe-cards grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {others.map((o) => (
                 <Link
                   key={o.id}

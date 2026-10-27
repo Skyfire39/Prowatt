@@ -52,6 +52,7 @@ export function ButtonLink({
  * `pos` règle le point focal, `zoom` agrandit le cadrage.
  */
 export function Photo({
+  src = "/images/solar-panels.jpg",
   pos = "50% 50%",
   zoom = 1,
   className = "",
@@ -59,6 +60,7 @@ export function Photo({
   sizes = "(min-width: 1152px) 1152px, 100vw",
   alt = "",
 }: {
+  src?: string;
   pos?: string;
   zoom?: number;
   className?: string;
@@ -69,7 +71,7 @@ export function Photo({
   return (
     <div className={`${className.includes("absolute") ? "" : "relative"} overflow-hidden ${className}`}>
       <Image
-        src="/images/solar-panels.jpg"
+        src={src}
         alt={alt}
         fill
         priority={priority}
@@ -162,7 +164,7 @@ export function CtaBand({
     <section className="px-4 py-12 sm:px-6 sm:py-20">
       <Reveal className="mx-auto max-w-6xl">
         <div className="glass-teal relative isolate overflow-hidden rounded-3xl px-6 py-20 text-center sm:py-28">
-          <Photo pos="30% 40%" zoom={1.3} className="absolute inset-0 -z-10 opacity-25" />
+          <Photo src="/images/solar-sky.jpg" pos="50% 50%" className="absolute inset-0 -z-10 opacity-30" />
           <h2 className="mx-auto max-w-3xl text-balance text-5xl leading-[1.04] tracking-[-0.04em] sm:text-7xl">
             {title}
           </h2>

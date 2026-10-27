@@ -15,7 +15,7 @@ export const roleDescriptions: Record<Role, string> = {
   manager: "Tout gérer sauf les utilisateurs.",
   sales: "Clients, commandes, devis ; consultation des produits et factures.",
   accountant: "Factures et paiements ; consultation des clients, commandes et devis.",
-  editor: "Produits, motos Ecooter et contenu du site.",
+  editor: "Produits, motos Ecooter, contenu du site et newsletter.",
 };
 
 export const PERMISSIONS = [
@@ -33,6 +33,7 @@ export const PERMISSIONS = [
   "invoices.write",
   "payments.write",
   "content.write",
+  "newsletter.manage",
   "settings.manage",
   "users.manage",
   "audit.read",
@@ -62,7 +63,7 @@ const matrix: Record<Role, readonly Permission[]> = {
     "invoices.write",
     "payments.write",
   ],
-  editor: ["dashboard.view", "products.read", "products.write", "motos.write", "content.write"],
+  editor: ["dashboard.view", "products.read", "products.write", "motos.write", "content.write", "newsletter.manage"],
 };
 
 export const can = (role: string, permission: Permission): boolean =>

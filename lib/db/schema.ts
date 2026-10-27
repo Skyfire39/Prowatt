@@ -326,3 +326,26 @@ export const partners = pgTable("partners", {
   sort: integer("sort").notNull().default(0),
   active: boolean("active").notNull().default(true),
 });
+
+/* ───────────── Newsletter ───────────── */
+
+/**
+ * Abonnés à la newsletter : sauvegarde locale de chaque adresse, quelle que soit la réponse de Mailchimp.
+ * `status` est le choix de l'abonné côté site (abonné / désabonné) ; `mailchimpStatus` est ce que Mailchimp a répondu.
+ */
+export const subscribers = pgTable(
+  "subscribers",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email: text("email").notNull(),
+    status: text("status").notNull().default("subscribed"),
+    source: text("source").notNull().default("site"),
+    mailchimpStatus: text("mailchimp_status"),
+    mailchimpSyncedAt: timestamp("mailchimp_synced_at", { withTimezone: true }),
+    mailchimpError: text("mailchimp_error"),
+    consentAt: stamp("consent_at"),
+    createdAt: stamp("created_at"),
+    updatedAt: stamp("updated_at"),
+  },
+  (t) => [uniqueIndex("subscribers_email_uq").on(t.email), index("subscribers_status_idx").on(t.status)],
+);

@@ -59,8 +59,9 @@ export function Navbar({
       ],
     },
     { href: `${base}/boutique`, label: nav.shop },
-    { href: `${base}/contact`, label: nav.contact },
   ];
+  // « Contact » est un bouton à part sur ordinateur ; il reste dans la liste du menu mobile.
+  const contact: Item = { href: `${base}/contact`, label: nav.contact };
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
@@ -114,6 +115,13 @@ export function Navbar({
         </ul>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
+          <Link
+            href={contact.href}
+            aria-current={isActive(contact.href) ? "page" : undefined}
+            className="hidden h-10 items-center rounded-full bg-accent px-5 text-[13px] font-semibold text-on-accent transition-opacity hover:opacity-90 lg:inline-flex"
+          >
+            {contact.label}
+          </Link>
           <button
             type="button"
             onClick={() => cart.open()}
@@ -156,7 +164,7 @@ export function Navbar({
             className="glass-nav mx-auto mt-2 max-h-[75dvh] max-w-6xl overflow-y-auto rounded-3xl p-3 lg:hidden"
           >
             <ul className="flex flex-col">
-              {items.map((item) => (
+              {[...items, contact].map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}

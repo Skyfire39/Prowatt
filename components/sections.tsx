@@ -5,6 +5,8 @@ import type { Locale } from "@/lib/i18n";
 import { FeaturedProducts } from "./featured-products";
 import { LogoMarquee } from "./logo-marquee";
 import { ModelSlider } from "./model-slider";
+import { AudienceArt } from "./audience-art";
+import { SolutionArt } from "./solution-art";
 import { SolutionPicker } from "./solution-picker";
 import { TestimonialSlider } from "./testimonial-slider";
 import {
@@ -26,12 +28,6 @@ import { ButtonLink, Photo, SectionHead } from "./ui";
 type Home = Dictionary["home"];
 
 const blockIcons = [BoltIcon, DropIcon, WrenchIcon];
-// Trois cadrages différents de la même photo, un par pilier.
-const blockCrops = [
-  { pos: "10% 40%", zoom: 1.9 },
-  { pos: "90% 80%", zoom: 2 },
-  { pos: "50% 5%", zoom: 2.2 },
-];
 
 /** Bande teal pleine largeur : « Nos solutions sur mesure ». */
 /** Plus récents d'abord, puis ordre alphabétique : le même ordre que la page « Mise en avant » de l'admin. */
@@ -59,7 +55,7 @@ export function Solutions({
             return (
               <Reveal key={b.title} delay={i * 0.08}>
                 <HoverLift className="glass-on-teal flex h-full flex-col overflow-hidden rounded-3xl">
-                  <Photo {...blockCrops[i]} className="h-56" sizes="(min-width: 768px) 380px, 100vw" />
+                  <SolutionArt index={i} className="block h-auto w-full" />
                   <div className="flex flex-1 flex-col p-8">
                     <span className="grid size-11 place-items-center rounded-full bg-lime text-teal">
                       <Icon className="size-5" />
@@ -251,11 +247,6 @@ export function SolarAdvantages({ dict }: { dict: Home["advantages"] }) {
 }
 
 const audIcons = [HomeIcon, BuildingIcon, FactoryIcon];
-const audCrops = [
-  { pos: "0% 15%", zoom: 2.1 },
-  { pos: "55% 55%", zoom: 2.4 },
-  { pos: "100% 90%", zoom: 2.1 },
-];
 
 export function Audiences({ dict }: { dict: Home["audiences"] }) {
   return (
@@ -268,7 +259,7 @@ export function Audiences({ dict }: { dict: Home["audiences"] }) {
             return (
               <Reveal key={item.title} delay={i * 0.1}>
                 <HoverLift className="glass h-full overflow-hidden rounded-3xl">
-                  <Photo {...audCrops[i]} className="h-48" sizes="(min-width: 768px) 380px, 100vw" />
+                  <AudienceArt index={i} className="block h-auto w-full" />
                   <div className="p-8">
                     <span className="-mt-14 mb-5 grid size-12 place-items-center rounded-full bg-lime text-teal ring-4 ring-white/70 relative">
                       <Icon className="size-6" />

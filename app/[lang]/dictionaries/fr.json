@@ -541,7 +541,11 @@
     "label": "Votre adresse e-mail",
     "placeholder": "vous@exemple.com",
     "button": "S'inscrire",
-    "success": "Merci ! Votre messagerie s'est ouverte : envoyez le message pour confirmer votre inscription.",
+    "success": "Merci ! Votre inscription est bien enregistrée. Si vous recevez un e-mail de confirmation, cliquez sur son lien pour la valider.",
+    "successMail": "Merci ! Votre messagerie s'est ouverte : envoyez le message pour confirmer votre inscription.",
+    "invalid": "Cette adresse e-mail ne semble pas valide.",
+    "error": "Une erreur est survenue. Réessayez dans un instant.",
+    "sending": "Envoi…",
     "note": "En vous inscrivant, vous acceptez de recevoir nos actualités. Vous pouvez vous désinscrire à tout moment.",
     "mailSubject": "Inscription à la newsletter Prowatt",
     "mailBody": "Bonjour, merci d'inscrire cette adresse à la newsletter Prowatt Madagascar : "

@@ -12,14 +12,34 @@ import { Logo } from "./logo";
 export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
   const id = useId();
   const site = useSite();
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState<"api" | "mail" | null>(null);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const email = String(new FormData(e.currentTarget).get("email") ?? "").trim();
-    if (!email) return;
-    setSent(true);
-    window.location.href = mailto(dict.mailSubject, `${dict.mailBody}${email}`, site.email);
+    const fd = new FormData(e.currentTarget);
+    const email = String(fd.get("email") ?? "").trim();
+    if (!email || pending) return;
+    setPending(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, website: String(fd.get("website") ?? "") }),
+      });
+      if (res.ok) setSent("api");
+      else if (res.status === 503) {
+        // Site sans base de données (mode statique) : on retombe sur l'envoi par e-mail.
+        setSent("mail");
+        window.location.href = mailto(dict.mailSubject, `${dict.mailBody}${email}`, site.email);
+      } else setError(res.status === 400 ? dict.invalid : dict.error);
+    } catch {
+      setError(dict.error);
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -62,7 +82,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                 <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-teal text-white">
                   <CheckIcon className="size-3.5" />
                 </span>
-                {dict.success}
+                {sent === "mail" ? dict.successMail : dict.success}
               </motion.p>
             ) : (
               <motion.form
@@ -75,6 +95,8 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                 <label htmlFor={`${id}-email`} className="sr-only">
                   {dict.label}
                 </label>
+                {/* Champ piège pour les robots : invisible et hors du parcours clavier. */}
+                <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] size-px opacity-0" />
                 <div className="flex items-center gap-2 rounded-full bg-white/80 p-1.5 pl-6 backdrop-blur-md focus-within:ring-4 focus-within:ring-teal/25">
                   <input
                     id={`${id}-email`}
@@ -87,12 +109,18 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                   />
                   <button
                     type="submit"
-                    className="group inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-teal px-6 text-[15px] font-medium text-white transition-opacity hover:opacity-85"
+                    disabled={pending}
+                    className="group inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-teal px-6 text-[15px] font-medium text-white transition-opacity hover:opacity-85 disabled:opacity-60"
                   >
-                    {dict.button}
+                    {pending ? dict.sending : dict.button}
                     <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
+                {error && (
+                  <p role="alert" className="mt-3 text-sm font-medium text-red-800">
+                    {error}
+                  </p>
+                )}
                 <p className="mt-4 text-sm leading-relaxed text-teal/65">{dict.note}</p>
               </motion.form>
             )}

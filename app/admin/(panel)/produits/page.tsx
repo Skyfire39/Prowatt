@@ -6,13 +6,12 @@ import { Badge, DataTable, Empty, FilterBar, Flash, LinkBtn, PageHeader, Paginat
 import { PlusIcon } from "@/components/icons";
 import { can } from "@/lib/auth/permissions";
 import { requireUser } from "@/lib/auth/session";
-import { categories } from "@/lib/data";
+import { listCategories } from "@/lib/admin/categories";
 import { getDb, schema } from "@/lib/db";
 import { ar, num } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Produits" };
 const PAGE_SIZE = 15;
-const catName = new Map(categories.map((c) => [c.id, c.name.fr]));
 
 type SP = { q?: string; category?: string; state?: string; page?: string; ok?: string };
 
@@ -22,6 +21,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
   const page = Math.max(1, Number(sp.page) || 1);
   const q = (sp.q ?? "").trim();
   const db = await getDb();
+  const categories = await listCategories();
+  const catName = new Map(categories.map((c) => [c.id, c.name]));
   const p = schema.products;
 
   const where = and(
@@ -54,10 +55,15 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
         subtitle={`${num(n)} produit${n > 1 ? "s" : ""} dans la boutique`}
         actions={
           canWrite && (
-            <LinkBtn href="/admin/produits/nouveau">
-              <PlusIcon className="size-4" />
-              Nouveau produit
-            </LinkBtn>
+            <>
+              <LinkBtn href="/admin/produits/categories" variant="soft">
+                Catégories
+              </LinkBtn>
+              <LinkBtn href="/admin/produits/nouveau">
+                <PlusIcon className="size-4" />
+                Nouveau produit
+              </LinkBtn>
+            </>
           )
         }
       />
@@ -68,7 +74,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
             <option value="">Toutes les catégories</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.name.fr}
+                {c.name}
               </option>
             ))}
           </select>
@@ -119,6 +125,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                   <div className="flex flex-wrap gap-1.5">
                     {r.bestSeller && <Badge tone="teal">Top vente</Badge>}
                     {r.oldPrice && <Badge tone="amber">Promo</Badge>}
+                    {r.options.length > 0 && <Badge tone="teal">{r.options.map((o) => o.name).join(" · ")}</Badge>}
                     {!r.active && <Badge tone="neutral">Masqué</Badge>}
                   </div>
                 </Td>

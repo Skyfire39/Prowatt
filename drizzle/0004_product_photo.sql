@@ -1,0 +1,1 @@
+ALTER TABLE "ecooters" ADD COLUMN "product_photo" text;

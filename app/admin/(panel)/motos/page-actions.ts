@@ -67,7 +67,8 @@ export async function saveEcooterPageAction(_: FormState, fd: FormData): Promise
     .onConflictDoUpdate({ target: schema.settings.key, set: { value, updatedAt: new Date() } });
   await logAudit(user, "modification", "fiche modèle Ecooter", key, target.label);
   updateTag("ecooter-page");
-  return { ok: scope === SHARED_ID ? "Le contenu commun est mis à jour sur le site." : `La fiche de ${target.label} est mise à jour sur le site.` };
+  // Retour sur la page : elle se recharge avec ce qui vient d'être enregistré et affiche le bandeau de confirmation.
+  redirect(scope === SHARED_ID ? "/admin/motos/commun?ok=saved" : `/admin/motos/${scope}?onglet=page&ok=saved`);
 }
 
 /** Moto : revient au contenu commun. Contenu commun : revient au contenu d'origine du site. */
@@ -75,26 +76,11 @@ export async function resetEcooterPageAction(fd: FormData) {
   const user = await requireActionUser("motos.write");
   const scope = s(fd, "scope");
   const target = await checkScope(scope);
-  if (!target.ok) redirect("/admin/fiche-modele?ok=notfound");
+  if (!target.ok) redirect("/admin/motos?ok=notfound");
   const db = await getDb();
   const key = pageKey(scope);
   await db.delete(schema.settings).where(eq(schema.settings.key, key));
   await logAudit(user, "réinitialisation", "fiche modèle Ecooter", key, target.label);
   updateTag("ecooter-page");
-  redirect(`/admin/fiche-modele/${scope}?ok=reset`);
-}
-
-/** Remplace la photo principale d'une moto (celle de l'en-tête de sa page et de la liste des modèles). */
-export async function changeMotoPhotoAction(_: FormState, fd: FormData): Promise<FormState> {
-  const user = await requireActionUser("motos.write");
-  const id = s(fd, "id");
-  const up = await saveUpload(fd.get("photo"));
-  if (!up) return { error: "Choisissez une image." };
-  if ("error" in up) return { error: up.error };
-  const db = await getDb();
-  const [m] = await db.update(schema.ecooters).set({ photo: up.url, updatedAt: new Date() }).where(eq(schema.ecooters.id, id)).returning({ name: schema.ecooters.name });
-  if (!m) return { error: "Modèle introuvable. Rechargez la page." };
-  await logAudit(user, "modification", "moto", id, `${m.name} : photo principale`);
-  updateTag("ecooters");
-  return { ok: "Photo principale remplacée." };
+  redirect(scope === SHARED_ID ? "/admin/motos/commun?ok=reset" : `/admin/motos/${scope}?onglet=page&ok=reset`);
 }

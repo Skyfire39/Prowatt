@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { AddToCart } from "@/components/add-to-cart";
+import { VariantImageProvider } from "@/components/variant-image";
 import { ArrowIcon, CheckIcon, ChevronIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { ModelFeature } from "@/components/model-feature";
 import { ProjectGallery } from "@/components/project-gallery";
@@ -11,7 +13,8 @@ import { ModelVisual } from "@/components/model-visual";
 import { Reveal } from "@/components/motion";
 import { CtaBand } from "@/components/ui";
 import { getEcooterPage, getEcooters, getSettings } from "@/lib/content";
-import { modelHref, techs, tr } from "@/lib/data";
+import { modelHref, motoCartId, techs, tr } from "@/lib/data";
+import { priceRange } from "@/lib/options";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
 import { mailto, whatsappHref } from "@/lib/site";
@@ -58,6 +61,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
     h === "{phoneHref}" ? site.phoneHref : h === "{emailHref}" ? mailto(subject, "", site.email) : h.startsWith("/") ? h : h;
   const d = dict.ecooter;
   const m = d.model;
+  const fromPrice = priceRange(model.price ?? 0, model.options);
   const base = "";
   const tagline = tr(model.tagline, lang);
   const specs = model.specs ?? {};
@@ -122,9 +126,10 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
             </nav>
           </Reveal>
 
+          <VariantImageProvider>
           <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-6">
-              <ModelVisual photo={model.photo} name={model.name} />
+              <ModelVisual photo={model.productPhoto ?? model.photo} name={model.name} cutout={!model.productPhoto} />
             </div>
 
             <div className="lg:col-span-6">
@@ -137,8 +142,23 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                 {model.description?.[lang]?.trim() && <p className="mt-3 whitespace-pre-line leading-relaxed text-muted">{model.description[lang]}</p>}
                 {model.price ? (
                   <p className="mt-4 text-3xl font-semibold tabular-nums tracking-tight text-accent">
-                    {new Intl.NumberFormat(lang).format(model.price)} <span className="text-lg text-muted">{dict.shop.currency}</span>
+                    {fromPrice.min !== fromPrice.max && <span className="mr-2 text-lg font-medium text-muted">{dict.shop.from}</span>}
+                    {new Intl.NumberFormat(lang).format(fromPrice.min)} <span className="text-lg text-muted">{dict.shop.currency}</span>
                   </p>
+                ) : null}
+                {model.price ? (
+                  <div className="glass mt-6 rounded-3xl border-teal/25 p-5 shadow-none sm:p-6">
+                    <AddToCart
+                      id={motoCartId(model.id)}
+                      name={`Ecooter ${model.name}`}
+                      price={model.price}
+                      options={model.options}
+                      lang={lang}
+                      currency={dict.shop.currency}
+                      labels={dict.product}
+                      checkoutHref="/commande"
+                    />
+                  </div>
                 ) : null}
                 {model.highlights.length > 0 && (
                   <ul className="mt-5 grid gap-2">
@@ -197,6 +217,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
               </Reveal>
             </div>
           </div>
+          </VariantImageProvider>
         </div>
       </section>
 
@@ -212,8 +233,6 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                 detail={b.image}
                 name={model.name}
                 side={b.side}
-                zoom={b.zoom}
-                origin={`${b.originX}% ${b.originY}%`}
                 title={fill(b.title[lang])}
                 bullets={b.bullets.map((t, k) => (
                   <RichText key={k} text={fill(t[lang])} />
@@ -267,15 +286,15 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                   href={modelHref(lang, o.id)}
                   className="glass group flex h-full flex-col rounded-3xl p-4 transition-transform duration-300 hover:-translate-y-1"
                 >
-                  <div className="overflow-hidden rounded-2xl bg-accent-soft/60 p-2">
+                  <div className={`overflow-hidden rounded-2xl bg-accent-soft/60 ${o.productPhoto ? "" : "p-2"}`}>
                     <Image
-                      src={o.photo}
-                      unoptimized={o.photo.startsWith("/api/")}
+                      src={o.productPhoto ?? o.photo}
+                      unoptimized={(o.productPhoto ?? o.photo).startsWith("/api/")}
                       alt=""
                       width={400}
                       height={400}
                       sizes="(min-width: 1024px) 200px, 60vw"
-                      className="h-auto w-full transition-transform duration-500 group-hover:scale-105"
+                      className={`w-full transition-transform duration-500 group-hover:scale-105 ${o.productPhoto ? "aspect-[4/3] object-cover" : "h-auto"}`}
                     />
                   </div>
                   <p className="mt-4 text-2xl tracking-tight">{o.name}</p>

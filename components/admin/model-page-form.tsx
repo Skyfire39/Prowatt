@@ -1,8 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { saveEcooterPageAction, resetEcooterPageAction } from "@/app/admin/(panel)/fiche-modele/actions";
+import { saveEcooterPageAction, resetEcooterPageAction } from "@/app/admin/(panel)/motos/page-actions";
 import { LIMITS, SHARED_ID, type Bi, type EcooterPageContent, type PageBlock, type PageButton } from "@/lib/ecooter-page";
 import { ConfirmButton, SubmitButton, useActionForm } from "./client";
 import { Field, FormError, Panel, Toggle, btn, inputClass, selectClass, textareaClass } from "./ui";
@@ -99,38 +98,19 @@ function BlockEditor({
       </div>
 
       <div className="mt-6 grid gap-8 min-[1280px]:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">
-        {/* Visuel : réglage du cadrage */}
+        {/* Visuel du bloc */}
         <div className="grid max-w-sm content-start gap-4">
           <div
-            role="button"
-            tabIndex={0}
-            aria-label="Cliquez pour choisir le point de zoom"
-            onClick={(e) => {
-              const r = e.currentTarget.getBoundingClientRect();
-              set({ originX: Math.round(((e.clientX - r.left) / r.width) * 100), originY: Math.round(((e.clientY - r.top) / r.height) * 100) });
-            }}
-            className="relative aspect-[4/3] cursor-crosshair overflow-hidden rounded-2xl"
+            className="relative aspect-[4/3] overflow-hidden rounded-2xl"
             style={{ background: "linear-gradient(135deg, #175c55 0%, #2f7d6e 52%, #c8e0a2 130%)" }}
           >
             {!detail && <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/25" />}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={detail ?? photo}
-              alt=""
-              draggable={false}
-              className={`pointer-events-none absolute inset-0 size-full select-none ${detail ? "object-cover" : "object-contain"}`}
-              style={{ transform: `scale(${block.zoom})`, transformOrigin: `${block.originX}% ${block.originY}%` }}
-            />
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-accent/60 shadow"
-              style={{ left: `${block.originX}%`, top: `${block.originY}%` }}
-            />
+            <img src={detail ?? photo} alt="" draggable={false} className={`pointer-events-none absolute inset-0 size-full select-none ${detail ? "object-cover" : "object-contain"}`} />
           </div>
-          <p className="text-xs text-muted">Aperçu du cadrage : cliquez sur l&apos;image pour choisir le point sur lequel zoomer.</p>
           <div className="grid gap-2 rounded-2xl border border-line/70 bg-white/40 p-3">
             <p className="text-sm font-semibold">Photo de détail</p>
-            <p className="text-xs text-muted">Sans photo de détail, le bloc recadre la photo principale de la moto. PNG, JPEG ou WebP, 2 Mo maximum.</p>
+            <p className="text-xs text-muted">Sans photo de détail, le bloc affiche la photo principale de la moto. PNG, JPEG ou WebP, 2 Mo maximum.</p>
             <input
               ref={fileRef}
               type="file"
@@ -170,9 +150,6 @@ function BlockEditor({
               </button>
             )}
           </div>
-          <Field label={`Zoom : ×${block.zoom.toFixed(1)}`}>
-            <input type="range" min={1} max={3} step={0.1} value={block.zoom} onChange={(e) => set({ zoom: Number(e.target.value) })} className="accent-[#175c55]" />
-          </Field>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Image à gauche">
               <button type="button" onClick={() => set({ side: "left" })} aria-pressed={block.side === "left"} className={`${btn(block.side === "left" ? "primary" : "soft", "sm")} w-full`}>
@@ -341,13 +318,7 @@ export function ModelPageForm({ initial, photo, scope, custom }: { initial: Ecoo
   const [content, setContent] = useState(initial);
   const { state, onSubmit, pending } = useActionForm(saveEcooterPageAction);
   const [sizeError, setSizeError] = useState<string | null>(null);
-  const router = useRouter();
   const gallery = content.gallery ?? [];
-  // Après un enregistrement, on recharge les données du serveur : les photos envoyées deviennent des vignettes
-  // enregistrées et les champs fichier sont vidés (sinon un second clic les enverrait en double).
-  useEffect(() => {
-    if (state?.ok) router.refresh();
-  }, [state, router]);
   // Les formulaires acceptent 20 Mo au total : on prévient avant l'envoi plutôt que d'échouer sans message.
   const guard = (e: React.FormEvent<HTMLFormElement>) => {
     const total = [...e.currentTarget.querySelectorAll<HTMLInputElement>("input[type=file]")].flatMap((i) => [...(i.files ?? [])]).reduce((s, f) => s + f.size, 0);
@@ -397,9 +368,6 @@ export function ModelPageForm({ initial, photo, scope, custom }: { initial: Ecoo
                     id: `bloc-${Date.now().toString(36)}`,
                     enabled: true,
                     side: content.blocks.length % 2 === 0 ? "left" : "right",
-                    zoom: 1,
-                    originX: 50,
-                    originY: 50,
                     title: { fr: "", en: "" },
                     bullets: [{ fr: "", en: "" }],
                     buttons: [],
@@ -424,7 +392,6 @@ export function ModelPageForm({ initial, photo, scope, custom }: { initial: Ecoo
           <SubmitButton pending={pending} pendingLabel="Enregistrement…">
             {scope === SHARED_ID ? "Enregistrer le contenu commun" : "Enregistrer la fiche"}
           </SubmitButton>
-          {state?.ok && <p role="status" className="text-sm font-semibold text-accent">{state.ok}</p>}
           <FormError message={sizeError ?? state?.error} />
         </div>
       </form>

@@ -5,8 +5,9 @@ import { ConfirmButton } from "@/components/admin/client";
 import { ProductForm } from "@/components/admin/product-form";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import { TrashIcon } from "@/components/icons";
+import { parseOptions } from "@/lib/options";
 import { requireUser } from "@/lib/auth/session";
-import { categories } from "@/lib/data";
+import { listCategories } from "@/lib/admin/categories";
 import { getDb, schema } from "@/lib/db";
 import { deleteProductAction } from "../actions";
 
@@ -23,7 +24,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     <>
       <PageHeader eyebrow="Catalogue" title={p.nameFr} subtitle={`Référence ${p.sku ?? p.id}`} back={{ href: "/admin/produits", label: "Tous les produits" }} />
       <ProductForm
-        categories={categories.map((c) => ({ id: c.id, name: c.name.fr }))}
+        categories={await listCategories()}
         values={{
           id: p.id,
           nameFr: p.nameFr,
@@ -39,6 +40,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           bestSeller: p.bestSeller,
           active: p.active,
           image: p.image,
+          options: parseOptions(p.options),
         }}
       />
       <Panel title="Zone sensible" className="mt-6">

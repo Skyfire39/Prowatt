@@ -312,6 +312,9 @@ export type EcooterSpecs = {
 
 export const modelHref = (lang: string, id: string) => `/ecooter/modeles/${id}`;
 
+/** Identifiant d'une moto dans le panier et les commandes (distinct des identifiants de produits). */
+export const motoCartId = (id: string) => `ecooter-${id}`;
+
 const woo = catalog.ecooters as Record<string, { price: number | null; specs: EcooterSpecs }>;
 const baseEcooters: { id: string; name: string; tagline: L10n; photo: string }[] = [
   { id: "aura", name: "AURA", tagline: { fr: "Confort, style et performance pour la ville.", en: "Comfort, style and performance for the city." }, photo: "/images/ecooter/aura.webp" },

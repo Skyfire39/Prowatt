@@ -1,16 +1,20 @@
 import { sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
-import { ecooters, partners, products, projects, testimonials } from "../data";
+import { categories, ecooters, partners, products, projects, testimonials } from "../data";
 import { defaultSettings } from "../settings";
 import type { Db } from "./index";
 import * as t from "./schema";
 
-/** Remplit les tables vides avec le contenu actuel du site (catalogue, motos, réalisations, avis, partenaires, réglages). */
+/** Remplit les tables vides avec le contenu actuel du site (catégories, catalogue, motos, réalisations, avis, partenaires, réglages). */
 export async function seedIfEmpty(db: Db) {
   const count = async (table: PgTable) => {
     const [row] = await db.select({ n: sql<number>`count(*)::int` }).from(table);
     return row.n;
   };
+
+  if ((await count(t.productCategories)) === 0) {
+    await db.insert(t.productCategories).values(categories.map((c, i) => ({ id: c.id, nameFr: c.name.fr, nameEn: c.name.en, sort: i })));
+  }
 
   if ((await count(t.products)) === 0) {
     await db.insert(t.products).values(

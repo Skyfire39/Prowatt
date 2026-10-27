@@ -289,6 +289,8 @@ export function FilterBar({ children, action }: { children: ReactNode; action: s
 const flashMessages: Record<string, { tone: "ok" | "err"; text: string }> = {
   created: { tone: "ok", text: "Élément créé avec succès." },
   saved: { tone: "ok", text: "Modifications enregistrées." },
+  "cat-name": { tone: "err", text: "Le nom de la catégorie doit contenir au moins 2 caractères." },
+  "cat-reserved": { tone: "err", text: "Cette catégorie est réservée aux motos : vous pouvez la renommer, pas la supprimer." },
   reset: { tone: "ok", text: "Contenu d'origine rétabli." },
   deleted: { tone: "ok", text: "Élément supprimé." },
   converted: { tone: "ok", text: "Conversion effectuée." },
@@ -306,7 +308,7 @@ const flashMessages: Record<string, { tone: "ok" | "err"; text: string }> = {
   denied: { tone: "err", text: "Vous n'avez pas le droit d'accéder à cette page." },
   notfound: { tone: "err", text: "Élément introuvable." },
   locked: { tone: "err", text: "Ce document n'est plus modifiable." },
-  inuse: { tone: "err", text: "Suppression impossible : cet élément est utilisé ailleurs." },
+  inuse: { tone: "err", text: "Suppression impossible : cet élément est utilisé ailleurs (des produits utilisent cette catégorie)." },
 };
 
 export function Flash({ code, denied }: { code?: string; denied?: boolean }) {

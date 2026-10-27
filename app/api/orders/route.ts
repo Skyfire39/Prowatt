@@ -1,8 +1,9 @@
 import { eq } from "drizzle-orm";
 import { upsertCustomer } from "@/lib/admin/customers";
 import { logAudit } from "@/lib/audit";
-import { getProducts } from "@/lib/content";
+import { getSellable } from "@/lib/content";
 import { atomic, dbConfigured, getDb, schema } from "@/lib/db";
+import { resolveSelection, selectionDelta, selectionLabel } from "@/lib/options";
 import { isEmail } from "@/lib/validate";
 
 const REF = /^PW-\d{6}-[A-Z0-9]{4}$/;
@@ -53,13 +54,17 @@ export async function POST(request: Request) {
   if (mode === "ship" && (!address || !city)) return json({ ok: false, error: "bad_request" }, 400);
   if (!Array.isArray(b.lines) || b.lines.length === 0 || b.lines.length > 30) return json({ ok: false, error: "bad_cart" }, 400);
 
-  const catalog = new Map((await getProducts()).map((p) => [p.id, p]));
+  const catalog = new Map((await getSellable()).map((p) => [p.id, p]));
   const items: { productId: string; name: string; unitPrice: number; qty: number }[] = [];
-  for (const l of b.lines as { id?: unknown; qty?: unknown }[]) {
+  for (const l of b.lines as { id?: unknown; qty?: unknown; o?: unknown }[]) {
     const p = typeof l?.id === "string" ? catalog.get(l.id) : undefined;
     const qty = l?.qty;
     if (!p || typeof qty !== "number" || !Number.isInteger(qty) || qty < 1 || qty > 99) return json({ ok: false, error: "bad_cart" }, 400);
-    items.push({ productId: p.id, name: p.name[lang], unitPrice: p.price, qty });
+    // Le prix vient du catalogue et des suppléments des options choisies, jamais du navigateur.
+    const sel = resolveSelection(p.options, l.o);
+    if (!sel) return json({ ok: false, error: "bad_cart" }, 400);
+    const label = selectionLabel(p.options, sel);
+    items.push({ productId: p.id, name: label ? `${p.name[lang]} — ${label}` : p.name[lang], unitPrice: p.price + selectionDelta(p.options, sel), qty });
   }
   const total = items.reduce((s, i) => s + i.unitPrice * i.qty, 0);
 

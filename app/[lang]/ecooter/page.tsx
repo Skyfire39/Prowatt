@@ -25,7 +25,8 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
     id: m.id,
     name: m.name,
     tagline: tr(m.tagline, lang),
-    photo: m.photo,
+    photo: m.productPhoto ?? m.photo,
+    cutout: !m.productPhoto,
     specs: m.specs,
     href: modelHref(lang, m.id),
   }));

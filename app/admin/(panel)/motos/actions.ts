@@ -3,6 +3,7 @@
 import { eq } from "drizzle-orm";
 import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
+import { readOptions } from "@/lib/admin/option-images";
 import { requireActionUser } from "@/lib/auth/session";
 import { logAudit } from "@/lib/audit";
 import { getDb, schema } from "@/lib/db";
@@ -25,6 +26,8 @@ export async function saveMotoAction(_: FormState, fd: FormData): Promise<FormSt
 
   const upload = await saveUpload(fd.get("photo"));
   if (upload && "error" in upload) return { error: upload.error };
+  const productUpload = await saveUpload(fd.get("productPhoto"));
+  if (productUpload && "error" in productUpload) return { error: productUpload.error };
 
   const specs: Record<string, string> = {};
   for (const f of specFields) {
@@ -36,26 +39,32 @@ export async function saveMotoAction(_: FormState, fd: FormData): Promise<FormSt
   const en = lines(s(fd, "highlightsEn"));
   const highlights = fr.map((t, i) => ({ fr: t, en: en[i] || t }));
 
+  const opts = await readOptions(fd);
+  if ("error" in opts) return { error: opts.error };
+
   const values = {
     name,
     taglineFr,
     taglineEn,
-    descriptionFr: opt(fd, "descriptionFr"),
-    descriptionEn: opt(fd, "descriptionEn"),
+    // Plus de champ « Présentation » : seule une ancienne présentation encore affichée dans le formulaire peut être vidée.
+    ...(fd.has("descriptionFr") ? { descriptionFr: opt(fd, "descriptionFr"), descriptionEn: null } : {}),
     specs,
     highlights,
     price: optInt(fd, "price"),
     active: bool(fd, "active"),
+    options: opts.options,
     sort: int(fd, "sort", 0),
     updatedAt: new Date(),
     ...(upload && "url" in upload ? { photo: upload.url } : {}),
+    // Une nouvelle photo produit remplace l'ancienne ; la case « Retirer » revient à la photo détourée.
+    ...(productUpload && "url" in productUpload ? { productPhoto: productUpload.url } : bool(fd, "removeProductPhoto") ? { productPhoto: null } : {}),
   };
 
   if (existingId) {
     await db.update(schema.ecooters).set(values).where(eq(schema.ecooters.id, existingId));
     await logAudit(user, "modification", "moto", existingId, name);
   } else {
-    if (!(upload && "url" in upload)) return { error: "Ajoutez une photo détourée de la moto (PNG ou WebP, fond transparent de préférence)." };
+    if (!(upload && "url" in upload)) return { error: "Ajoutez la photo détourée de la moto (PNG ou WebP, fond transparent) : c'est celle de l'accueil." };
     const base = slugify(name) || "modele";
     let id = base;
     for (let n = 2; ; n++) {

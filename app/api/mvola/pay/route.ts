@@ -1,6 +1,7 @@
 import { attachPaymentToOrder } from "@/lib/admin/orders";
-import { getProducts } from "@/lib/content";
+import { getSellable } from "@/lib/content";
 import { dbConfigured } from "@/lib/db";
+import { resolveSelection, selectionDelta } from "@/lib/options";
 import { isMvolaConfigured, MvolaError, startPayment } from "@/lib/mvola";
 
 const REF = /^PW-\d{6}-[A-Z0-9]{4}$/;
@@ -46,15 +47,18 @@ export async function POST(request: Request) {
   if (typeof msisdn !== "string" || !MSISDN.test(msisdn)) return json({ error: "bad_phone" }, 400);
   if (!Array.isArray(lines) || lines.length === 0 || lines.length > MAX_LINES) return json({ error: "bad_cart" }, 400);
 
-  const products = await getProducts();
+  const products = await getSellable();
   let amount = 0;
-  for (const l of lines as { id?: unknown; qty?: unknown }[]) {
+  for (const l of lines as { id?: unknown; qty?: unknown; o?: unknown }[]) {
     const product = typeof l?.id === "string" ? products.find((p) => p.id === l.id) : undefined;
     const qty = l?.qty;
     if (!product || typeof qty !== "number" || !Number.isInteger(qty) || qty < 1 || qty > 99) {
       return json({ error: "bad_cart" }, 400);
     }
-    amount += product.price * qty;
+    // Même calcul que la commande : prix du catalogue + suppléments des options choisies.
+    const sel = resolveSelection(product.options, l.o);
+    if (!sel) return json({ error: "bad_cart" }, 400);
+    amount += (product.price + selectionDelta(product.options, sel)) * qty;
   }
 
   // Une nouvelle tentative pour la même commande reçoit un suffixe : MVola refuse une référence réutilisée (409).

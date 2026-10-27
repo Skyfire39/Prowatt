@@ -19,6 +19,8 @@ export type CardItem = {
   badge?: CardBadge;
   /** Ancien prix, barré, quand le produit est en promotion. */
   oldPrice?: string;
+  /** Le produit a des options à choisir : la carte mène à sa fiche au lieu d'ajouter au panier. */
+  hasOptions?: boolean;
 };
 
 const badgeTones = {
@@ -26,7 +28,7 @@ const badgeTones = {
   teal: "bg-teal text-lime",
   accent: "bg-accent text-on-accent",
 };
-export type CardLabels = { addToCart: string; added: string; addToCartAria: string; view: string };
+export type CardLabels = { addToCart: string; added: string; addToCartAria: string; view: string; chooseOptions: string };
 
 /** Carte produit : l'image et le nom mènent à la fiche, le bouton ajoute au panier sans quitter la liste. */
 export function ProductCard({ item, labels }: { item: CardItem; labels: CardLabels }) {
@@ -65,6 +67,15 @@ export function ProductCard({ item, labels }: { item: CardItem; labels: CardLabe
           {item.oldPrice && <p className="text-sm tabular-nums text-muted line-through">{item.oldPrice}</p>}
           <p className="whitespace-nowrap text-2xl tracking-tight text-accent">{item.price}</p>
         </div>
+        {item.hasOptions ? (
+          <Link
+            href={item.href}
+            aria-label={`${labels.chooseOptions} : ${item.name}`}
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90"
+          >
+            {labels.chooseOptions}
+          </Link>
+        ) : (
         <motion.button
           type="button"
           onClick={add}
@@ -88,6 +99,7 @@ export function ProductCard({ item, labels }: { item: CardItem; labels: CardLabe
             </motion.span>
           </AnimatePresence>
         </motion.button>
+        )}
       </div>
     </>
   );

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
-import { cart, formatPrice, useCart } from "@/lib/cart";
+import { cart, formatPrice, useCart, type CartLineView } from "@/lib/cart";
 import { tr } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { mailto, whatsappHref, type PaymentConfig } from "@/lib/site";
@@ -32,6 +32,9 @@ type Order = {
 };
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+/** Ce que le serveur reçoit d'une ligne : l'identifiant, la quantité et les choix (il recalcule le prix lui-même). */
+const lineBody = (v: CartLineView) => ({ id: v.product.id, qty: v.qty, ...(v.product.options.length ? { o: v.selection } : {}) });
 
 function newRef() {
   const d = new Date();
@@ -107,7 +110,7 @@ export function Checkout({
             city: draft.city,
             note: draft.note,
             pay,
-            lines: views.map((v) => ({ id: v.product.id, qty: v.qty })),
+            lines: views.map(lineBody),
           }),
         }),
         new Promise((resolve) => setTimeout(resolve, 4000)),
@@ -122,7 +125,7 @@ export function Checkout({
   }
 
   function message(o: Order) {
-    const lines = views.map((v) => `- ${v.qty} × ${tr(v.product.name, lang)} — ${money(v.total)}`);
+    const lines = views.map((v) => `- ${v.qty} × ${tr(v.product.name, lang)}${v.optionsLabel ? ` (${v.optionsLabel})` : ""} — ${money(v.total)}`);
     return [
       dict.intro.replace("{ref}", o.ref),
       "",
@@ -234,16 +237,17 @@ export function Checkout({
     <aside className="glass rounded-3xl p-6 lg:sticky lg:top-28">
       <h2 className="text-2xl tracking-tight">{dict.summary}</h2>
       <ul className="mt-5 space-y-4">
-        {views.map(({ product, qty, total }) => (
-          <li key={product.id} className="flex gap-3">
+        {views.map(({ key, product, qty, total, optionsLabel, image }) => (
+          <li key={key} className="flex gap-3">
             <div className="relative">
-              <ProductThumb src={product.image} className="size-16" />
+              <ProductThumb src={image} className="size-16" />
               <span className="absolute -right-1.5 -top-1.5 grid min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold leading-5 text-on-accent tabular-nums">
                 {qty}
               </span>
             </div>
             <div className="min-w-0 flex-1">
               <p className="line-clamp-2 text-sm font-semibold leading-snug">{tr(product.name, lang)}</p>
+              {optionsLabel && <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-muted">{optionsLabel}</p>}
               <p className="mt-0.5 text-sm tabular-nums text-muted">{money(total)}</p>
             </div>
           </li>
@@ -409,7 +413,7 @@ export function Checkout({
                     key={order.ref}
                     dict={dict}
                     reference={order.ref}
-                    lines={views.map((v) => ({ id: v.product.id, qty: v.qty }))}
+                    lines={views.map(lineBody)}
                     amountLabel={money(order.total)}
                     onPaid={setPaidTx}
                   />

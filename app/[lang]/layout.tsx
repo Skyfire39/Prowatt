@@ -9,7 +9,7 @@ import { FloatingContact } from "@/components/floating-contact";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
 import { Navbar } from "@/components/navbar";
-import { getProducts, getSettings } from "@/lib/content";
+import { getSellable, getSettings } from "@/lib/content";
 import { hasLocale, locales } from "@/lib/i18n";
 import { toSiteInfo } from "@/lib/site-info";
 import { getDictionary } from "./dictionaries";
@@ -45,7 +45,7 @@ export default async function RootLayout({
 }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const [dict, products, settings] = await Promise.all([getDictionary(lang), getProducts(), getSettings()]);
+  const [dict, products, settings] = await Promise.all([getDictionary(lang), getSellable(), getSettings()]);
 
   return (
     <html

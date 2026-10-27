@@ -12,21 +12,32 @@ import { toggleProjectAction } from "./actions";
 
 export const metadata: Metadata = { title: "Réalisations" };
 
+const PAGE_SIZE = 9;
+
 const monthYear = (d: string) => {
   if (!d) return "";
   const [y, m] = d.split("-").map(Number);
   return new Intl.DateTimeFormat("fr", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, 1)));
 };
 
-export default async function ProjectsAdminPage({ searchParams }: { searchParams: Promise<{ ok?: string; cat?: string }> }) {
+export default async function ProjectsAdminPage({ searchParams }: { searchParams: Promise<{ ok?: string; cat?: string; page?: string }> }) {
   await requireUser("content.write");
-  const { ok, cat } = await searchParams;
+  const { ok, cat, page: pageParam } = await searchParams;
   const current = projectCategories.find((c) => c.id === cat);
   const db = await getDb();
   const rows = await db.select().from(schema.projects).orderBy(asc(schema.projects.sort), asc(schema.projects.createdAt));
   const counts = new Map<string, number>();
   for (const r of rows) counts.set(r.slug, (counts.get(r.slug) ?? 0) + 1);
-  const list = current ? rows.filter((r) => r.slug === current.id) : rows;
+  const filtered = current ? rows.filter((r) => r.slug === current.id) : rows;
+  const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const page = Math.min(pages, Math.max(1, Math.floor(Number(pageParam)) || 1));
+  const list = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const pageHref = (n: number) => {
+    const q = new URLSearchParams();
+    if (current) q.set("cat", current.id);
+    if (n > 1) q.set("page", String(n));
+    return `/admin/realisations${q.size ? `?${q}` : ""}`;
+  };
   const nameOf = (slug: string) => projectCategories.find((c) => c.id === slug)?.name ?? slug;
 
   const tab = (active: boolean) =>
@@ -112,6 +123,33 @@ export default async function ProjectsAdminPage({ searchParams }: { searchParams
             );
           })}
         </div>
+      )}
+
+      {pages > 1 && (
+        <nav aria-label="Pagination" className="mt-8 flex flex-wrap items-center justify-center gap-2">
+          {page > 1 ? (
+            <Link href={pageHref(page - 1)} className={tab(false)}>
+              ← Précédent
+            </Link>
+          ) : (
+            <span className={`${tab(false)} pointer-events-none opacity-40`}>← Précédent</span>
+          )}
+          {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+            <Link key={n} href={pageHref(n)} aria-current={n === page ? "page" : undefined} className={`${tab(n === page)} min-w-10 justify-center px-3`}>
+              {n}
+            </Link>
+          ))}
+          {page < pages ? (
+            <Link href={pageHref(page + 1)} className={tab(false)}>
+              Suivant →
+            </Link>
+          ) : (
+            <span className={`${tab(false)} pointer-events-none opacity-40`}>Suivant →</span>
+          )}
+          <p className="w-full text-center text-xs text-muted">
+            {filtered.length} réalisations · page {page} sur {pages}
+          </p>
+        </nav>
       )}
     </>
   );

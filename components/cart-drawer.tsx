@@ -131,11 +131,11 @@ export function CartDrawer({
               <>
                 <ul className="flex-1 space-y-3 overflow-y-auto px-6 py-2">
                   <AnimatePresence initial={false}>
-                    {views.map(({ product, qty, total }) => {
+                    {views.map(({ key, product, qty, total, unit, optionsLabel, image }) => {
                       const name = tr(product.name, lang);
                       return (
                         <motion.li
-                          key={product.id}
+                          key={key}
                           layout
                           initial={{ opacity: 0, y: 16 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -143,23 +143,24 @@ export function CartDrawer({
                           transition={{ duration: 0.3 }}
                           className="glass flex gap-4 rounded-2xl p-3"
                         >
-                          <ProductThumb src={product.image} className="size-20 shrink-0" />
+                          <ProductThumb src={image} className="size-20 shrink-0" />
                           <div className="flex min-w-0 flex-1 flex-col">
                             <Link
-                              href={`/boutique/${product.id}`}
+                              href={product.href ?? `/boutique/${product.id}`}
                               onClick={() => cart.close()}
                               className="line-clamp-2 text-[15px] font-semibold leading-snug hover:underline"
                             >
                               {name}
                             </Link>
-                            <p className="mt-0.5 text-sm tabular-nums text-muted">{money(product.price)}</p>
+                            {optionsLabel && <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-muted">{optionsLabel}</p>}
+                            <p className="mt-0.5 text-sm tabular-nums text-muted">{money(unit)}</p>
                             <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-                              <Stepper qty={qty} onChange={(n) => cart.setQty(product.id, n)} labels={dict} name={name} small />
+                              <Stepper qty={qty} onChange={(n) => cart.setQty(key, n)} labels={dict} name={name} small />
                               <div className="flex items-center gap-1">
                                 <span className="text-sm font-semibold tabular-nums">{money(total)}</span>
                                 <button
                                   type="button"
-                                  onClick={() => cart.remove(product.id)}
+                                  onClick={() => cart.remove(key)}
                                   aria-label={`${dict.remove} : ${name}`}
                                   className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-accent-soft hover:text-ink"
                                 >

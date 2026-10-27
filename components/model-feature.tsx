@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Reveal } from "./motion";
 
 /**
- * Bloc image + texte façon fiche produit : une scène teal avec la moto recadrée sur un détail, et une
+ * Bloc image + texte façon fiche produit : une scène teal avec la moto ou une photo de détail, et une
  * carte de verre qui la chevauche. `side` place l'image à gauche ou à droite, en alternance.
  */
 export function ModelFeature({
@@ -11,8 +11,6 @@ export function ModelFeature({
   detail,
   name,
   side,
-  zoom = 1,
-  origin = "50% 50%",
   title,
   bullets,
   children,
@@ -22,9 +20,6 @@ export function ModelFeature({
   detail?: string | null;
   name: string;
   side: "left" | "right";
-  zoom?: number;
-  /** Point du visuel sur lequel on zoome (transform-origin CSS). */
-  origin?: string;
   title: string;
   bullets: ReactNode[];
   children?: ReactNode;
@@ -47,7 +42,6 @@ export function ModelFeature({
               sizes="(min-width: 1024px) 700px, 92vw"
               draggable={false}
               className="absolute inset-0 size-full select-none object-cover"
-              style={{ transform: `scale(${zoom})`, transformOrigin: origin }}
             />
           ) : (
             <>
@@ -61,7 +55,6 @@ export function ModelFeature({
                 sizes="(min-width: 1024px) 700px, 92vw"
                 draggable={false}
                 className="absolute inset-0 size-full select-none object-contain drop-shadow-[0_24px_24px_rgb(5_25_22/0.4)]"
-                style={{ transform: `scale(${zoom})`, transformOrigin: origin }}
               />
             </>
           )}

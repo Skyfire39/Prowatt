@@ -3,14 +3,13 @@
 import { eq } from "drizzle-orm";
 import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
+import { readOptions } from "@/lib/admin/option-images";
 import { requireActionUser } from "@/lib/auth/session";
 import { logAudit } from "@/lib/audit";
-import { categories } from "@/lib/data";
+import { listCategories } from "@/lib/admin/categories";
 import { getDb, schema } from "@/lib/db";
 import { saveUpload } from "@/lib/media";
 import { bool, int, isIsoDate, opt, optInt, s, slugify, type FormState } from "@/lib/validate";
-
-const categoryIds = new Set(categories.map((c) => c.id));
 
 export async function saveProductAction(_: FormState, fd: FormData): Promise<FormState> {
   const user = await requireActionUser("products.write");
@@ -25,13 +24,16 @@ export async function saveProductAction(_: FormState, fd: FormData): Promise<For
   const addedAt = s(fd, "addedAt");
 
   if (nameFr.length < 2) return { error: "Le nom en français est obligatoire." };
-  if (!categoryIds.has(category)) return { error: "Choisissez une catégorie." };
+  if (!(await listCategories()).some((c) => c.id === category)) return { error: "Choisissez une catégorie." };
   if (price < 0) return { error: "Indiquez un prix valide (en ariary)." };
   if (oldPrice !== null && oldPrice <= price) return { error: "L'ancien prix doit être supérieur au prix actuel pour afficher une promotion." };
   if (addedAt && !isIsoDate(addedAt)) return { error: "Date d'ajout invalide." };
 
   const upload = await saveUpload(fd.get("image"));
   if (upload && "error" in upload) return { error: upload.error };
+
+  const opts = await readOptions(fd);
+  if ("error" in opts) return { error: opts.error };
 
   const values = {
     category,
@@ -45,6 +47,7 @@ export async function saveProductAction(_: FormState, fd: FormData): Promise<For
     sku: opt(fd, "sku"),
     stock: optInt(fd, "stock"),
     active: bool(fd, "active"),
+    options: opts.options,
     ...(addedAt ? { addedAt } : {}),
     ...(upload && "url" in upload ? { image: upload.url } : {}),
     ...(bool(fd, "removeImage") && !upload ? { image: null } : {}),

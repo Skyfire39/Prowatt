@@ -27,7 +27,7 @@ export function MvolaPay({
 }: {
   dict: Dict;
   reference: string;
-  lines: { id: string; qty: number }[];
+  lines: { id: string; qty: number; o?: Record<string, string> }[];
   amountLabel: string;
   onPaid: (transactionId: string) => void;
 }) {

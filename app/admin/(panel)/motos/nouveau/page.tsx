@@ -10,7 +10,7 @@ export default async function NewMotoPage() {
   return (
     <>
       <PageHeader eyebrow="Motos Ecooter" title="Nouveau modèle" back={{ href: "/admin/motos", label: "Tous les modèles" }} />
-      <MotoForm values={{ name: "", taglineFr: "", taglineEn: "", descriptionFr: "", descriptionEn: "", photo: null, price: "", active: true, sort: 0, specs: {}, highlightsFr: "", highlightsEn: "" }} />
+      <MotoForm values={{ name: "", taglineFr: "", taglineEn: "", descriptionFr: "", descriptionEn: "", photo: null, productPhoto: null, price: "", active: true, sort: 0, specs: {}, highlightsFr: "", highlightsEn: "", options: [] }} />
     </>
   );
 }

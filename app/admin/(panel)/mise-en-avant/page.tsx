@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import { FeaturedManager } from "@/components/admin/featured-manager";
 import { Flash, PageHeader } from "@/components/admin/ui";
 import { requireUser } from "@/lib/auth/session";
-import { categories } from "@/lib/data";
+import { listCategories } from "@/lib/admin/categories";
 import { getDb, schema } from "@/lib/db";
 
 export const metadata: Metadata = { title: "Mise en avant" };
-const catName = new Map(categories.map((c) => [c.id, c.name.fr]));
 
 export default async function FeaturedPage({ searchParams }: { searchParams: Promise<{ ok?: string }> }) {
   await requireUser("content.write");
   const { ok } = await searchParams;
   const db = await getDb();
+  const catName = new Map((await listCategories()).map((c) => [c.id, c.name]));
   const rows = (await db.select().from(schema.products)).sort((a, b) => b.addedAt.localeCompare(a.addedAt) || a.nameFr.localeCompare(b.nameFr, "fr"));
 
   return (

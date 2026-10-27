@@ -10,10 +10,6 @@ export type PageBlock = {
   id: string;
   enabled: boolean;
   side: "left" | "right";
-  /** Agrandissement de la photo (1 = entière) et point sur lequel on zoome, en %. */
-  zoom: number;
-  originX: number;
-  originY: number;
   /** Photo de détail propre au bloc (/api/media/…). Sans elle, le bloc recadre la photo principale de la moto. */
   image?: string | null;
   title: Bi;
@@ -40,10 +36,6 @@ const MEDIA_URL = /^\/api\/media\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4
 export const LIMITS = { gallery: 12, blocks: 8, bullets: 8, buttons: 3, title: 120, bullet: 400, label: 40, href: 200 } as const;
 
 const str = (v: unknown, max: number, fallback = "") => (typeof v === "string" ? v.trim().slice(0, max) : fallback);
-const num = (v: unknown, min: number, max: number, fallback: number) => {
-  const n = typeof v === "number" ? v : Number(v);
-  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
-};
 function bi(v: unknown, max: number): Bi {
   const o = (v ?? {}) as Record<string, unknown>;
   const fr = str(o.fr, max);
@@ -63,9 +55,6 @@ export function parseEcooterPage(raw: unknown): EcooterPageContent {
           id: str(x.id, 40).replace(/[^\w-]/g, "") || `bloc-${i + 1}`,
           enabled: x.enabled !== false,
           side: x.side === "right" ? "right" : "left",
-          zoom: num(x.zoom, 1, 3, 1),
-          originX: num(x.originX, 0, 100, 50),
-          originY: num(x.originY, 0, 100, 50),
           image: typeof x.image === "string" && MEDIA_URL.test(x.image) ? x.image : null,
           title: bi(x.title, LIMITS.title),
           bullets: (Array.isArray(x.bullets) ? x.bullets : []).slice(0, LIMITS.bullets).map((t) => bi(t, LIMITS.bullet)).filter((t) => t.fr),

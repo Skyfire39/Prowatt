@@ -40,7 +40,6 @@ async function PanelShell({ children }: { children: React.ReactNode }) {
       items: [
         can(r, "products.read") && { href: "/admin/produits", label: "Produits", icon: "products" as const },
         can(r, "motos.write") && { href: "/admin/motos", label: "Motos Ecooter", icon: "motos" as const },
-        can(r, "motos.write") && { href: "/admin/fiche-modele", label: "Fiche modèle", icon: "modelpage" as const },
       ].filter(Boolean) as NavGroup["items"],
     },
     {

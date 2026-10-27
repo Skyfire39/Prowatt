@@ -23,7 +23,7 @@ export default async function MotosPage({ searchParams }: { searchParams: Promis
       <PageHeader
         eyebrow="Catalogue"
         title="Motos Ecooter"
-        subtitle="Modifiez la fiche, la photo et les caractéristiques de chaque modèle : la page dédiée du site se met à jour aussitôt."
+        subtitle="Pour chaque modèle : ses informations et sa photo, puis sa page détaillée (photos de détail et textes). Le site se met à jour aussitôt."
         actions={
           <LinkBtn href="/admin/motos/nouveau">
             <PlusIcon className="size-4" />
@@ -52,14 +52,25 @@ export default async function MotosPage({ searchParams }: { searchParams: Promis
                   </div>
                   <p className="mt-1 line-clamp-2 flex-1 text-sm text-muted">{m.taglineFr}</p>
                   <p className="mt-3 text-sm font-semibold tabular-nums">{m.price ? ar(m.price) : <span className="font-medium text-muted">Prix sur demande</span>}</p>
+                  {m.options.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {m.options.map((o) => (
+                        <Badge key={o.name} tone="neutral">
+                          {o.name} · {o.values.length}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                   <div className="mt-4 flex gap-2">
                     <LinkBtn href={`/admin/motos/${m.id}`} variant="primary" size="sm" className="flex-1">
                       <EditIcon className="size-4" />
                       Modifier
                     </LinkBtn>
-                    <LinkBtn href={`/ecooter/modeles/${m.id}`} target="_blank" variant="soft" size="sm">
+                    <LinkBtn href={`/admin/motos/${m.id}?onglet=page`} variant="soft" size="sm">
+                      Page détaillée
+                    </LinkBtn>
+                    <LinkBtn href={`/ecooter/modeles/${m.id}`} target="_blank" variant="soft" size="sm" aria-label="Voir sur le site">
                       <EyeIcon className="size-4" />
-                      Voir
                     </LinkBtn>
                   </div>
                 </div>
@@ -68,6 +79,16 @@ export default async function MotosPage({ searchParams }: { searchParams: Promis
           })}
         </div>
       )}
+
+      <Panel title="Contenu commun des pages" subtitle="Les blocs repris par les motos qui n'ont pas de page détaillée à elles." className="mt-8">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="max-w-xl text-sm text-muted">Modifier le contenu commun change toutes les pages de moto qui n&apos;ont pas la leur.</p>
+          <LinkBtn href="/admin/motos/commun" variant="soft" size="sm">
+            <EditIcon className="size-4" />
+            Modifier le contenu commun
+          </LinkBtn>
+        </div>
+      </Panel>
     </>
   );
 }

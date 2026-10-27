@@ -506,7 +506,9 @@
     "addToCart": "Ajouter",
     "added": "Ajouté",
     "view": "Voir le produit",
-    "addToCartAria": "Ajouter au panier"
+    "addToCartAria": "Ajouter au panier",
+    "chooseOptions": "Choisir",
+    "from": "À partir de"
   },
   "contact": {
     "eyebrow": "Contact",

@@ -2,19 +2,20 @@ import type { Metadata } from "next";
 import { ProductForm } from "@/components/admin/product-form";
 import { PageHeader } from "@/components/admin/ui";
 import { requireUser } from "@/lib/auth/session";
-import { categories } from "@/lib/data";
+import { listCategories } from "@/lib/admin/categories";
 import { today } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Nouveau produit" };
 
 export default async function NewProductPage() {
   await requireUser("products.write");
+  const categories = await listCategories();
   return (
     <>
       <PageHeader eyebrow="Catalogue" title="Nouveau produit" back={{ href: "/admin/produits", label: "Tous les produits" }} />
       <ProductForm
-        categories={categories.map((c) => ({ id: c.id, name: c.name.fr }))}
-        values={{ nameFr: "", nameEn: "", category: "", price: "", oldPrice: "", descriptionFr: "", descriptionEn: "", sku: "", stock: "", addedAt: today(), bestSeller: false, active: true, image: null }}
+        categories={categories}
+        values={{ nameFr: "", nameEn: "", category: "", price: "", oldPrice: "", descriptionFr: "", descriptionEn: "", sku: "", stock: "", addedAt: today(), bestSeller: false, active: true, image: null, options: [] }}
       />
     </>
   );

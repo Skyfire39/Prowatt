@@ -5,6 +5,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { cart, formatPrice, useCart } from "@/lib/cart";
+import { defaultSelection, lineKey, selectionDelta, selectionImage, type ProductOption, type Selection } from "@/lib/options";
+import { OptionPicker } from "./option-picker";
+import { useSetVariantImage } from "./variant-image";
 import { BagIcon, CheckIcon, MinusIcon, PlusIcon } from "./icons";
 
 type Labels = {
@@ -34,16 +37,22 @@ export function AddToCart({
   currency,
   labels,
   checkoutHref,
+  options = [],
 }: {
   id: string;
   name: string;
+  /** Prix de base : les suppléments des options choisies s'y ajoutent. */
   price: number;
+  options?: ProductOption[];
   lang: string;
   currency: string;
   labels: Labels;
   checkoutHref: string;
 }) {
   const [qty, setQty] = useState(1);
+  const [selection, setSelection] = useState<Selection>(() => defaultSelection(options));
+  const unit = price + selectionDelta(options, selection);
+  useSetVariantImage(selectionImage(options, selection));
   const [done, setDone] = useState(false);
   const [stuck, setStuck] = useState(false);
   // Vrai uniquement dans le navigateur : le portail de la barre fixe n'existe pas au rendu serveur.
@@ -55,7 +64,7 @@ export function AddToCart({
   const boxRef = useRef<HTMLDivElement>(null);
   const timer = useRef<number | undefined>(undefined);
   const { lines } = useCart();
-  const inCart = lines.find((l) => l.id === id)?.qty ?? 0;
+  const inCart = lines.find((l) => l.id === id && lineKey(id, options.length ? l.o : undefined) === lineKey(id, options.length ? selection : undefined))?.qty ?? 0;
 
   // Barre mobile : visible quand le bloc d'achat n'est plus à l'écran.
   useEffect(() => {
@@ -69,7 +78,7 @@ export function AddToCart({
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   function add() {
-    cart.add(id, qty);
+    cart.add(id, qty, options.length ? selection : undefined);
     setDone(true);
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setDone(false), 2600);
@@ -80,6 +89,7 @@ export function AddToCart({
   return (
     <>
       <div ref={boxRef} className="grid gap-5">
+        <OptionPicker options={options} selection={selection} onChange={setSelection} lang={lang} currency={currency} />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <div>
             <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted">{labels.qty}</span>
@@ -94,7 +104,7 @@ export function AddToCart({
               transition={{ duration: 0.3 }}
               className="block text-3xl font-semibold tabular-nums tracking-tight"
             >
-              {money(price * qty)}
+              {money(unit * qty)}
             </motion.span>
           </div>
         </div>
@@ -144,7 +154,7 @@ export function AddToCart({
 
           <Link
             href={checkoutHref}
-            onClick={() => cart.add(id, qty)}
+            onClick={() => cart.add(id, qty, options.length ? selection : undefined)}
             className="glass border-teal/25 shadow-none inline-flex h-14 items-center justify-center rounded-full px-7 text-base font-semibold transition-opacity hover:opacity-85"
           >
             {labels.buyNow}
@@ -192,7 +202,7 @@ export function AddToCart({
             <div className="mx-auto flex max-w-6xl items-center gap-3">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{name}</p>
-                <p className="text-sm tabular-nums text-muted">{money(price * qty)}</p>
+                <p className="text-sm tabular-nums text-muted">{money(unit * qty)}</p>
               </div>
               <button
                 type="button"

@@ -10,6 +10,7 @@ import type { EcooterSpecs, L10n, Project } from "./data";
 import { isSlug } from "./data";
 import { dbConfigured, getDb, schema } from "./db";
 import { defaultEcooterPage, pageKey, parseEcooterPage, type EcooterPageContent } from "./ecooter-page";
+import { parseOptions, type ProductOption } from "./options";
 import { defaultSettings, mergeSettings, type AppSettings } from "./settings";
 
 export type CatalogProduct = {
@@ -22,6 +23,10 @@ export type CatalogProduct = {
   bestSeller: boolean;
   addedAt: string;
   image: string | null;
+  /** Page du produit quand ce n'est pas /boutique/<id> (motos Ecooter). */
+  href?: string;
+  /** Choix proposés au client (couleur, type…), avec supplément de prix facultatif. */
+  options: ProductOption[];
 };
 
 /** Version allégée pour le panier côté navigateur : sans les descriptions, trop lourdes à envoyer sur chaque page. */
@@ -32,11 +37,17 @@ export type CatalogEcooter = {
   name: string;
   tagline: L10n;
   description: L10n | null;
+  /** Photo détourée (fond transparent), utilisée sur l'accueil. */
   photo: string;
+  /** Photo produit (avec décor) des pages Ecooter, de la boutique et du panier ; `null` : on reprend `photo`. */
+  productPhoto: string | null;
   specs: EcooterSpecs;
   highlights: L10n[];
   price: number | null;
+  options: ProductOption[];
 };
+
+export type CatalogCategory = { id: string; name: L10n };
 
 export type CatalogTestimonial = { name: string; photo: string; text: L10n };
 export type CatalogPartner = { name: string; logo: string };
@@ -54,6 +65,7 @@ const staticProducts = (): CatalogProduct[] =>
       bestSeller: p.bestSeller ?? false,
       addedAt: p.addedAt,
       image: p.image ?? null,
+      options: [],
     }));
 
 export async function getProducts(): Promise<CatalogProduct[]> {
@@ -75,6 +87,7 @@ export async function getProducts(): Promise<CatalogProduct[]> {
         bestSeller: r.bestSeller,
         addedAt: r.addedAt,
         image: r.image,
+        options: parseOptions(r.options),
       }))
       .sort((a, b) => b.addedAt.localeCompare(a.addedAt) || a.name.fr.localeCompare(b.name.fr, "fr"));
   } catch (e) {
@@ -90,9 +103,11 @@ const staticEcooters = (): CatalogEcooter[] =>
     tagline: m.tagline,
     description: null,
     photo: m.photo,
+    productPhoto: null,
     specs: m.specs,
     highlights: [],
     price: m.price,
+    options: [],
   }));
 
 export async function getEcooters(): Promise<CatalogEcooter[]> {
@@ -109,14 +124,55 @@ export async function getEcooters(): Promise<CatalogEcooter[]> {
       tagline: { fr: r.taglineFr, en: r.taglineEn },
       description: r.descriptionFr || r.descriptionEn ? { fr: r.descriptionFr ?? "", en: r.descriptionEn ?? r.descriptionFr ?? "" } : null,
       photo: r.photo,
+      productPhoto: r.productPhoto,
       specs: r.specs as EcooterSpecs,
       highlights: r.highlights,
       price: r.price,
+      options: parseOptions(r.options),
     }));
   } catch (e) {
     console.error("[content] motos : repli statique", e instanceof Error ? e.message : e);
     return staticEcooters();
   }
+}
+
+export async function getCategories(): Promise<CatalogCategory[]> {
+  "use cache";
+  cacheTag("categories");
+  cacheLife("hours");
+  if (!dbConfigured()) return data.categories;
+  try {
+    const db = await getDb();
+    const rows = await db.select().from(schema.productCategories).orderBy(asc(schema.productCategories.sort), asc(schema.productCategories.nameFr));
+    // Table pas encore remplie (migration non lancée) : on garde les catégories d'origine.
+    return rows.length ? rows.map((r) => ({ id: r.id, name: { fr: r.nameFr, en: r.nameEn } })) : data.categories;
+  } catch (e) {
+    console.error("[content] catégories : repli statique", e instanceof Error ? e.message : e);
+    return data.categories;
+  }
+}
+
+/**
+ * Tout ce qui s'achète depuis le panier : le catalogue et les motos Ecooter qui ont un prix
+ * (identifiant `ecooter-<modèle>`). Les motos sans prix restent « sur demande ».
+ */
+export async function getSellable(): Promise<CatalogProduct[]> {
+  const [products, ecooters] = await Promise.all([getProducts(), getEcooters()]);
+  const motos: CatalogProduct[] = ecooters
+    .filter((m) => m.price)
+    .map((m) => ({
+      id: data.motoCartId(m.id),
+      category: "motos-electriques",
+      name: { fr: `Ecooter ${m.name}`, en: `Ecooter ${m.name}` },
+      description: null,
+      price: m.price!,
+      bestSeller: false,
+      addedAt: "2025-01-01",
+      image: m.productPhoto ?? m.photo,
+      href: data.modelHref("fr", m.id),
+      options: m.options,
+    }));
+  return [...products, ...motos];
 }
 
 /** Une ligne de la table `projects` convertie en réalisation du site. */

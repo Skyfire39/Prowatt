@@ -16,6 +16,8 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
+import type { ProductOption } from "../options";
+
 const bytea = customType<{ data: Buffer; driverData: Buffer | Uint8Array | string }>({
   dataType: () => "bytea",
   toDriver: (v) => v,
@@ -112,6 +114,8 @@ export const products = pgTable(
     oldPrice: integer("old_price"),
     bestSeller: boolean("best_seller").notNull().default(false),
     sku: text("sku"),
+    /** Options au choix du client (couleur, type…), avec supplément de prix facultatif : voir lib/options.ts. */
+    options: jsonb("options").$type<ProductOption[]>().notNull().default([]),
     stock: integer("stock"),
     /** Adresse de l'image (/api/media/<id>) envoyée depuis l'admin. */
     image: text("image"),
@@ -123,6 +127,15 @@ export const products = pgTable(
   (t) => [index("products_category_idx").on(t.category)],
 );
 
+/** Catégories de la boutique. `id` (adresse courte) est repris par `products.category` ; « motos-electriques » est réservée. */
+export const productCategories = pgTable("product_categories", {
+  id: text("id").primaryKey(),
+  nameFr: text("name_fr").notNull(),
+  nameEn: text("name_en").notNull(),
+  sort: integer("sort").notNull().default(0),
+  createdAt: stamp("created_at"),
+});
+
 export const ecooters = pgTable("ecooters", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -130,12 +143,17 @@ export const ecooters = pgTable("ecooters", {
   taglineEn: text("tagline_en").notNull(),
   descriptionFr: text("description_fr"),
   descriptionEn: text("description_en"),
+  /** Photo détourée (fond transparent) : accueil, blocs de la page du modèle. */
   photo: text("photo").notNull(),
+  /** Photo produit (avec décor) : pages Ecooter, boutique et panier. Vide : on reprend la photo détourée. */
+  productPhoto: text("product_photo"),
   /** Puissance, vitesse, autonomie, charge, freins, pneus, dimensions, poids, charge max, selle. */
   specs: jsonb("specs").$type<Record<string, string>>().notNull().default({}),
   /** Points forts affichés sur la page du modèle : [{ fr, en }]. */
   highlights: jsonb("highlights").$type<{ fr: string; en: string }[]>().notNull().default([]),
   price: integer("price"),
+  /** Options au choix du client (couleur, batterie…), avec supplément de prix facultatif. */
+  options: jsonb("options").$type<ProductOption[]>().notNull().default([]),
   active: boolean("active").notNull().default(true),
   sort: integer("sort").notNull().default(0),
   updatedAt: stamp("updated_at"),

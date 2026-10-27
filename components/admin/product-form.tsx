@@ -1,8 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { saveProductAction } from "@/app/admin/(panel)/produits/actions";
 import { Field, FormError, Panel, Toggle, inputClass, selectClass, textareaClass } from "./ui";
+import type { ProductOption } from "@/lib/options";
 import { SubmitButton, useActionForm } from "./client";
+import { OptionsEditor } from "./options-editor";
 
 export type ProductFormValues = {
   id?: string;
@@ -19,6 +22,7 @@ export type ProductFormValues = {
   bestSeller: boolean;
   active: boolean;
   image: string | null;
+  options: ProductOption[];
 };
 
 export function ProductForm({ values, categories }: { values: ProductFormValues; categories: { id: string; name: string }[] }) {
@@ -44,6 +48,9 @@ export function ProductForm({ values, categories }: { values: ProductFormValues;
                   </option>
                 ))}
               </select>
+              <Link href="/admin/produits/categories" className="mt-1.5 inline-block text-xs font-semibold text-accent hover:underline">
+                + Ajouter ou renommer une catégorie
+              </Link>
             </Field>
             <Field label="Référence (SKU)">
               <input name="sku" defaultValue={values.sku} className={inputClass} placeholder="ex. RAIL-CR20" />
@@ -70,6 +77,8 @@ export function ProductForm({ values, categories }: { values: ProductFormValues;
             </Field>
           </div>
         </Panel>
+
+        <OptionsEditor initial={values.options} subject="ce produit" />
       </div>
 
       <div className="grid content-start gap-6">

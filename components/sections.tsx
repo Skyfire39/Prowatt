@@ -1,6 +1,7 @@
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import type { CatalogEcooter, CatalogPartner, CatalogProduct, CatalogTestimonial } from "@/lib/content";
 import { modelHref, slugs, tr } from "@/lib/data";
+import { cardPrice } from "@/lib/options";
 import type { Locale } from "@/lib/i18n";
 import { FeaturedProducts } from "./featured-products";
 import { LogoMarquee } from "./logo-marquee";
@@ -100,8 +101,7 @@ export function FeaturedSection({
   const toItem = (p: CatalogProduct, badge: { label: string; tone: "lime" | "teal" | "accent" }) => ({
     id: p.id,
     name: tr(p.name, lang),
-    price: money(p.price),
-    oldPrice: p.oldPrice ? money(p.oldPrice) : undefined,
+    ...cardPrice(p.price, p.oldPrice, p.options, money, shop.from),
     href: `/boutique/${p.id}`,
     image: p.image,
     badge,

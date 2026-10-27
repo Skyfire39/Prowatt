@@ -38,6 +38,7 @@ type Item = {
   href: string;
   image?: string | null;
   oldPrice?: string;
+  hasOptions?: boolean;
   /** Présent pour une moto : carte dédiée, sans panier. */
   moto?: MotoCardItem;
 };
@@ -71,6 +72,7 @@ type Labels = {
   addToCart: string;
   added: string;
   addToCartAria: string;
+  chooseOptions: string;
   view: string;
 };
 

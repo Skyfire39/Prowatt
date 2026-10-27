@@ -11,7 +11,6 @@ import { Logo } from "@/components/logo";
 import {
   BoxIcon,
   DashboardIcon,
-  EditIcon,
   HistoryIcon,
   ImageIcon,
   InvoiceIcon,
@@ -38,7 +37,6 @@ const icons = {
   projects: ProjectsIcon,
   featured: StarIcon,
   newsletter: MailIcon,
-  modelpage: EditIcon,
   users: UserCogIcon,
   settings: SlidersIcon,
   audit: HistoryIcon,

@@ -12,6 +12,8 @@ type Slide = {
   name: string;
   tagline: string;
   photo: string;
+  /** Photo détourée (fond transparent) : posée sur un disque. Sinon, photo avec décor : affichée dans un cadre. */
+  cutout?: boolean;
   href: string;
   specs?: { power?: string; speed?: string; range?: string; battery?: string };
 };
@@ -131,6 +133,20 @@ export function ModelSlider({
               aria-hidden="true"
               className={`absolute left-1/2 top-1/2 size-[17rem] -translate-x-1/2 -translate-y-1/2 rounded-full sm:size-[22rem] md:size-[25rem] ${circle}`}
             />
+            {slide.cutout === false ? (
+              <div className="relative aspect-[4/3] w-full max-w-[22rem] overflow-hidden rounded-3xl shadow-[0_24px_40px_-18px_rgb(10_35_32/0.35)] ring-1 ring-white/70 sm:max-w-[28rem] md:max-w-[33rem]">
+                <Image
+                  src={slide.photo}
+                  unoptimized={slide.photo.startsWith("/api/")}
+                  alt={slide.name}
+                  fill
+                  priority={index === 0}
+                  sizes="(min-width: 768px) 528px, 90vw"
+                  draggable={false}
+                  className="select-none object-cover"
+                />
+              </div>
+            ) : (
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -148,6 +164,7 @@ export function ModelSlider({
                 className="h-auto w-full select-none drop-shadow-[0_28px_28px_rgb(10_35_32/0.28)]"
               />
             </motion.div>
+            )}
           </div>
 
           {/* Une seule carte de verre à droite : identité, caractéristiques, action. Sa pointe désigne la moto. */}

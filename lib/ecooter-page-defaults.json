@@ -4,9 +4,6 @@
    "id": "tech",
    "enabled": true,
    "side": "left",
-   "zoom": 1.5,
-   "originX": 24,
-   "originY": 40,
    "title": {
     "fr": "Une technologie pensée pour la route",
     "en": "Technology built for the road"
@@ -31,9 +28,6 @@
    "id": "battery",
    "enabled": true,
    "side": "right",
-   "zoom": 1,
-   "originX": 50,
-   "originY": 50,
    "title": {
     "fr": "Votre batterie, au choix",
     "en": "Your battery, your choice"
@@ -75,9 +69,6 @@
    "id": "try",
    "enabled": true,
    "side": "left",
-   "zoom": 1.5,
-   "originX": 78,
-   "originY": 72,
    "title": {
     "fr": "Venez la voir et l'essayer",
     "en": "Come and see it, try it"

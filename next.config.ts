@@ -29,7 +29,13 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@electric-sql/pglite"],
   // Les navigateurs demandent toujours /favicon.ico : on les renvoie vers l'icône du site.
   async redirects() {
-    return [{ source: "/favicon.ico", destination: "/icon.svg", permanent: false }];
+    return [
+      { source: "/favicon.ico", destination: "/icon.svg", permanent: false },
+      // « Fiche modèle » est maintenant un onglet de chaque moto, dans « Motos Ecooter ».
+      { source: "/admin/fiche-modele", destination: "/admin/motos", permanent: true },
+      { source: "/admin/fiche-modele/commun", destination: "/admin/motos/commun", permanent: true },
+      { source: "/admin/fiche-modele/:id", destination: "/admin/motos/:id?onglet=page", permanent: true },
+    ];
   },
   async headers() {
     return [

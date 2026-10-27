@@ -5,16 +5,23 @@ import { Suspense } from "react";
 import { AddToCart } from "@/components/add-to-cart";
 import { CheckIcon, ChevronIcon, PhoneIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
-import { ProductArt } from "@/components/product-art";
+import { VariantImageProvider, ProductPhoto } from "@/components/variant-image";
 import { ProductDescription } from "@/components/product-description";
 import { ProductCard } from "@/components/product-card";
 import { ButtonLink } from "@/components/ui";
-import { getProducts, getSettings } from "@/lib/content";
-import { categories, tr } from "@/lib/data";
-import { hasLocale, locales } from "@/lib/i18n";
+import { getCategories, getProducts, getSettings } from "@/lib/content";
+import { tr } from "@/lib/data";
+import { cardPrice, priceRange } from "@/lib/options";
+import { hasLocale, locales, type Locale } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
 import { toSiteInfo } from "@/lib/site-info";
 import { getDictionary } from "../../dictionaries";
+
+/** Nom de la catégorie d'un produit ; l'adresse brute si la catégorie n'existe plus. */
+async function categoryName(id: string, lang: Locale) {
+  const c = (await getCategories()).find((x) => x.id === id);
+  return c ? tr(c.name, lang) : id;
+}
 
 export async function generateStaticParams() {
   const products = await getProducts();
@@ -29,7 +36,7 @@ export async function generateMetadata({
   const product = products.find((p) => p.id === id);
   if (!hasLocale(lang) || !product) return {};
   const dict = await getDictionary(lang);
-  const category = tr(categories.find((c) => c.id === product.category)!.name, lang);
+  const category = await categoryName(product.category, lang);
   return {
     title: tr(product.name, lang),
     description: dict.product.about.replace("{name}", tr(product.name, lang)).replace("{category}", category),
@@ -53,10 +60,11 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
   const site = toSiteInfo(await getSettings());
 
   const d = dict.product;
+  const range = priceRange(product.price, product.options);
   const currency = dict.shop.currency;
   const nf = new Intl.NumberFormat(lang);
   const name = tr(product.name, lang);
-  const category = tr(categories.find((c) => c.id === product.category)!.name, lang);
+  const category = await categoryName(product.category, lang);
   const base = "";
 
   const related = [
@@ -70,7 +78,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
     name,
     sku: product.id,
     category,
-    offers: { "@type": "Offer", price: product.price, priceCurrency: "MGA", availability: "https://schema.org/InStock" },
+    offers: { "@type": "Offer", price: range.min, priceCurrency: "MGA", availability: "https://schema.org/InStock" },
   };
 
   return (
@@ -95,29 +103,15 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
             </nav>
           </Reveal>
 
+          <VariantImageProvider>
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
             {/* Visuel : reste visible pendant la lecture de la fiche (desktop) */}
             <Reveal y={30} className="grid content-start gap-6 lg:col-span-7">
               <div className="glass border-teal/25 shadow-none relative overflow-hidden rounded-3xl p-6 sm:p-10">
-                {!product.image && (
-                  <div
-                    aria-hidden="true"
-                    className="absolute left-1/2 top-1/2 size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/55"
-                  />
-                )}
                 <span className="glass-chip relative z-10 inline-block rounded-full px-4 py-1.5 text-xs font-semibold">
                   {category}
                 </span>
-                {product.image ? (
-                  <div className="relative mx-auto mt-3 aspect-[4/3] w-full max-w-xl overflow-hidden rounded-2xl border border-teal/15 bg-white">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={product.image} alt={name} className="absolute inset-0 size-full object-contain p-6" />
-                  </div>
-                ) : (
-                  <div className="relative mx-auto aspect-[4/3] w-full max-w-xl">
-                    <ProductArt />
-                  </div>
-                )}
+                <ProductPhoto image={product.image} name={name} />
                 {product.id.length <= 24 && (
                   <p className="relative mt-2 text-xs font-semibold uppercase tracking-wider text-muted">
                     {d.ref} {product.id.toUpperCase()}
@@ -139,13 +133,14 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                   {category}
                 </Link>
                 <h1 className="mt-3 text-balance text-4xl leading-[1.05] tracking-[-0.035em] sm:text-5xl">{name}</h1>
-                {product.oldPrice && (
+                {product.oldPrice && range.min === range.max && (
                   <p className="mt-5 text-lg tabular-nums text-muted line-through">
                     {nf.format(product.oldPrice)} {currency}
                   </p>
                 )}
-                <p className={`${product.oldPrice ? "mt-1" : "mt-5"} text-5xl font-semibold tabular-nums tracking-tight text-accent`}>
-                  {nf.format(product.price)} <span className="text-2xl text-muted">{currency}</span>
+                <p className={`${product.oldPrice && range.min === range.max ? "mt-1" : "mt-5"} text-5xl font-semibold tabular-nums tracking-tight text-accent`}>
+                  {range.min !== range.max && <span className="mr-2 text-xl font-medium text-muted">{dict.shop.from}</span>}
+                  {nf.format(range.min)} <span className="text-2xl text-muted">{currency}</span>
                 </p>
               </Reveal>
 
@@ -154,6 +149,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                   id={product.id}
                   name={name}
                   price={product.price}
+                  options={product.options}
                   lang={lang}
                   currency={currency}
                   labels={d}
@@ -205,6 +201,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
               </Reveal>
             </div>
           </div>
+          </VariantImageProvider>
         </div>
       </section>
 
@@ -221,10 +218,9 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                     item={{
                       id: p.id,
                       name: tr(p.name, lang),
-                      price: `${nf.format(p.price)} ${currency}`,
+                      ...cardPrice(p.price, p.oldPrice, p.options, (n) => `${nf.format(n)} ${currency}`, dict.shop.from),
                       href: `${base}/boutique/${p.id}`,
                       image: p.image,
-                      oldPrice: p.oldPrice ? `${nf.format(p.oldPrice)} ${currency}` : undefined,
                     }}
                     labels={dict.shop}
                   />

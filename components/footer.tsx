@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { slugs } from "@/lib/data";
@@ -10,6 +11,7 @@ import { Newsletter } from "./newsletter";
 
 async function getYear() {
   "use cache";
+  cacheLife("days");
   return new Date().getFullYear();
 }
 

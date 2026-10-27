@@ -26,6 +26,7 @@ export const BoxIcon = make("M21 8l-9-5-9 5v8l9 5 9-5z M3 8l9 5 9-5 M12 13v8");
 export const QuoteIcon = make("M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h4");
 export const InvoiceIcon = make("M6 3h12v18l-3-2-3 2-3-2-3 2z M9 8h6 M9 12h6");
 export const ScooterIcon = make("M6 18a2 2 0 1 0 0-.01 M19 18a2 2 0 1 0 0-.01 M8 18h7 M15 18l3-9h-3 M12 6h3 M5 14l2-4h4");
+export const ProjectsIcon = make("M3 20h18 M5 20V10l7-5 7 5v10 M9 20v-6h6v6");
 export const ImageIcon = make("M4 5h16v14H4z M4 16l4-4 4 4 3-3 5 5 M9 9.5h.01");
 export const SlidersIcon = make("M4 7h10 M18 7h2 M4 17h2 M10 17h10 M14 5v4 M6 15v4");
 export const PrinterIcon = make("M7 8V4h10v4 M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2 M7 14h10v6H7z");

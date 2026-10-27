@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Reddit_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { BrandWatermark } from "@/components/brand-watermark";
 import { CartDrawer } from "@/components/cart-drawer";
 import { CatalogProvider } from "@/components/catalog-provider";
@@ -63,7 +64,9 @@ export default async function RootLayout({
           <CatalogProvider products={products.map(({ description: _description, ...p }) => p)} site={toSiteInfo(settings)}>
             <Navbar nav={dict.nav} categories={dict.categories} />
             <main>{children}</main>
-            <Footer lang={lang} dict={dict} />
+            <Suspense fallback={<div className="min-h-96" aria-hidden="true" />}>
+              <Footer lang={lang} dict={dict} />
+            </Suspense>
             <FloatingContact dict={dict.floating} />
             <CartDrawer
               lang={lang}

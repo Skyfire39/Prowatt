@@ -6,7 +6,8 @@
 import { asc, eq, inArray } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import * as data from "./data";
-import type { EcooterSpecs, L10n } from "./data";
+import type { EcooterSpecs, L10n, Project } from "./data";
+import { isSlug } from "./data";
 import { dbConfigured, getDb, schema } from "./db";
 import { defaultEcooterPage, pageKey, parseEcooterPage, type EcooterPageContent } from "./ecooter-page";
 import { defaultSettings, mergeSettings, type AppSettings } from "./settings";
@@ -58,7 +59,7 @@ const staticProducts = (): CatalogProduct[] =>
 export async function getProducts(): Promise<CatalogProduct[]> {
   "use cache";
   cacheTag("products");
-  cacheLife("minutes");
+  cacheLife("hours");
   if (!dbConfigured()) return staticProducts();
   try {
     const db = await getDb();
@@ -97,7 +98,7 @@ const staticEcooters = (): CatalogEcooter[] =>
 export async function getEcooters(): Promise<CatalogEcooter[]> {
   "use cache";
   cacheTag("ecooters");
-  cacheLife("minutes");
+  cacheLife("hours");
   if (!dbConfigured()) return staticEcooters();
   try {
     const db = await getDb();
@@ -118,10 +119,54 @@ export async function getEcooters(): Promise<CatalogEcooter[]> {
   }
 }
 
+/** Une ligne de la table `projects` convertie en réalisation du site. */
+export function rowToProject(r: typeof schema.projects.$inferSelect): Project | null {
+  if (!isSlug(r.slug)) return null;
+  const same = (v: string | null) => (v ? { fr: v, en: v } : undefined);
+  return {
+    id: r.id,
+    slug: r.slug,
+    title: { fr: r.titleFr, en: r.titleFr },
+    city: r.city ?? undefined,
+    date: r.date,
+    client: r.client ?? undefined,
+    description: same(r.descriptionFr),
+    note: same(r.noteFr),
+    kwc: r.kwc ?? undefined,
+    panels: r.panelsCount != null && r.panelsWatts != null ? { count: r.panelsCount, watts: r.panelsWatts } : undefined,
+    storageKwh: r.storageKwh ?? undefined,
+    storageKind: same(r.storageKind),
+    inverterKva: r.inverterKva ?? undefined,
+    capacityL: r.capacityL ?? undefined,
+    coveragePct: r.coveragePct ?? undefined,
+    autonomyHours: r.autonomyHours ?? undefined,
+    annualKwh: r.annualKwh ?? undefined,
+    roiYears: r.roiYears ?? undefined,
+    warrantyYears: r.warrantyYears ?? undefined,
+    co2: r.co2 ?? undefined,
+    images: r.images.length > 0 ? r.images : undefined,
+  };
+}
+
+export async function getProjects(): Promise<Project[]> {
+  "use cache";
+  cacheTag("projects");
+  cacheLife("hours");
+  if (!dbConfigured()) return data.projects;
+  try {
+    const db = await getDb();
+    const rows = await db.select().from(schema.projects).where(eq(schema.projects.active, true)).orderBy(asc(schema.projects.sort), asc(schema.projects.createdAt));
+    return rows.map(rowToProject).filter((p): p is Project => p !== null);
+  } catch (e) {
+    console.error("[content] réalisations : repli statique", e instanceof Error ? e.message : e);
+    return data.projects;
+  }
+}
+
 export async function getTestimonials(): Promise<CatalogTestimonial[]> {
   "use cache";
   cacheTag("testimonials");
-  cacheLife("minutes");
+  cacheLife("hours");
   if (!dbConfigured()) return data.testimonials;
   try {
     const db = await getDb();
@@ -136,7 +181,7 @@ export async function getTestimonials(): Promise<CatalogTestimonial[]> {
 export async function getPartners(): Promise<CatalogPartner[]> {
   "use cache";
   cacheTag("partners");
-  cacheLife("minutes");
+  cacheLife("hours");
   if (!dbConfigured()) return data.partners;
   try {
     const db = await getDb();
@@ -151,7 +196,7 @@ export async function getPartners(): Promise<CatalogPartner[]> {
 export async function getSettings(): Promise<AppSettings> {
   "use cache";
   cacheTag("settings");
-  cacheLife("minutes");
+  cacheLife("hours");
   if (!dbConfigured()) return defaultSettings;
   try {
     const db = await getDb();
@@ -170,7 +215,7 @@ export async function getSettings(): Promise<AppSettings> {
 export async function getEcooterPage(motoId?: string): Promise<EcooterPageContent> {
   "use cache";
   cacheTag("ecooter-page");
-  cacheLife("minutes");
+  cacheLife("hours");
   if (!dbConfigured()) return defaultEcooterPage;
   try {
     const db = await getDb();

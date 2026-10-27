@@ -3,6 +3,7 @@ import {
   boolean,
   customType,
   date,
+  doublePrecision,
   index,
   integer,
   jsonb,
@@ -318,6 +319,43 @@ export const testimonials = pgTable("testimonials", {
   sort: integer("sort").notNull().default(0),
   active: boolean("active").notNull().default(true),
 });
+
+/** Réalisations (chantiers) présentées sur le site, classées par type de solution (`slug`). */
+export const projects = pgTable(
+  "projects",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Type de solution : 100-autonome, hybride, ongrid, anti-delestage ou acces-a-eau. */
+    slug: text("slug").notNull(),
+    titleFr: text("title_fr").notNull(),
+    city: text("city"),
+    /** AAAA-MM, ou vide. */
+    date: text("date").notNull().default(""),
+    client: text("client"),
+    descriptionFr: text("description_fr"),
+    noteFr: text("note_fr"),
+    kwc: doublePrecision("kwc"),
+    panelsCount: integer("panels_count"),
+    panelsWatts: integer("panels_watts"),
+    storageKwh: doublePrecision("storage_kwh"),
+    storageKind: text("storage_kind"),
+    inverterKva: doublePrecision("inverter_kva"),
+    capacityL: doublePrecision("capacity_l"),
+    coveragePct: doublePrecision("coverage_pct"),
+    autonomyHours: doublePrecision("autonomy_hours"),
+    annualKwh: doublePrecision("annual_kwh"),
+    roiYears: doublePrecision("roi_years"),
+    warrantyYears: integer("warranty_years"),
+    co2: doublePrecision("co2"),
+    /** Photos du chantier (adresses /images/… ou /api/media/<id>), la première sert de couverture. */
+    images: jsonb("images").$type<string[]>().notNull().default([]),
+    active: boolean("active").notNull().default(true),
+    sort: integer("sort").notNull().default(0),
+    createdAt: stamp("created_at"),
+    updatedAt: stamp("updated_at"),
+  },
+  (t) => [index("projects_slug_idx").on(t.slug)],
+);
 
 export const partners = pgTable("partners", {
   id: uuid("id").primaryKey().defaultRandom(),

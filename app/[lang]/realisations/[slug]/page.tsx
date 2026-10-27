@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/motion";
 import { CtaBand, PageHero } from "@/components/ui";
-import { isSlug, projectsBySlug, slugs } from "@/lib/data";
+import { getProjects } from "@/lib/content";
+import { isSlug, slugs } from "@/lib/data";
 import type { Slug } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
@@ -45,7 +46,7 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
   if (!isSlug(slug)) notFound();
   const { lang, dict } = await loadPage(params);
   const c = dict.categories[slug];
-  const list = projectsBySlug(slug);
+  const list = (await getProjects()).filter((p) => p.slug === slug);
 
   return (
     <>
@@ -54,7 +55,7 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
       <section className="px-4 pb-12 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {list.map((p, i) => (
-            <ProjectCard key={`${p.title.fr}-${i}`} project={p} lang={lang} dict={dict.realisations} index={i} />
+            <ProjectCard key={p.id ?? `${p.title.fr}-${i}`} project={p} lang={lang} dict={dict.realisations} index={i} />
           ))}
         </div>
       </section>

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ArrowIcon, BatteryIcon, DropIcon, GridIcon, HomeIcon, ShieldIcon } from "@/components/icons";
 import { HoverLift, Reveal } from "@/components/motion";
 import { CtaBand, PageHero } from "@/components/ui";
-import { projectsBySlug, slugs } from "@/lib/data";
+import { getProjects } from "@/lib/content";
+import { slugs } from "@/lib/data";
 import type { Slug } from "@/lib/data";
 import { loadPage } from "@/lib/page";
 
@@ -23,6 +24,7 @@ const icons: Record<Slug, typeof HomeIcon> = {
 export default async function RealisationsPage({ params }: PageProps<"/[lang]/realisations">) {
   const { dict } = await loadPage(params);
   const d = dict.realisations;
+  const projects = await getProjects();
 
   return (
     <>
@@ -32,7 +34,7 @@ export default async function RealisationsPage({ params }: PageProps<"/[lang]/re
           {slugs.map((slug, i) => {
             const Icon = icons[slug];
             const c = dict.categories[slug];
-            const n = projectsBySlug(slug).length;
+            const n = projects.filter((p) => p.slug === slug).length;
             return (
               <Reveal key={slug} delay={(i % 3) * 0.08}>
                 <HoverLift className="h-full">

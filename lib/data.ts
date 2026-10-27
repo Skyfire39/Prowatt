@@ -16,6 +16,8 @@ export const isSlug = (v: string): v is Slug =>
   (slugs as readonly string[]).includes(v);
 
 export type Project = {
+  /** Identifiant en base (absent des données statiques). */
+  id?: string;
   slug: Slug;
   title: L10n;
   city?: string;

@@ -85,7 +85,7 @@ export function SolutionPicker({ title, items, cta }: { title: string; items: It
                 )}
 
                 <span
-                  className={`relative grid size-12 place-items-center rounded-2xl transition-colors duration-500 ${
+                  className={`relative grid size-12 shrink-0 place-items-center rounded-2xl transition-colors duration-500 ${
                     on ? "animate-pop bg-teal text-lime" : "bg-white/15 text-lime"
                   } max-lg:bg-white/15 max-lg:text-lime`}
                 >

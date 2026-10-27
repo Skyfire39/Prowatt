@@ -462,6 +462,9 @@ body:has([data-sticky-buy]) .floating-contact {
   transform-origin: 50% 100%;
   animation: eq-charge 3.3s ease-in-out infinite;
 }
+.wb-wave { animation: wb-wave 6s linear infinite; }
+.wb-rise { animation: wb-rise 3.2s ease-in infinite; opacity: 0; }
+.wb-heat { animation: wb-heat 4.2s ease-in-out infinite alternate; }
 .rb-in { animation: rb-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .rb-progress { animation: rb-progress linear forwards; }
 @keyframes rb-cloud { from { transform: translateX(-34px); } to { transform: translateX(54px); } }
@@ -485,6 +488,13 @@ body:has([data-sticky-buy]) .floating-contact {
   32%, 82% { opacity: 1; transform: scaleY(1); }
   100% { opacity: 0.15; transform: scaleY(0.55); }
 }
+@keyframes wb-wave { to { transform: translateX(-80px); } }
+@keyframes wb-rise {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.9; }
+  100% { transform: translateY(-34px); opacity: 0; }
+}
+@keyframes wb-heat { from { opacity: 0.25; } to { opacity: 0.95; } }
 @keyframes rb-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes rb-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
@@ -495,8 +505,10 @@ body:has([data-sticky-buy]) .floating-contact {
   }
   .sa-smoke { opacity: 0.25; }
   .sa-draw { stroke-dasharray: none; }
-  .eq-glint, .eq-charge, .rb-cloud, .rb-drop, .rb-grow, .rb-in, .rb-progress, .rb-pin { animation: none; transition: none; }
+  .eq-glint, .eq-charge, .wb-wave, .wb-rise, .wb-heat, .rb-cloud, .rb-drop, .rb-grow, .rb-in, .rb-progress, .rb-pin { animation: none; transition: none; }
   .rb-drop { opacity: 0.8; }
+  .wb-rise { opacity: 0.6; }
+  .wb-heat { opacity: 0.7; }
 }
 
 /* Impression des devis et factures (« Imprimer / PDF » dans l'administration). */

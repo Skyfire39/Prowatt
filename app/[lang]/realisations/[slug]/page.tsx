@@ -3,8 +3,10 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/json-ld";
+import { PaginatedGrid } from "@/components/paginated-grid";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/motion";
+import { WaterBanner } from "@/components/water-banner";
 import { CtaBand, PageHero } from "@/components/ui";
 import { getProjects } from "@/lib/content";
 import { isSlug, slugs } from "@/lib/data";
@@ -59,13 +61,21 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
           { name: c.name, path: `/realisations/${slug}` },
         ])}
       />
-      <PageHero eyebrow={dict.realisations.eyebrow} title={c.name} subtitle={c.intro} photo={crops[slug]} />
+      <PageHero
+        eyebrow={dict.realisations.eyebrow}
+        title={c.name}
+        subtitle={c.intro}
+        photo={crops[slug]}
+        scene={slug === "acces-a-eau" ? <WaterBanner labels={dict.realisations.waterScene} /> : undefined}
+      />
 
       <section className="px-4 pb-12 sm:px-6">
-        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
-          {list.map((p, i) => (
-            <ProjectCard key={p.id ?? `${p.title.fr}-${i}`} project={p} lang={lang} dict={dict.realisations} index={i} />
-          ))}
+        <div className="mx-auto max-w-6xl">
+          <PaginatedGrid className="grid gap-6 md:grid-cols-2" label={dict.realisations.pagination}>
+            {list.map((p, i) => (
+              <ProjectCard key={p.id ?? `${p.title.fr}-${i}`} project={p} lang={lang} dict={dict.realisations} index={i} />
+            ))}
+          </PaginatedGrid>
         </div>
       </section>
 

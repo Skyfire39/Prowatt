@@ -115,12 +115,15 @@ export function PageHero({
   title,
   subtitle,
   photo,
+  scene,
   children,
 }: {
   eyebrow: string;
   title: string;
   subtitle?: string;
   photo?: { pos: string; zoom?: number };
+  /** Illustration animée à la place de la photo. */
+  scene?: ReactNode;
   children?: ReactNode;
 }) {
   return (
@@ -135,7 +138,12 @@ export function PageHero({
         )}
         {children && <div className="mt-8 flex flex-wrap justify-center gap-3">{children}</div>}
       </Reveal>
-      {photo && (
+      {scene && (
+        <Reveal y={30} delay={0.1} className="mx-auto mt-14 max-w-6xl">
+          {scene}
+        </Reveal>
+      )}
+      {!scene && photo && (
         <Reveal y={30} delay={0.1} className="mx-auto mt-14 max-w-6xl">
           <Photo
             pos={photo.pos}

@@ -437,6 +437,15 @@
     "others": "Autres solutions",
     "installed": "Installé en",
     "moreInfo": "À propos du projet",
+    "pagination": "Pages des réalisations",
+    "waterScene": {
+      "aria": "Illustration animée au coucher du soleil : des panneaux solaires alimentent une pompe immergée qui remplit un château d'eau, puis un chauffe-eau solaire et un robinet.",
+      "sun": "Énergie 100 % solaire",
+      "pump": "Pompe solaire immergée",
+      "tank": "Château d'eau",
+      "heater": "Chauffe-eau solaire",
+      "tap": "Eau courante"
+    },
     "client": "Client",
     "specs": {
       "kwc": "Puissance",

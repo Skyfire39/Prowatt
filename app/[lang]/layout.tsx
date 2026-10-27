@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Reddit_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
+import { BrandWatermark } from "@/components/brand-watermark";
 import { CartDrawer } from "@/components/cart-drawer";
 import { CatalogProvider } from "@/components/catalog-provider";
 import { FloatingContact } from "@/components/floating-contact";
@@ -56,6 +57,7 @@ export default async function RootLayout({
           <span />
           <span />
         </div>
+        <BrandWatermark lang={lang} />
         <MotionProvider>
           <CatalogProvider products={products.map(({ description: _description, ...p }) => p)} site={toSiteInfo(settings)}>
             <Navbar lang={lang} nav={dict.nav} categories={dict.categories} />

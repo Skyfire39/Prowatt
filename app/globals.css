@@ -330,6 +330,48 @@ body:has([data-sticky-buy]) .floating-contact {
   }
 }
 
+/* Filigrane du symbole Prowatt (pages du site hors accueil) : voir components/brand-watermark.tsx. */
+.brand-mark {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  animation: bm-in 1.8s ease-out both;
+}
+.brand-mark__art {
+  --s: clamp(520px, 96vmin, 1200px);
+  position: absolute;
+  top: 50%;
+  right: calc(var(--s) * -0.2);
+  width: var(--s);
+  aspect-ratio: 280 / 270.95;
+  translate: 0 -50%;
+  /* Se dissout vers la gauche, côté contenu. */
+  -webkit-mask-image: linear-gradient(270deg, #000 0%, #000 46%, transparent 98%);
+  mask-image: linear-gradient(270deg, #000 0%, #000 46%, transparent 98%);
+}
+.bm-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: bm-spin 200s linear infinite;
+}
+.bm-line { opacity: 0.4; }
+.bm-glow { opacity: 0.12; filter: blur(14px); }
+/* Sur téléphone le symbole passe sous le texte : on l'allège pour garder la lecture confortable. */
+@media (max-width: 640px) {
+  .bm-line { opacity: 0.26; }
+  .bm-glow { opacity: 0.08; }
+}
+@keyframes bm-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bm-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark, .bm-svg { animation: none; }
+}
+
 /* Administration : un enfant de grille (tableau, longue valeur, sélecteur) ne doit jamais élargir toute la page
    sur mobile. Sans cela, sa largeur minimale d'origine impose la largeur de la colonne. */
 .admin-main .grid > * {

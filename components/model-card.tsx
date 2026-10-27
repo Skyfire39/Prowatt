@@ -7,6 +7,7 @@ import type { Tech } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { ArrowIcon } from "./icons";
 import { HoverLift, Reveal } from "./motion";
+import { PopOutImage } from "./pop-out-image";
 
 type Model = CatalogEcooter;
 
@@ -25,19 +26,23 @@ export function ModelCard({
 }) {
   return (
     <Reveal delay={(index % 3) * 0.08}>
-      <HoverLift className="glass flex h-full flex-col overflow-hidden rounded-3xl p-5">
-        <Link href={modelHref(lang, model.id)} aria-label={`${dict.model.view} : ${model.name}`} className={`group block overflow-hidden rounded-2xl bg-accent-soft/60 ${model.productPhoto ? "" : "p-4"}`}>
-          <Image
-            src={model.productPhoto ?? model.photo}
-            unoptimized={(model.productPhoto ?? model.photo).startsWith("/api/")}
-            alt={model.name}
-            width={700}
-            height={700}
-            sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 90vw"
-            className={`w-full transition-transform duration-500 group-hover:scale-105 ${
-              model.productPhoto ? "aspect-[4/3] object-cover" : "h-auto drop-shadow-[0_18px_18px_rgb(10_35_32/0.22)]"
-            }`}
-          />
+      <HoverLift className="glass flex h-full flex-col rounded-3xl p-5">
+        <Link href={modelHref(lang, model.id)} aria-label={`${dict.model.view} : ${model.name}`} className="group block">
+          {model.productPhoto ? (
+            <div className="overflow-hidden rounded-2xl bg-accent-soft/60">
+              <Image
+                src={model.productPhoto}
+                unoptimized={model.productPhoto.startsWith("/api/")}
+                alt={model.name}
+                width={700}
+                height={700}
+                sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 90vw"
+                className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+          ) : (
+            <PopOutImage src={model.photo} unoptimized={model.photo.startsWith("/api/")} alt={model.name} sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 90vw" />
+          )}
         </Link>
         <div className="flex flex-1 flex-col px-2 pb-2 pt-6">
           <h3 className="text-3xl tracking-tight">

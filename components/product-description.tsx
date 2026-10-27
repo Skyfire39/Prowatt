@@ -30,7 +30,7 @@ function parse(raw: string): Block[] {
 export function ProductDescription({ text, title }: { text: string; title: string }) {
   const blocks = parse(text);
   return (
-    <div className="glass shadow-none rounded-3xl p-6 sm:p-10">
+    <div className="glass border-teal/25 shadow-none rounded-3xl p-6 sm:p-10">
       <h2 className="text-3xl tracking-tight sm:text-4xl">{title}</h2>
       <div className="mt-6 grid gap-8">
         {blocks.map((b, i) =>

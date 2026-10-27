@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
+    "user:owner": "tsx scripts/create-owner.ts",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {

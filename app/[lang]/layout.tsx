@@ -34,9 +34,6 @@ export async function generateMetadata({
   return {
     title: { default: meta.title, template: "%s — Prowatt Madagascar" },
     description: meta.description,
-    alternates: {
-      languages: Object.fromEntries(locales.map((l) => [l, `/${l}`])),
-    },
   };
 }
 

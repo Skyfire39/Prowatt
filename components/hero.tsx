@@ -61,7 +61,7 @@ export function Hero({
 }) {
   const nf = new Intl.NumberFormat(lang);
   const stats = [
-    { icon: BoltIcon, value: site.stats.kwc, unit: lang === "fr" ? "kWc" : "kWp" },
+    { icon: BoltIcon, value: site.stats.kwc, unit: "kWc" },
     { icon: UsersIcon, value: site.stats.clients, unit: "" },
     { icon: GlobeIcon, value: site.stats.co2, unit: "t" },
   ];

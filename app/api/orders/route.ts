@@ -46,7 +46,7 @@ export async function POST(request: Request) {
   const city = clean(b.city, 80);
   const note = clean(b.note, 500);
   const pay = ["mvola", "bank", "card"].includes(String(b.pay)) ? (b.pay as string) : "mvola";
-  const lang = b.lang === "en" ? "en" : "fr";
+  const lang = "fr";
 
   if (!REF.test(ref) || name.length < 2 || phone.replace(/\D/g, "").length < 7) return json({ ok: false, error: "bad_request" }, 400);
   if (email && !isEmail(email)) return json({ ok: false, error: "bad_request" }, 400);

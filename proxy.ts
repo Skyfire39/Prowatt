@@ -1,29 +1,17 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { defaultLocale, hasLocale, LOCALE_COOKIE, locales } from "@/lib/i18n";
-import type { Locale } from "@/lib/i18n";
+import { defaultLocale, hasLocale } from "@/lib/i18n";
 
-function pickLocale(request: NextRequest): Locale {
-  const saved = request.cookies.get(LOCALE_COOKIE)?.value;
-  if (saved && hasLocale(saved)) return saved;
-
-  const header = request.headers.get("accept-language") ?? "";
-  for (const part of header.split(",")) {
-    const tag = part.split(";")[0].trim().toLowerCase().split("-")[0];
-    if (hasLocale(tag)) return tag;
-  }
-  return defaultLocale;
-}
-
+// Le site n'existe qu'en français : toute adresse sans préfixe, ou avec un ancien préfixe
+// (/en/…), est redirigée vers la même page sous /fr.
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const hasPrefix = locales.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
-  );
-  if (hasPrefix) return;
+  const [, first = "", ...rest] = pathname.split("/");
+  if (hasLocale(first)) return;
 
+  const tail = /^[a-z]{2}$/.test(first) ? rest.join("/") : [first, ...rest].filter(Boolean).join("/");
   const url = request.nextUrl.clone();
-  url.pathname = `/${pickLocale(request)}${pathname === "/" ? "" : pathname}`;
+  url.pathname = `/${defaultLocale}${tail ? `/${tail}` : ""}`;
   return NextResponse.redirect(url);
 }
 

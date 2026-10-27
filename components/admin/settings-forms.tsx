@@ -28,17 +28,11 @@ export function CompanyForm({ v }: { v: AppSettings["company"] }) {
           <Field label="Numéro WhatsApp" required hint="Format international sans « + », ex. 261343422220." className="sm:col-span-2">
             <input name="whatsappNumber" defaultValue={v.whatsappNumber} required className={inputClass} />
           </Field>
-          <Field label="Adresse (français)">
+          <Field label="Adresse">
             <textarea name="addressFr" defaultValue={v.address.fr} rows={2} className={textareaClass} />
           </Field>
-          <Field label="Adresse (anglais)">
-            <textarea name="addressEn" defaultValue={v.address.en} rows={2} className={textareaClass} />
-          </Field>
-          <Field label="Horaires (français)" hint="Une ligne par créneau.">
+          <Field label="Horaires" hint="Une ligne par créneau.">
             <textarea name="hoursFr" defaultValue={v.hours.fr.join("\n")} rows={4} className={textareaClass} />
-          </Field>
-          <Field label="Horaires (anglais)">
-            <textarea name="hoursEn" defaultValue={v.hours.en.join("\n")} rows={4} className={textareaClass} />
           </Field>
         </div>
         <div className="mt-6 grid gap-4">

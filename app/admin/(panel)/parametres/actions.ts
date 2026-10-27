@@ -32,8 +32,8 @@ export async function saveCompanyAction(_: FormState, fd: FormData): Promise<For
     email,
     phone,
     whatsappNumber: wa,
-    address: { fr: s(fd, "addressFr"), en: s(fd, "addressEn") || s(fd, "addressFr") },
-    hours: { fr: lines(s(fd, "hoursFr")), en: lines(s(fd, "hoursEn")) },
+    address: { fr: s(fd, "addressFr"), en: s(fd, "addressFr") },
+    hours: { fr: lines(s(fd, "hoursFr")), en: lines(s(fd, "hoursFr")) },
   });
   await logAudit(user, "modification", "réglages", "company");
   updateTag("settings");

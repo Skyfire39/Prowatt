@@ -19,19 +19,15 @@ function BiInput({ label, value, onChange, rows, max }: { label: string; value: 
   const Tag = rows ? "textarea" : "input";
   const cls = rows ? textareaClass : inputClass;
   return (
-    <div className="grid min-w-0 gap-3 min-[1500px]:grid-cols-2">
-      {(["fr", "en"] as const).map((l) => (
-        <Field key={l} label={`${label} (${l === "fr" ? "français" : "anglais"})`} hint={l === "en" && !value.en ? "Vide : reprend le français." : undefined}>
-          <Tag
-            value={value[l]}
-            maxLength={max}
-            {...(rows ? { rows } : {})}
-            onChange={(e) => onChange({ ...value, [l]: e.target.value })}
-            className={cls}
-          />
-        </Field>
-      ))}
-    </div>
+    <Field label={label}>
+      <Tag
+        value={value.fr}
+        maxLength={max}
+        {...(rows ? { rows } : {})}
+        onChange={(e) => onChange({ fr: e.target.value, en: e.target.value })}
+        className={cls}
+      />
+    </Field>
   );
 }
 

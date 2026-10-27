@@ -28,13 +28,10 @@ export function ProductForm({ values, categories }: { values: ProductFormValues;
       {values.id && <input type="hidden" name="id" value={values.id} />}
 
       <div className="grid gap-6 lg:col-span-2">
-        <Panel title="Informations" subtitle="Le nom s'affiche sur la boutique, en français et en anglais.">
+        <Panel title="Informations" subtitle="Le nom et la description s'affichent sur la boutique.">
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Nom (français)" required className="sm:col-span-2">
+            <Field label="Nom" required className="sm:col-span-2">
               <input name="nameFr" defaultValue={values.nameFr} required className={inputClass} />
-            </Field>
-            <Field label="Nom (anglais)" hint="Laissez vide pour reprendre le nom français." className="sm:col-span-2">
-              <input name="nameEn" defaultValue={values.nameEn} className={inputClass} />
             </Field>
             <Field label="Catégorie" required>
               <select name="category" defaultValue={values.category} required className={selectClass}>
@@ -51,11 +48,8 @@ export function ProductForm({ values, categories }: { values: ProductFormValues;
             <Field label="Référence (SKU)">
               <input name="sku" defaultValue={values.sku} className={inputClass} placeholder="ex. RAIL-CR20" />
             </Field>
-            <Field label="Description (français)" className="sm:col-span-2">
+            <Field label="Description" className="sm:col-span-2">
               <textarea name="descriptionFr" defaultValue={values.descriptionFr} rows={3} className={textareaClass} />
-            </Field>
-            <Field label="Description (anglais)" className="sm:col-span-2">
-              <textarea name="descriptionEn" defaultValue={values.descriptionEn} rows={3} className={textareaClass} />
             </Field>
           </div>
         </Panel>

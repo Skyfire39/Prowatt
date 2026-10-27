@@ -145,7 +145,7 @@ export function AddToCart({
           <Link
             href={checkoutHref}
             onClick={() => cart.add(id, qty)}
-            className="glass inline-flex h-14 items-center justify-center rounded-full px-7 text-base font-semibold transition-opacity hover:opacity-85"
+            className="glass shadow-none inline-flex h-14 items-center justify-center rounded-full px-7 text-base font-semibold transition-opacity hover:opacity-85"
           >
             {labels.buyNow}
           </Link>

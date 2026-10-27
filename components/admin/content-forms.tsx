@@ -23,14 +23,9 @@ export function TestimonialForm({ values }: { values: TestimonialValues }) {
           <input name="sort" type="number" defaultValue={values.sort} className={inputClass} />
         </Field>
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Témoignage (français)" required hint="400 caractères maximum.">
-          <textarea name="textFr" defaultValue={values.textFr} rows={4} required maxLength={400} className={textareaClass} />
-        </Field>
-        <Field label="Témoignage (anglais)" hint="Vide : reprend le français.">
-          <textarea name="textEn" defaultValue={values.textEn} rows={4} maxLength={400} className={textareaClass} />
-        </Field>
-      </div>
+      <Field label="Témoignage" required hint="400 caractères maximum.">
+        <textarea name="textFr" defaultValue={values.textFr} rows={4} required maxLength={400} className={textareaClass} />
+      </Field>
       <Field label="Photo" hint="Carrée de préférence — PNG, JPEG ou WebP, 2 Mo maximum.">
         <div className="flex items-center gap-4">
           {values.photo && (

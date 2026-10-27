@@ -9,7 +9,6 @@ import { slugs } from "@/lib/data";
 import type { Locale } from "@/lib/i18n";
 import { CartIcon, ChevronIcon, CloseIcon, MenuIcon } from "./icons";
 import { cart, useCart } from "@/lib/cart";
-import { LangSwitch } from "./lang-switch";
 import { Logo } from "./logo";
 
 type Item = {
@@ -115,7 +114,6 @@ export function Navbar({
         </ul>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <LangSwitch lang={lang} label={nav.language} />
           <button
             type="button"
             onClick={() => cart.open()}

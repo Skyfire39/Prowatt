@@ -33,17 +33,11 @@ export function MotoForm({ values }: { values: MotoFormValues }) {
             <Field label="Nom du modèle" required className="sm:col-span-2">
               <input name="name" defaultValue={values.name} required className={inputClass} placeholder="ex. ALTA" />
             </Field>
-            <Field label="Accroche (français)" required>
+            <Field label="Accroche" required>
               <input name="taglineFr" defaultValue={values.taglineFr} required className={inputClass} />
             </Field>
-            <Field label="Accroche (anglais)" hint="Vide : reprend le français.">
-              <input name="taglineEn" defaultValue={values.taglineEn} className={inputClass} />
-            </Field>
-            <Field label="Présentation (français)" hint="Texte libre affiché sur la page du modèle." className="sm:col-span-2">
+            <Field label="Présentation" hint="Texte libre affiché sur la page du modèle." className="sm:col-span-2">
               <textarea name="descriptionFr" defaultValue={values.descriptionFr} rows={4} className={textareaClass} />
-            </Field>
-            <Field label="Présentation (anglais)" className="sm:col-span-2">
-              <textarea name="descriptionEn" defaultValue={values.descriptionEn} rows={4} className={textareaClass} />
             </Field>
           </div>
         </Panel>
@@ -58,15 +52,10 @@ export function MotoForm({ values }: { values: MotoFormValues }) {
           </div>
         </Panel>
 
-        <Panel title="Points forts" subtitle="Une ligne par point fort ; la ligne anglaise de même rang sert de traduction.">
-          <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Français">
-              <textarea name="highlightsFr" defaultValue={values.highlightsFr} rows={5} className={textareaClass} placeholder={"Moteur central silencieux\nRecharge à domicile"} />
-            </Field>
-            <Field label="Anglais">
-              <textarea name="highlightsEn" defaultValue={values.highlightsEn} rows={5} className={textareaClass} placeholder={"Quiet central motor\nHome charging"} />
-            </Field>
-          </div>
+        <Panel title="Points forts" subtitle="Une ligne par point fort.">
+          <Field label="Points forts">
+            <textarea name="highlightsFr" defaultValue={values.highlightsFr} rows={5} className={textareaClass} placeholder={"Moteur central silencieux\nRecharge à domicile"} />
+          </Field>
         </Panel>
       </div>
 

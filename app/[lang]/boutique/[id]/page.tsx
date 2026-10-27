@@ -98,7 +98,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
             {/* Visuel : reste visible pendant la lecture de la fiche (desktop) */}
             <Reveal y={30} className="grid content-start gap-6 lg:col-span-7">
-              <div className="glass relative overflow-hidden rounded-3xl p-6 sm:p-10">
+              <div className="glass shadow-none relative overflow-hidden rounded-3xl p-6 sm:p-10">
                 {!product.image && (
                   <div
                     aria-hidden="true"
@@ -109,7 +109,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                   {category}
                 </span>
                 {product.image ? (
-                  <div className="relative mx-auto mt-3 aspect-[4/3] w-full max-w-xl overflow-hidden rounded-2xl bg-white shadow-[0_18px_40px_-20px_rgb(10_35_32/0.35)]">
+                  <div className="relative mx-auto mt-3 aspect-[4/3] w-full max-w-xl overflow-hidden rounded-2xl bg-white">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={product.image} alt={name} className="absolute inset-0 size-full object-contain p-6" />
                   </div>
@@ -149,7 +149,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                 </p>
               </Reveal>
 
-              <Reveal y={24} delay={0.16} className="glass mt-8 rounded-3xl p-5 sm:p-6">
+              <Reveal y={24} delay={0.16} className="glass shadow-none mt-8 rounded-3xl p-5 sm:p-6">
                 <AddToCart
                   id={product.id}
                   name={name}
@@ -163,7 +163,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
 
               <Reveal y={24} delay={0.24} className="mt-6 grid gap-3">
                 {!product.description?.[lang]?.trim() && (
-                  <details open className="glass group rounded-2xl p-5">
+                  <details open className="glass shadow-none group rounded-2xl p-5">
                   <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden">
                     {d.aboutTitle}
                     <ChevronIcon className="size-5 transition-transform group-open:rotate-180" />
@@ -174,7 +174,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                 </details>
                 )}
 
-                <details className="glass group rounded-2xl p-5">
+                <details className="glass shadow-none group rounded-2xl p-5">
                   <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden">
                     {d.orderTitle}
                     <ChevronIcon className="size-5 transition-transform group-open:rotate-180" />
@@ -193,7 +193,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                   </a>
                 </details>
 
-                <div className="glass-lime rounded-2xl p-5">
+                <div className="glass-lime shadow-none rounded-2xl p-5">
                   <p className="text-xl font-semibold tracking-tight">{d.helpTitle}</p>
                   <p className="mt-1 text-sm leading-relaxed opacity-80">{d.helpText}</p>
                   <div className="mt-4">
@@ -216,7 +216,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
           <Reveal>
             <div className="swipe-row swipe-cards mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((p) => (
-                <article key={p.id} className="glass flex h-full flex-col rounded-2xl p-6">
+                <article key={p.id} className="glass shadow-none flex h-full flex-col rounded-2xl p-6">
                   <ProductCard
                     item={{
                       id: p.id,

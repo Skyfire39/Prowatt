@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Reddit_Sans } from "next/font/google";
+import { BrandWatermark } from "@/components/brand-watermark";
 import { MotionProvider } from "@/components/motion";
 import "../globals.css";
 
@@ -20,6 +21,7 @@ export default function AdminRoot({ children }: { children: React.ReactNode }) {
           <span />
           <span />
         </div>
+        <BrandWatermark />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

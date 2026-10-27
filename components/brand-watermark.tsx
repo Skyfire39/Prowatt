@@ -18,13 +18,14 @@ const PATHS = [
 ];
 
 /**
- * Grand symbole Prowatt en filigrane à droite du fond des pages (sauf l'accueil). Fixe pendant le défilement,
+ * Grand symbole Prowatt en filigrane à droite du fond des pages (sauf l'accueil du site : on passe sa langue pour
+ * l'exclure ; l'administration, sans `lang`, l'affiche partout). Fixe pendant le défilement,
  * trait fin dégradé teal → lime, halo flou en dessous, fondu vers la gauche ; les cartes en verre le floutent
  * en passant par-dessus. Tourne très lentement (arrêté si le visiteur réduit les animations).
  */
-export function BrandWatermark({ lang }: { lang: Locale }) {
+export function BrandWatermark({ lang }: { lang?: Locale }) {
   const pathname = usePathname();
-  if (pathname === `/${lang}` || pathname === `/${lang}/` || pathname === "/") return null;
+  if (lang && (pathname === `/${lang}` || pathname === `/${lang}/` || pathname === "/")) return null;
 
   const art = (glow: boolean) => (
     <svg viewBox="0 0 280 270.95" className={`bm-svg ${glow ? "bm-glow" : "bm-line"}`} aria-hidden="true" fill="none">

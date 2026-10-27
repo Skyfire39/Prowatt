@@ -19,7 +19,7 @@ export function ProjectGallery({ images, alt }: { images: string[]; alt: string 
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0"
           >
-            <Image src={images[index]} alt={alt} fill sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw" className="object-cover" />
+            <Image src={images[index]} unoptimized={images[index].startsWith("/api/")} alt={alt} fill sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw" className="object-cover" />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -34,7 +34,7 @@ export function ProjectGallery({ images, alt }: { images: string[]; alt: string 
               aria-current={i === index}
               className={`relative aspect-square w-14 overflow-hidden rounded-xl ring-2 transition-all ${i === index ? "ring-accent" : "opacity-70 ring-transparent hover:opacity-100"}`}
             >
-              <Image src={src} alt="" fill sizes="56px" className="object-cover" />
+              <Image src={src} unoptimized={src.startsWith("/api/")} alt="" fill sizes="56px" className="object-cover" />
             </button>
           ))}
         </div>

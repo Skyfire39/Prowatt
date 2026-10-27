@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowIcon, CheckIcon, ChevronIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { ModelFeature } from "@/components/model-feature";
+import { ProjectGallery } from "@/components/project-gallery";
 import { RichText } from "@/components/rich-text";
 import { ModelVisual } from "@/components/model-visual";
 import { Reveal } from "@/components/motion";
@@ -233,6 +234,18 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
             ))}
         </div>
       </section>
+
+      {/* Photos de détail de la moto */}
+      {page.gallery && page.gallery.length > 0 && (
+        <section className="px-4 pt-24 sm:px-6">
+          <div className="mx-auto max-w-3xl">
+            <Reveal>
+              <h2 className="mb-8 text-center text-4xl tracking-tight sm:text-5xl">{m.gallery}</h2>
+              <ProjectGallery images={page.gallery} alt={`Ecooter ${model.name}`} />
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Autres modèles */}
       <section className="px-4 pb-20 pt-24 sm:px-6">

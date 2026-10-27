@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { requireActionUser } from "@/lib/auth/session";
 import { logAudit } from "@/lib/audit";
 import { getDb, schema } from "@/lib/db";
-import { SHARED_ID, pageKey, parseEcooterPage, safeHref } from "@/lib/ecooter-page";
+import { LIMITS, SHARED_ID, pageKey, parseEcooterPage, safeHref } from "@/lib/ecooter-page";
 import { saveUpload } from "@/lib/media";
 import { s, type FormState } from "@/lib/validate";
 
@@ -48,6 +48,17 @@ export async function saveEcooterPageAction(_: FormState, fd: FormData): Promise
     if (up && "url" in up) block.image = up.url;
   }
 
+  // Nouvelles photos de détail (galerie de la moto) : plusieurs fichiers dans le champ « gallery ».
+  const gallery = value.gallery ?? [];
+  const files = fd.getAll("gallery").filter((f): f is File => f instanceof File && f.size > 0);
+  if (gallery.length + files.length > LIMITS.gallery) return { error: `La galerie accepte ${LIMITS.gallery} photos au maximum.` };
+  for (const file of files) {
+    const up = await saveUpload(file);
+    if (up && "error" in up) return { error: `Galerie : ${up.error}` };
+    if (up && "url" in up) gallery.push(up.url);
+  }
+  value.gallery = scope === SHARED_ID ? [] : gallery;
+
   const db = await getDb();
   const key = pageKey(scope);
   await db
@@ -71,4 +82,19 @@ export async function resetEcooterPageAction(fd: FormData) {
   await logAudit(user, "réinitialisation", "fiche modèle Ecooter", key, target.label);
   updateTag("ecooter-page");
   redirect(`/admin/fiche-modele/${scope}?ok=reset`);
+}
+
+/** Remplace la photo principale d'une moto (celle de l'en-tête de sa page et de la liste des modèles). */
+export async function changeMotoPhotoAction(_: FormState, fd: FormData): Promise<FormState> {
+  const user = await requireActionUser("motos.write");
+  const id = s(fd, "id");
+  const up = await saveUpload(fd.get("photo"));
+  if (!up) return { error: "Choisissez une image." };
+  if ("error" in up) return { error: up.error };
+  const db = await getDb();
+  const [m] = await db.update(schema.ecooters).set({ photo: up.url, updatedAt: new Date() }).where(eq(schema.ecooters.id, id)).returning({ name: schema.ecooters.name });
+  if (!m) return { error: "Modèle introuvable. Rechargez la page." };
+  await logAudit(user, "modification", "moto", id, `${m.name} : photo principale`);
+  updateTag("ecooters");
+  return { ok: "Photo principale remplacée." };
 }

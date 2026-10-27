@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { saveEcooterPageAction, resetEcooterPageAction } from "@/app/admin/(panel)/fiche-modele/actions";
 import { LIMITS, SHARED_ID, type Bi, type EcooterPageContent, type PageBlock, type PageButton } from "@/lib/ecooter-page";
@@ -37,6 +38,7 @@ function BlockEditor({
   index,
   total,
   photo,
+  gallery,
   onChange,
   onMove,
   onRemove,
@@ -45,6 +47,7 @@ function BlockEditor({
   index: number;
   total: number;
   photo: string;
+  gallery: string[];
   onChange: (b: PageBlock) => void;
   onMove: (d: -1 | 1) => void;
   onRemove: () => void;
@@ -137,6 +140,30 @@ function BlockEditor({
               className="block w-full cursor-pointer text-sm file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-on-accent hover:file:opacity-90"
             />
             {fileError && <p role="alert" className="text-xs font-medium text-red-700">{fileError}</p>}
+            {gallery.length > 0 && (
+              <div className="grid gap-2">
+                <p className="text-xs font-semibold text-muted">Ou choisir dans les photos de la moto</p>
+                <div className="flex flex-wrap gap-2">
+                  {gallery.map((src) => (
+                    <button
+                      key={src}
+                      type="button"
+                      onClick={() => {
+                        if (fileRef.current) fileRef.current.value = "";
+                        setChosen(null);
+                        set({ image: src });
+                      }}
+                      aria-label="Utiliser cette photo"
+                      aria-pressed={block.image === src && !chosen}
+                      className={`relative size-14 overflow-hidden rounded-xl ring-2 transition-all ${block.image === src && !chosen ? "ring-accent" : "ring-transparent opacity-80 hover:opacity-100"}`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt="" className="size-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {detail && (
               <button type="button" className={`${btn("soft", "sm")} w-fit`} onClick={clearDetail}>
                 Retirer la photo de détail
@@ -232,16 +259,114 @@ function BlockEditor({
   );
 }
 
+/** Galerie de la moto : photos déjà enregistrées (retirables) et nouvelles photos à envoyer à l'enregistrement. */
+function GalleryPanel({ saved, onRemove }: { saved: string[]; onRemove: (src: string) => void }) {
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => () => previews.forEach((u) => URL.revokeObjectURL(u)), [previews]);
+  const room = LIMITS.gallery - saved.length;
+  return (
+    <Panel
+      title="Photos de détail de la moto"
+      subtitle="Ajoutez plusieurs photos d'un coup : elles s'affichent en galerie en bas de la page, et vous pouvez les choisir dans chaque bloc ci-dessous."
+    >
+      <div className="grid gap-4">
+        {saved.length > 0 && (
+          <ul className="flex flex-wrap gap-3">
+            {saved.map((src) => (
+              <li key={src} className="group relative size-24 overflow-hidden rounded-2xl bg-accent-soft">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="size-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => onRemove(src)}
+                  aria-label="Retirer cette photo"
+                  className="absolute right-1 top-1 grid size-7 place-items-center rounded-full bg-black/60 text-base text-white transition-colors hover:bg-red-600"
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {room > 0 ? (
+          <>
+            <input
+              type="file"
+              name="gallery"
+              multiple
+              accept="image/png,image/jpeg,image/webp"
+              onChange={(e) => {
+                const files = [...(e.target.files ?? [])];
+                setError(null);
+                if (files.length > room) {
+                  e.target.value = "";
+                  setPreviews([]);
+                  return setError(`Vous pouvez encore ajouter ${room} photo${room > 1 ? "s" : ""} (${LIMITS.gallery} au maximum).`);
+                }
+                if (files.some((f) => f.size > 2 * 1024 * 1024)) {
+                  e.target.value = "";
+                  setPreviews([]);
+                  return setError("Une photo dépasse 2 Mo.");
+                }
+                setPreviews(files.map((f) => URL.createObjectURL(f)));
+              }}
+              className="block w-full cursor-pointer text-sm file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-on-accent hover:file:opacity-90"
+            />
+            {error && <p role="alert" className="text-xs font-medium text-red-700">{error}</p>}
+            {previews.length > 0 && (
+              <div>
+                <p className="mb-2 text-xs font-semibold text-muted">À envoyer à l&apos;enregistrement :</p>
+                <ul className="flex flex-wrap gap-3">
+                  {previews.map((u) => (
+                    <li key={u} className="size-24 overflow-hidden rounded-2xl bg-accent-soft ring-2 ring-accent/40">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={u} alt="" className="size-full object-cover" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="text-sm text-muted">La galerie est pleine ({LIMITS.gallery} photos). Retirez-en une pour en ajouter.</p>
+        )}
+        <p className="text-xs text-muted">PNG, JPEG ou WebP, 2 Mo maximum par photo.</p>
+      </div>
+    </Panel>
+  );
+}
+
 export function ModelPageForm({ initial, photo, scope, custom }: { initial: EcooterPageContent; photo: string; scope: string; custom: boolean }) {
   const [content, setContent] = useState(initial);
   const { state, onSubmit, pending } = useActionForm(saveEcooterPageAction);
+  const [sizeError, setSizeError] = useState<string | null>(null);
+  const router = useRouter();
+  const gallery = content.gallery ?? [];
+  // Après un enregistrement, on recharge les données du serveur : les photos envoyées deviennent des vignettes
+  // enregistrées et les champs fichier sont vidés (sinon un second clic les enverrait en double).
+  useEffect(() => {
+    if (state?.ok) router.refresh();
+  }, [state, router]);
+  // Les formulaires acceptent 20 Mo au total : on prévient avant l'envoi plutôt que d'échouer sans message.
+  const guard = (e: React.FormEvent<HTMLFormElement>) => {
+    const total = [...e.currentTarget.querySelectorAll<HTMLInputElement>("input[type=file]")].flatMap((i) => [...(i.files ?? [])]).reduce((s, f) => s + f.size, 0);
+    if (total > 18 * 1024 * 1024) {
+      e.preventDefault();
+      return setSizeError("Les photos choisies dépassent 18 Mo au total. Enregistrez-les en plusieurs fois.");
+    }
+    setSizeError(null);
+    onSubmit(e);
+  };
   const setBlock = (i: number, b: PageBlock) => setContent({ ...content, blocks: content.blocks.map((x, k) => (k === i ? b : x)) });
 
   return (
     <div className="grid gap-6">
-      <form method="post" onSubmit={onSubmit} className="grid gap-6">
+      <form method="post" onSubmit={guard} className="grid gap-6">
         <input type="hidden" name="scope" value={scope} />
         <input type="hidden" name="data" value={JSON.stringify(content)} />
+
+        {scope !== SHARED_ID && <GalleryPanel saved={gallery} onRemove={(src) => setContent({ ...content, gallery: gallery.filter((g) => g !== src) })} />}
 
         {content.blocks.map((b, i) => (
           <BlockEditor
@@ -250,6 +375,7 @@ export function ModelPageForm({ initial, photo, scope, custom }: { initial: Ecoo
             index={i}
             total={content.blocks.length}
             photo={photo}
+            gallery={scope === SHARED_ID ? [] : gallery}
             onChange={(nb) => setBlock(i, nb)}
             onMove={(d) => setContent({ ...content, blocks: move(content.blocks, i, d) })}
             onRemove={() => {
@@ -299,7 +425,7 @@ export function ModelPageForm({ initial, photo, scope, custom }: { initial: Ecoo
             {scope === SHARED_ID ? "Enregistrer le contenu commun" : "Enregistrer la fiche"}
           </SubmitButton>
           {state?.ok && <p role="status" className="text-sm font-semibold text-accent">{state.ok}</p>}
-          <FormError message={state?.error} />
+          <FormError message={sizeError ?? state?.error} />
         </div>
       </form>
 

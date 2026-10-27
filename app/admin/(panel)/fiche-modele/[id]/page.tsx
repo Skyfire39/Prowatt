@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { inArray } from "drizzle-orm";
 import { ModelPageForm } from "@/components/admin/model-page-form";
+import { MotoPhotoForm } from "@/components/admin/moto-photo-form";
 import { Badge, Flash, PageHeader, Panel } from "@/components/admin/ui";
 import { requireUser } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db";
@@ -62,10 +63,13 @@ export default async function ModelPageEditor({ params, searchParams }: { params
       />
 
       {moto && (
-        <Panel className="mb-6" title="En-tête de la fiche" subtitle="Ce que le visiteur voit en haut de la page. Le nom, la photo et les caractéristiques se modifient dans « Motos Ecooter ».">
-          <div className="grid items-center gap-6 sm:grid-cols-[12rem_1fr]">
-            <div className="grid aspect-square place-items-center rounded-2xl bg-accent-soft/70 p-3">
-              <Image src={moto.photo} unoptimized={moto.photo.startsWith("/api/")} alt="" width={300} height={300} className="max-h-full w-auto object-contain" />
+        <Panel className="mb-6" title="En-tête de la fiche" subtitle="Ce que le visiteur voit en haut de la page. La photo principale se remplace ici ; le nom et les caractéristiques se modifient dans « Motos Ecooter ».">
+          <div className="grid items-start gap-6 sm:grid-cols-[14rem_1fr]">
+            <div className="grid content-start gap-4">
+              <div className="grid aspect-square place-items-center rounded-2xl bg-accent-soft/70 p-3">
+                <Image src={moto.photo} unoptimized={moto.photo.startsWith("/api/")} alt="" width={300} height={300} className="max-h-full w-auto object-contain" />
+              </div>
+              <MotoPhotoForm id={moto.id} />
             </div>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
@@ -94,7 +98,7 @@ export default async function ModelPageEditor({ params, searchParams }: { params
         </Panel>
       )}
 
-      <ModelPageForm key={id} initial={initial} photo={photo} scope={shared ? SHARED_ID : id} custom={Boolean(own)} />
+      <ModelPageForm key={`${id}-${own ? new Date(own.updatedAt).getTime() : 0}`} initial={initial} photo={photo} scope={shared ? SHARED_ID : id} custom={Boolean(own)} />
     </>
   );
 }

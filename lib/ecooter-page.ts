@@ -24,6 +24,8 @@ export type PageBlock = {
 };
 export type EcooterPageContent = {
   blocks: PageBlock[];
+  /** Photos de détail de la moto (/api/media/…) : galerie affichée sur sa page, réutilisable dans les blocs. */
+  gallery?: string[];
   paramsNote: Bi;
   cta: { title: Bi; subtitle: Bi };
 };
@@ -35,7 +37,7 @@ export const SHARED_ID = "commun";
 export const pageKey = (motoId?: string | null) => (motoId && motoId !== SHARED_ID ? `ecooterPage:${motoId}` : "ecooterPage");
 const MEDIA_URL = /^\/api\/media\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export const LIMITS = { blocks: 8, bullets: 8, buttons: 3, title: 120, bullet: 400, label: 40, href: 200 } as const;
+export const LIMITS = { gallery: 12, blocks: 8, bullets: 8, buttons: 3, title: 120, bullet: 400, label: 40, href: 200 } as const;
 
 const str = (v: unknown, max: number, fallback = "") => (typeof v === "string" ? v.trim().slice(0, max) : fallback);
 const num = (v: unknown, min: number, max: number, fallback: number) => {
@@ -81,8 +83,13 @@ export function parseEcooterPage(raw: unknown): EcooterPageContent {
   const note = bi(o.paramsNote, 300);
   const ctaTitle = bi(c.title, 120);
   const ctaSub = bi(c.subtitle, 200);
+  const gallery = (Array.isArray(o.gallery) ? o.gallery : [])
+    .filter((u): u is string => typeof u === "string" && MEDIA_URL.test(u))
+    .filter((u, i, all) => all.indexOf(u) === i)
+    .slice(0, LIMITS.gallery);
   return {
     blocks,
+    gallery,
     paramsNote: note.fr ? note : d.paramsNote,
     cta: { title: ctaTitle.fr ? ctaTitle : d.cta.title, subtitle: ctaSub.fr ? ctaSub : d.cta.subtitle },
   };

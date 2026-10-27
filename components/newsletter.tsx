@@ -15,6 +15,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
   const [sent, setSent] = useState<"api" | "mail" | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,6 +24,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
     if (!email || pending) return;
     setPending(true);
     setError(null);
+    setNotice(null);
     try {
       const res = await fetch("/api/newsletter", {
         method: "POST",
@@ -34,7 +36,8 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
         // Site sans base de données (mode statique) : on retombe sur l'envoi par e-mail.
         setSent("mail");
         window.location.href = mailto(dict.mailSubject, `${dict.mailBody}${email}`, site.email);
-      } else setError(res.status === 400 ? dict.invalid : dict.error);
+      } else if (res.status === 409) setNotice(dict.already);
+      else setError(res.status === 400 ? dict.invalid : dict.error);
     } catch {
       setError(dict.error);
     } finally {
@@ -120,6 +123,14 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
                 {error && (
                   <p role="alert" className="mt-3 text-sm font-medium text-red-800">
                     {error}
+                  </p>
+                )}
+                {notice && (
+                  <p role="alert" className="mt-3 flex items-center gap-2 rounded-xl bg-white/60 px-4 py-2.5 text-sm font-medium text-teal">
+                    <span className="grid size-5 shrink-0 place-items-center rounded-full bg-teal text-[11px] font-bold text-white" aria-hidden="true">
+                      !
+                    </span>
+                    {notice}
                   </p>
                 )}
                 <p className="mt-4 text-sm leading-relaxed text-teal/65">{dict.note}</p>

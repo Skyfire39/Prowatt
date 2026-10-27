@@ -1,4 +1,5 @@
 import { and, desc, eq, gte, inArray, sql } from "drizzle-orm";
+import { connection } from "next/server";
 import { getDb, schema } from "@/lib/db";
 import { today } from "@/lib/format";
 
@@ -20,6 +21,7 @@ export function resetNavCounts() {
 }
 
 export async function getNavCounts(): Promise<NavCounts> {
+  await connection(); // dépend de l'heure : jamais calculé pendant le prérendu
   if (navCache && Date.now() - navCache.at < 15_000) return navCache.value;
   const value = await loadNavCounts();
   navCache = { at: Date.now(), value };

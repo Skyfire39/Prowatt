@@ -71,7 +71,14 @@ export async function subscribeToMailchimp(email: string): Promise<MailchimpResu
       tags: ["Site web"],
     });
     if (!res.ok) return { ok: false, error: describe(res, data) };
-    return { ok: true, status: typeof data.status === "string" ? data.status : "subscribed" };
+    let status = typeof data.status === "string" ? data.status : "subscribed";
+    // Sans confirmation par e-mail, un contact resté « en attente » (inscrit plus tôt avec la confirmation active)
+    // est validé : la personne a donné son accord en remplissant le formulaire du site.
+    if (!cfg.doubleOptIn && status === "pending") {
+      const up = await call(cfg, "PATCH", `/lists/${encodeURIComponent(cfg.audienceId)}/members/${hash}`, { status: "subscribed" });
+      if (up.res.ok) status = typeof up.data.status === "string" ? up.data.status : "subscribed";
+    }
+    return { ok: true, status };
   } catch (e) {
     return failure(e);
   }

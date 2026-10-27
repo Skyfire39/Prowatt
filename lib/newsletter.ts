@@ -29,6 +29,7 @@ export async function saveSubscriber(email: string, source: "site" | "admin" | "
   const db = await getDb();
   const t = schema.subscribers;
   const now = new Date();
+  const [prev] = await db.select({ status: t.status }).from(t).where(eq(t.email, email)).limit(1);
   const [row] = await db
     .insert(t)
     .values({ email, source })
@@ -37,7 +38,8 @@ export async function saveSubscriber(email: string, source: "site" | "admin" | "
       set: { updatedAt: now, ...(source === "site" ? { status: "subscribed", consentAt: now } : {}) },
     })
     .returning({ id: t.id, created: sql<boolean>`(xmax = 0)` });
-  return row;
+  // `alreadySubscribed` : l'adresse était déjà abonnée avant cet appel (un ancien désabonné qui revient ne compte pas).
+  return { ...row, alreadySubscribed: prev?.status === "subscribed" };
 }
 
 export type SyncOutcome = { ok: true; status: string } | { ok: false; error: string; skipped?: boolean; notConfigured?: boolean };

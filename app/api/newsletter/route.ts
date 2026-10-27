@@ -39,9 +39,11 @@ export async function POST(request: Request) {
   if (email.length > 254 || !isEmail(email)) return json({ ok: false, error: "invalid_email" }, 400);
 
   try {
-    const { id } = await saveSubscriber(email, "site");
+    const { id, alreadySubscribed } = await saveSubscriber(email, "site");
+    // Même pour une adresse déjà connue, on renvoie à Mailchimp : cela rattrape un envoi qui avait échoué.
     const res = await syncSubscriber(id);
     if (!res.ok && !res.notConfigured && !res.skipped) console.error("[newsletter] Mailchimp :", res.error);
+    if (alreadySubscribed) return json({ ok: false, error: "already_subscribed" }, 409);
   } catch (e) {
     console.error("[newsletter] échec d'enregistrement", e instanceof Error ? e.message : e);
     return json({ ok: false, error: "server_error" }, 500);

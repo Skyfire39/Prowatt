@@ -4,10 +4,11 @@ import { ArrowIcon, BuildingIcon, HomeIcon } from "@/components/icons";
 import { HoverLift, Reveal } from "@/components/motion";
 import { PageHero } from "@/components/ui";
 import { loadPage } from "@/lib/page";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/devis">): Promise<Metadata> {
   const { dict } = await loadPage(params);
-  return { title: dict.nav.quotes, description: dict.quotes.subtitle };
+  return pageMetadata({ ...dict.seo.devis, path: "/devis" });
 }
 
 export default async function QuotesPage({ params }: PageProps<"/[lang]/devis">) {

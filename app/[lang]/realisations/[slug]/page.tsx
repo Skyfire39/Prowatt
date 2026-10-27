@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/json-ld";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/motion";
 import { CtaBand, PageHero } from "@/components/ui";
@@ -10,6 +11,7 @@ import { isSlug, slugs } from "@/lib/data";
 import type { Slug } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
 import { getDictionary } from "../../dictionaries";
 
 const crops: Record<Slug, { pos: string; zoom: number }> = {
@@ -29,8 +31,8 @@ export async function generateMetadata({
 }: PageProps<"/[lang]/realisations/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;
   if (!hasLocale(lang) || !isSlug(slug)) return {};
-  const { categories } = await getDictionary(lang);
-  return { title: categories[slug].name, description: categories[slug].intro };
+  const { seo } = await getDictionary(lang);
+  return pageMetadata({ ...seo.categories[slug], path: `/realisations/${slug}` });
 }
 
 export default function CategoryPage({ params }: PageProps<"/[lang]/realisations/[slug]">) {
@@ -50,6 +52,13 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbLd([
+          { name: dict.nav.home, path: "/" },
+          { name: dict.nav.realisations, path: "/realisations" },
+          { name: c.name, path: `/realisations/${slug}` },
+        ])}
+      />
       <PageHero eyebrow={dict.realisations.eyebrow} title={c.name} subtitle={c.intro} photo={crops[slug]} />
 
       <section className="px-4 pb-12 sm:px-6">

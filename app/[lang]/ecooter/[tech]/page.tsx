@@ -12,6 +12,7 @@ import { isTech, modelHref, techs, tr } from "@/lib/data";
 import type { Tech } from "@/lib/data";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
+import { clip, pageMetadata } from "@/lib/seo";
 import { getDictionary } from "../../dictionaries";
 
 export function generateStaticParams() {
@@ -23,8 +24,13 @@ export async function generateMetadata({
 }: PageProps<"/[lang]/ecooter/[tech]">): Promise<Metadata> {
   const { lang, tech } = await params;
   if (!hasLocale(lang) || !isTech(tech)) return {};
-  const { ecooter } = await getDictionary(lang);
-  return { title: ecooter.techs[tech].title, description: ecooter.techs[tech].intro };
+  const { ecooter, seo } = await getDictionary(lang);
+  const t = ecooter.techs[tech];
+  return pageMetadata({
+    title: `Scooter électrique ${t.name.toLowerCase()} à Madagascar | Prowatt`,
+    description: clip(seo.techDescription.replace("{intro}", t.intro)),
+    path: `/ecooter/${tech}`,
+  });
 }
 
 export default function TechPage({ params }: PageProps<"/[lang]/ecooter/[tech]">) {

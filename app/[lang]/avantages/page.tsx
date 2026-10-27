@@ -9,15 +9,20 @@ import {
   ShieldIcon,
   SunIcon,
   BoltIcon,
-  CheckIcon,
 } from "@/components/icons";
+import { AdvantagesBanner } from "@/components/advantages-banner";
+import { Faq } from "@/components/faq";
+import { EquipmentGrid } from "@/components/equipment-grid";
 import { Reveal, HoverLift } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
+import { getSettings } from "@/lib/content";
 import { loadPage } from "@/lib/page";
+import { toSiteInfo } from "@/lib/site-info";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/avantages">): Promise<Metadata> {
   const { dict } = await loadPage(params);
-  return { title: dict.nav.advantages, description: dict.advantagesPage.subtitle };
+  return pageMetadata({ ...dict.seo.avantages, path: "/avantages" });
 }
 
 const solIcons = [HomeIcon, BatteryIcon, GridIcon, ShieldIcon, SunIcon, DropIcon];
@@ -26,10 +31,16 @@ const benIcons = [BoltIcon, LeafIcon, PanelIcon, ShieldIcon];
 export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avantages">) {
   const { dict } = await loadPage(params);
   const d = dict.advantagesPage;
+  const site = toSiteInfo(await getSettings());
+  const faq = d.faq.items.map((it) => ({ q: it.q, a: it.a.replace("{address}", site.address.fr).replace("{hours}", site.hours.fr.join(" ; ")) }));
 
   return (
     <>
-      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} photo={{ pos: "50% 45%" }} />
+      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} />
+      <AdvantagesBanner
+        items={d.benefits.map((b, i) => ({ title: b.title, text: b.text, chip: d.banner.chips[i] }))}
+        labels={{ kicker: d.banner.kicker, hint: d.banner.hint, stat: d.banner.stat, aria: d.banner.aria, cta: d.banner.cta, devisHref: "/devis" }}
+      />
 
       <section className="px-4 py-12 sm:px-6">
         <div className="mx-auto max-w-6xl">
@@ -81,17 +92,12 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
         <Reveal className="mx-auto max-w-6xl">
           <div className="glass-strong rounded-3xl p-8 text-center sm:p-12">
             <h2 className="text-3xl tracking-tight sm:text-3xl">{d.productsTitle}</h2>
-            <ul className="mt-8 flex flex-wrap justify-center gap-3">
-              {d.products.map((p) => (
-                <li key={p} className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium">
-                  <CheckIcon className="size-4 text-accent" />
-                  {p}
-                </li>
-              ))}
-            </ul>
+            <EquipmentGrid items={d.products.map((name, i) => ({ name, text: d.productsText[i] }))} />
           </div>
         </Reveal>
       </section>
+
+      <Faq eyebrow={d.faq.eyebrow} title={d.faq.title} items={faq} />
 
       <CtaBand
         title={dict.home.cta.title}

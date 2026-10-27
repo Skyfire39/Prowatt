@@ -4,10 +4,11 @@ import { QuoteForm } from "@/components/quote-form";
 import { PageHero } from "@/components/ui";
 import { companyForm, resolveForm } from "@/lib/forms";
 import { loadPage } from "@/lib/page";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/devis/societe">): Promise<Metadata> {
   const { dict } = await loadPage(params);
-  return { title: dict.quotes.company.formTitle, description: dict.quotes.company.formSubtitle };
+  return pageMetadata({ ...dict.seo.devisSociete, path: "/devis/societe" });
 }
 
 export default async function CompanyQuotePage({ params }: PageProps<"/[lang]/devis/societe">) {

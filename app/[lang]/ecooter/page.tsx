@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowIcon, BatteryIcon, BoltIcon, WrenchIcon } from "@/components/icons";
+import { Faq } from "@/components/faq";
 import { ModelCard } from "@/components/model-card";
 import { ModelSlider } from "@/components/model-slider";
 import { Reveal } from "@/components/motion";
@@ -8,10 +9,11 @@ import { CtaBand, PageHero, SectionHead } from "@/components/ui";
 import { getEcooters } from "@/lib/content";
 import { modelHref, techs, tr } from "@/lib/data";
 import { loadPage } from "@/lib/page";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/ecooter">): Promise<Metadata> {
   const { dict } = await loadPage(params);
-  return { title: dict.nav.ecooter, description: dict.ecooter.subtitle };
+  return pageMetadata({ ...dict.seo.ecooter, path: "/ecooter" });
 }
 
 const techIcons = [BoltIcon, BatteryIcon, WrenchIcon];
@@ -96,6 +98,8 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
           </div>
         </div>
       </section>
+
+      <Faq eyebrow={d.faq.eyebrow} title={d.faq.title} items={d.faq.items} />
 
       <CtaBand
         title={dict.home.cta.title}

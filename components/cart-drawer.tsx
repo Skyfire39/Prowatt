@@ -11,12 +11,12 @@ import { Stepper } from "./add-to-cart";
 import { ArrowIcon, BagIcon, CloseIcon, TrashIcon } from "./icons";
 
 /** Miniature d'un produit : le montage de panneau, en trait. */
-export function ProductThumb({ className = "", src }: { className?: string; src?: string | null }) {
+export function ProductThumb({ className = "", src, alt = "" }: { className?: string; src?: string | null; alt?: string }) {
   if (src) {
     return (
       <span className={`relative block overflow-hidden rounded-2xl bg-white ${className}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt="" loading="lazy" className="absolute inset-0 size-full object-contain p-2" />
+        <img src={src} alt={alt} loading="lazy" className="absolute inset-0 size-full object-contain p-2" />
       </span>
     );
   }

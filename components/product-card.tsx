@@ -47,7 +47,7 @@ export function ProductCard({ item, labels }: { item: CardItem; labels: CardLabe
     <>
       <div className="relative">
         <Link href={item.href} aria-label={`${labels.view} : ${item.name}`} className="group block overflow-hidden rounded-2xl">
-          <ProductThumb src={item.image} className="h-44 w-full transition-transform duration-500 group-hover:scale-[1.04]" />
+          <ProductThumb src={item.image} alt={item.name} className="h-44 w-full transition-transform duration-500 group-hover:scale-[1.04]" />
         </Link>
         {item.badge && (
           <span

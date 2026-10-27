@@ -4,12 +4,13 @@ import { ClockIcon, MailIcon, MapPinIcon, PhoneIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/ui";
 import { loadPage } from "@/lib/page";
+import { pageMetadata } from "@/lib/seo";
 import { getSettings } from "@/lib/content";
 import { toSiteInfo } from "@/lib/site-info";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/contact">): Promise<Metadata> {
   const { dict } = await loadPage(params);
-  return { title: dict.nav.contact, description: dict.contact.subtitle };
+  return pageMetadata({ ...dict.seo.contact, path: "/contact" });
 }
 
 export default async function ContactPage({ params }: PageProps<"/[lang]/contact">) {

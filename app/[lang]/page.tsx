@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/hero";
 import {
@@ -15,7 +16,15 @@ import { SolarParallax } from "@/components/solar-parallax";
 import { CtaBand } from "@/components/ui";
 import { getEcooters, getPartners, getProducts, getTestimonials } from "@/lib/content";
 import { hasLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/seo";
 import { getDictionary } from "./dictionaries";
+
+export async function generateMetadata({ params }: PageProps<"/[lang]">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const { seo } = await getDictionary(lang);
+  return pageMetadata({ ...seo.home, path: "/" });
+}
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;

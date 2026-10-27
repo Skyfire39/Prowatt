@@ -3,6 +3,76 @@
     "title": "Prowatt Madagascar — Énergie solaire, eau et mobilité électrique",
     "description": "Solutions solaires 100 % autonomes, hybrides, on-grid et anti-délestage, accès à l'eau, scooters électriques Ecooter et boutique d'équipements à Madagascar."
   },
+  "seo": {
+    "home": {
+      "title": "Énergie solaire à Madagascar : panneaux, batteries | Prowatt",
+      "description": "Prowatt installe panneaux solaires, batteries lithium et solutions anti-délestage à Antananarivo. Pompage solaire, scooters électriques Ecooter et boutique."
+    },
+    "avantages": {
+      "title": "Avantages du solaire à Madagascar | Prowatt",
+      "description": "Économies sur la facture, énergie propre, bien valorisé et indépendance face au délestage : découvrez pourquoi passer au solaire à Madagascar."
+    },
+    "realisations": {
+      "title": "Réalisations solaires à Madagascar | Prowatt",
+      "description": "Installations solaires autonomes, hybrides, on-grid, anti-délestage et accès à l'eau réalisées par Prowatt à Madagascar : découvrez nos projets."
+    },
+    "categories": {
+      "100-autonome": {
+        "title": "Installation solaire autonome à Madagascar | Prowatt",
+        "description": "Système solaire 100 % autonome, sans réseau Jirama : panneaux, batteries lithium et onduleur dimensionnés pour votre site, de jour comme de nuit."
+      },
+      "hybride": {
+        "title": "Solaire hybride à Madagascar : batteries et réseau | Prowatt",
+        "description": "Solaire, batteries et réseau ou groupe électrogène en harmonie : une alimentation continue, avec gestion automatique des sources à Madagascar."
+      },
+      "ongrid": {
+        "title": "Solaire on-grid : réduire sa facture Jirama | Prowatt",
+        "description": "Centrale solaire raccordée au réseau pour produire et consommer sur place : idéal pour entreprises, commerces et bâtiments à Madagascar."
+      },
+      "anti-delestage": {
+        "title": "Anti-délestage à Madagascar : batteries solaires | Prowatt",
+        "description": "Coupures de courant à Antananarivo ? Un kit de batteries bascule automatiquement et garde vos équipements en marche. Solutions anti-délestage Prowatt."
+      },
+      "acces-a-eau": {
+        "title": "Pompe solaire et chauffe-eau solaire à Madagascar | Prowatt",
+        "description": "Chauffe-eau solaires, forage et pompage solaire : de l'eau chaude et de l'eau courante sans dépendre du réseau ni du carburant, à Madagascar."
+      }
+    },
+    "boutique": {
+      "title": "Boutique solaire à Madagascar : panneaux, batteries | Prowatt",
+      "description": "Panneaux solaires, batteries lithium et gel, convertisseurs, câbles, pompes et accessoires, prix en Ariary. Commandez en ligne chez Prowatt, à Antananarivo."
+    },
+    "ecooter": {
+      "title": "Scooters électriques Ecooter à Madagascar | Prowatt",
+      "description": "Découvrez les scooters électriques Ecooter à Antananarivo : batterie lithium ou graphène, silencieux et économiques. Achetez en ligne ou essayez un modèle."
+    },
+    "techDescription": "{intro} Scooters électriques Ecooter chez Prowatt Madagascar.",
+    "devis": {
+      "title": "Devis installation solaire à Madagascar | Prowatt",
+      "description": "Demandez un devis pour une installation solaire à Madagascar : maison, commerce ou entreprise. L'équipe Prowatt étudie votre besoin et vous répond."
+    },
+    "devisParticulier": {
+      "title": "Devis solaire pour particulier à Madagascar | Prowatt",
+      "description": "Votre maison à Madagascar, avec ou sans délestage : décrivez votre consommation et recevez un devis d'installation solaire de Prowatt."
+    },
+    "devisSociete": {
+      "title": "Devis solaire pour entreprise à Madagascar | Prowatt",
+      "description": "Commerce, usine, hôtel ou bâtiment : décrivez votre site et recevez un devis d'installation solaire adapté de Prowatt Madagascar."
+    },
+    "contact": {
+      "title": "Contact Prowatt Madagascar — Ankadifotsy, Antananarivo",
+      "description": "Contactez Prowatt Madagascar à Ankadifotsy, Antananarivo : téléphone, WhatsApp, e-mail et horaires d'ouverture."
+    },
+    "product": {
+      "title": "{name} — prix en Ariary | Prowatt",
+      "description": "{name} ({category}) à partir de {price} Ar chez Prowatt Madagascar, Antananarivo. Commandez en ligne ou demandez conseil à l'équipe."
+    },
+    "moto": {
+      "title": "Ecooter {name} — scooter électrique à Madagascar | Prowatt",
+      "description": "{tagline} Ecooter {name} : prix, fiche technique et achat en ligne chez Prowatt Madagascar, à Antananarivo."
+    },
+    "motoNoPrice": "{tagline} Ecooter {name} : fiche technique et essai chez Prowatt Madagascar, à Antananarivo."
+  },
   "nav": {
     "home": "Accueil",
     "advantages": "Les avantages",
@@ -277,13 +347,66 @@
         "text": "Votre électricité reste là, y compris pendant les coupures."
       }
     ],
+    "banner": {
+      "kicker": "Pourquoi passer au solaire",
+      "stat": "bonnes raisons de s'équiper",
+      "hint": "Touchez un avantage pour le voir à l'œuvre.",
+      "cta": "Demander un devis",
+      "aria": "Illustration animée des quatre avantages du solaire : une facture qui baisse, une énergie propre, un bien valorisé et une maison indépendante du réseau.",
+      "chips": [
+        "Économies",
+        "Énergie propre",
+        "Valeur du bien",
+        "Indépendance"
+      ]
+    },
     "productsTitle": "Les équipements que nous proposons",
     "products": [
       "Panneaux solaires",
       "Batteries au lithium",
       "Câblages",
       "Convertisseurs"
-    ]
+    ],
+    "productsText": [
+      "Captent la lumière du soleil et la transforment en électricité.",
+      "Stockent l'énergie pour la nuit et les coupures de courant.",
+      "Relient en toute sécurité chaque élément de l'installation.",
+      "Transforment le courant continu des panneaux en courant utilisable."
+    ],
+    "faq": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Le solaire à Madagascar : vos questions",
+      "items": [
+        {
+          "q": "Le solaire fonctionne-t-il pendant le délestage à Madagascar ?",
+          "a": "Oui, avec des batteries. Une installation anti-délestage ou autonome stocke l'énergie du soleil et prend automatiquement le relais dès que le courant de la Jirama s'arrête : vos équipements restent en marche."
+        },
+        {
+          "q": "Quelle différence entre solaire autonome, hybride et on-grid ?",
+          "a": "L'autonome fonctionne sans aucun raccordement au réseau, avec panneaux et batteries. L'hybride associe solaire, batteries et réseau ou groupe électrogène, avec une gestion automatique des sources. L'on-grid est raccordé au réseau : vous consommez d'abord votre propre énergie et le réseau complète."
+        },
+        {
+          "q": "Peut-on réduire sa facture d'électricité avec des panneaux solaires ?",
+          "a": "Oui. Avec une installation on-grid ou hybride, vous produisez et consommez sur place : moins d'énergie à acheter au réseau, donc une facture réduite et une moindre dépendance. Le gain dépend de votre consommation et de la taille de l'installation."
+        },
+        {
+          "q": "Batterie lithium ou batterie gel : laquelle choisir ?",
+          "a": "Les batteries lithium offrent un grand nombre de cycles de charge, une grande compacité et peu d'entretien. Les batteries gel sont une alternative plus classique. Notre équipe vous conseille selon votre usage et votre budget."
+        },
+        {
+          "q": "Proposez-vous des pompes solaires et des chauffe-eau solaires ?",
+          "a": "Oui. Notre solution « Accès à l'eau » comprend des chauffe-eau solaires, le forage et le pompage solaire, pour de l'eau chaude et de l'eau courante sans dépendre du réseau ni du carburant."
+        },
+        {
+          "q": "Comment obtenir un devis d'installation solaire à Antananarivo ?",
+          "a": "Remplissez le formulaire de devis (particulier ou société) ou contactez-nous directement : l'équipe étudie votre besoin et vous propose une installation adaptée."
+        },
+        {
+          "q": "Où se trouve Prowatt Madagascar et quels sont vos horaires ?",
+          "a": "Nous sommes à {address}. Horaires : {hours}."
+        }
+      ]
+    }
   },
   "realisations": {
     "eyebrow": "Nos réalisations",
@@ -292,6 +415,25 @@
     "projects": "projets",
     "project": "projet",
     "explore": "Voir les projets",
+    "banner": {
+      "kicker": "Chantiers à Madagascar",
+      "hint": "Touchez une solution pour la voir à l'œuvre.",
+      "aria": "Illustration animée des cinq solutions Prowatt : maison autonome, installation hybride, commerce raccordé au réseau, anti-délestage et accès à l'eau, alimentés par le soleil.",
+      "chips": {
+        "100-autonome": "Autonome",
+        "hybride": "Hybride",
+        "ongrid": "On-grid",
+        "anti-delestage": "Anti-délestage",
+        "acces-a-eau": "Eau"
+      },
+      "scenes": {
+        "100-autonome": "Le soleil charge les batteries le jour, elles font tourner la maison la nuit : plus de facture, plus de coupure.",
+        "hybride": "Panneaux, batteries et réseau ou groupe électrogène se relaient tout seuls pour que le courant ne manque jamais.",
+        "ongrid": "Vous produisez sur place et consommez d'abord votre énergie ; le réseau complète le reste et la facture baisse.",
+        "anti-delestage": "Le réseau s'éteint, les batteries prennent le relais à la seconde : la lumière et vos équipements restent allumés.",
+        "acces-a-eau": "Le soleil actionne la pompe du forage et remplit le château d'eau, sans carburant ni facture."
+      }
+    },
     "others": "Autres solutions",
     "installed": "Installé en",
     "client": "Client",
@@ -471,6 +613,24 @@
           }
         ]
       }
+    },
+    "faq": {
+      "eyebrow": "Questions fréquentes",
+      "title": "Scooters électriques Ecooter : vos questions",
+      "items": [
+        {
+          "q": "Quelle batterie choisir pour un scooter électrique : lithium ou graphène ?",
+          "a": "Le lithium est léger et compact, avec une recharge plus rapide et peu d'entretien. Le graphène offre une bonne tenue à la chaleur et à l'usage intensif, pour un budget maîtrisé. Les deux technologies sont disponibles sur nos modèles Ecooter."
+        },
+        {
+          "q": "Peut-on acheter un scooter électrique Ecooter en ligne à Madagascar ?",
+          "a": "Oui. Les modèles dont le prix est affiché s'achètent directement depuis la boutique, avec le choix des options (couleur, batterie). Pour un essai ou un modèle « sur demande », contactez l'équipe à Antananarivo."
+        },
+        {
+          "q": "Peut-on essayer un Ecooter avant de l'acheter ?",
+          "a": "Oui : demandez un essai depuis la page du modèle par e-mail ou WhatsApp, et l'équipe Prowatt vous répond pour convenir d'un rendez-vous."
+        }
+      ]
     }
   },
   "shop": {

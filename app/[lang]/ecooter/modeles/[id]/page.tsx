@@ -17,8 +17,11 @@ import { modelHref, motoCartId, techs, tr } from "@/lib/data";
 import { priceRange } from "@/lib/options";
 import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
+import { breadcrumbLd, clip, pageMetadata, productLd } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { mailto, whatsappHref } from "@/lib/site";
 import { toSiteInfo } from "@/lib/site-info";
+import { getDictionary } from "../../../dictionaries";
 
 export async function generateStaticParams() {
   const ecooters = await getEcooters();
@@ -32,7 +35,14 @@ export async function generateMetadata({
   const ecooters = await getEcooters();
   const model = ecooters.find((m) => m.id === id);
   if (!hasLocale(lang) || !model) return {};
-  return { title: `Ecooter ${model.name}`, description: tr(model.tagline, lang) };
+  const { seo } = await getDictionary(lang);
+  const fill = (t: string) => t.replace("{name}", model.name).replace("{tagline}", tr(model.tagline, lang));
+  return pageMetadata({
+    title: fill(seo.moto.title),
+    description: clip(fill(model.price ? seo.moto.description : seo.motoNoPrice)),
+    path: `/ecooter/modeles/${model.id}`,
+    image: { url: model.productPhoto ?? model.photo, alt: `Ecooter ${model.name}` },
+  });
 }
 
 export default function ModelPage({ params }: PageProps<"/[lang]/ecooter/modeles/[id]">) {
@@ -94,18 +104,27 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
   const subject = `${d.mailSubject} — ${model.name}`;
   const others = ecooters.filter((o) => o.id !== model.id).slice(0, 4);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
+  const productData = productLd({
     name: `Ecooter ${model.name}`,
+    path: `/ecooter/modeles/${model.id}`,
     description: tagline,
-    brand: { "@type": "Brand", name: "Ecooter" },
-    category: "Electric scooter",
-  };
+    image: model.productPhoto ?? model.photo,
+    sku: model.id,
+    category: "Scooter électrique",
+    price: model.price ? fromPrice.min : null,
+    brand: "Ecooter",
+  });
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={productData} />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: dict.nav.home, path: "/" },
+          { name: dict.nav.ecooter, path: "/ecooter" },
+          { name: model.name, path: `/ecooter/modeles/${model.id}` },
+        ])}
+      />
 
       {/* En-tête : visuel à gauche, identité et paramètres à droite */}
       <section className="px-4 pb-16 pt-28 sm:px-6 sm:pt-32">
@@ -137,7 +156,10 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                 <p className="eyebrow">
                   {d.eyebrow} · {m.position.replace("{n}", String(index + 1)).replace("{total}", String(ecooters.length))}
                 </p>
-                <h1 className="mt-3 text-6xl leading-none tracking-[-0.05em] sm:text-7xl">{model.name}</h1>
+                <h1 className="mt-3 text-6xl leading-none tracking-[-0.05em] sm:text-7xl">
+                  <span className="sr-only">Ecooter </span>
+                  {model.name}
+                </h1>
                 <p className="mt-4 text-xl leading-relaxed text-muted">{tagline}</p>
                 {model.description?.[lang]?.trim() && <p className="mt-3 whitespace-pre-line leading-relaxed text-muted">{model.description[lang]}</p>}
                 {model.price ? (

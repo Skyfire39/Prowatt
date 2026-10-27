@@ -5,11 +5,12 @@ import { getCategories, getEcooters, getProducts, getSettings } from "@/lib/cont
 import { modelHref, motoCartId, tr } from "@/lib/data";
 import { cardPrice, priceRange } from "@/lib/options";
 import { loadPage } from "@/lib/page";
+import { pageMetadata } from "@/lib/seo";
 import { mailto } from "@/lib/site";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/boutique">): Promise<Metadata> {
   const { dict } = await loadPage(params);
-  return { title: dict.nav.shop, description: dict.shop.subtitle };
+  return pageMetadata({ ...dict.seo.boutique, path: "/boutique" });
 }
 
 export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">) {

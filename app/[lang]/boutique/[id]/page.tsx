@@ -14,6 +14,8 @@ import { tr } from "@/lib/data";
 import { cardPrice, priceRange } from "@/lib/options";
 import { hasLocale, locales, type Locale } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
+import { breadcrumbLd, clip, pageMetadata, productLd } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { toSiteInfo } from "@/lib/site-info";
 import { getDictionary } from "../../dictionaries";
 
@@ -37,10 +39,14 @@ export async function generateMetadata({
   if (!hasLocale(lang) || !product) return {};
   const dict = await getDictionary(lang);
   const category = await categoryName(product.category, lang);
-  return {
-    title: tr(product.name, lang),
-    description: dict.product.about.replace("{name}", tr(product.name, lang)).replace("{category}", category),
-  };
+  const name = tr(product.name, lang);
+  const price = new Intl.NumberFormat(lang).format(priceRange(product.price, product.options).min);
+  return pageMetadata({
+    title: clip(dict.seo.product.title.replace("{name}", name), 70),
+    description: clip(dict.seo.product.description.replace("{name}", name).replace("{category}", category).replace("{price}", price)),
+    path: `/boutique/${product.id}`,
+    image: product.image ? { url: product.image, alt: name } : null,
+  });
 }
 
 export default function ProductPage({ params }: PageProps<"/[lang]/boutique/[id]">) {
@@ -72,18 +78,26 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
     ...products.filter((p) => p.category !== product.category),
   ].slice(0, 3);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
+  const productData = productLd({
     name,
+    path: `/boutique/${product.id}`,
+    description: clip(product.description ? tr(product.description, lang) : dict.product.about.replace("{name}", name).replace("{category}", category)),
+    image: product.image,
     sku: product.id,
     category,
-    offers: { "@type": "Offer", price: range.min, priceCurrency: "MGA", availability: "https://schema.org/InStock" },
-  };
+    price: range.min,
+  });
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={productData} />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: dict.nav.home, path: "/" },
+          { name: dict.nav.shop, path: "/boutique" },
+          { name, path: `/boutique/${product.id}` },
+        ])}
+      />
 
       <section className="px-4 pb-16 pt-28 sm:px-6 sm:pt-32">
         <div className="mx-auto max-w-6xl">

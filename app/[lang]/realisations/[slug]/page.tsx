@@ -62,7 +62,7 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
       <PageHero eyebrow={dict.realisations.eyebrow} title={c.name} subtitle={c.intro} photo={crops[slug]} />
 
       <section className="px-4 pb-12 sm:px-6">
-        <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
           {list.map((p, i) => (
             <ProjectCard key={p.id ?? `${p.title.fr}-${i}`} project={p} lang={lang} dict={dict.realisations} index={i} />
           ))}

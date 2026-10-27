@@ -55,48 +55,59 @@ export function ProjectCard({
 
   return (
     <Reveal delay={(index % 3) * 0.08}>
-      <HoverLift className="glass relative flex h-full flex-col overflow-hidden rounded-2xl p-7">
+      <HoverLift className="glass relative flex h-full flex-col overflow-hidden rounded-2xl">
         {project.images && project.images.length > 0 && <ProjectGallery images={project.images} alt={tr(project.title, lang)} />}
-        <div className="relative">
-          <h3 className="text-2xl leading-snug tracking-tight">
-            {tr(project.title, lang)}
-          </h3>
-          {project.client && (
-            <p className="mt-1 text-sm font-medium text-accent">
-              {dict.client} : {project.client}
-            </p>
-          )}
-          {(project.city || when) && (
-            <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
-              {project.city && (
-                <span className="inline-flex items-center gap-1">
-                  <MapPinIcon className="size-4" />
-                  {project.city}
+        <div className="relative flex flex-1 flex-col p-6 sm:p-7">
+          <div className="relative">
+            <h3 className="text-2xl leading-snug tracking-tight">
+              {tr(project.title, lang)}
+            </h3>
+            {project.client && (
+              <p className="mt-1 text-sm font-medium text-accent">
+                {dict.client} : {project.client}
+              </p>
+            )}
+            {(project.city || when) && (
+              <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
+                {project.city && (
+                  <span className="inline-flex items-center gap-1">
+                    <MapPinIcon className="size-4" />
+                    {project.city}
+                  </span>
+                )}
+                {when && (
+                  <span>
+                    {dict.installed} {when}
+                  </span>
+                )}
+              </p>
+            )}
+          </div>
+
+          <dl className="relative mt-6 grid grid-cols-2 gap-3">
+            {specs.map(([k, v]) => (
+              <div key={k} className="rounded-2xl border border-line bg-white/35 px-3.5 py-2.5">
+                <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted">{k}</dt>
+                <dd className="mt-0.5 text-[15px] font-semibold">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          {(project.note || project.description) && (
+            <details className="group relative mt-5 border-t border-line pt-1">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-semibold text-accent marker:hidden [&::-webkit-details-marker]:hidden">
+                {dict.moreInfo}
+                <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center rounded-full bg-accent-soft transition-transform duration-300 group-open:rotate-45">
+                  <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
                 </span>
-              )}
-              {when && (
-                <span>
-                  {dict.installed} {when}
-                </span>
-              )}
-            </p>
+              </summary>
+              <p className="pb-1 text-sm leading-relaxed text-muted">
+                {project.note ? tr(project.note, lang) : tr(project.description!, lang)}
+              </p>
+            </details>
           )}
         </div>
-
-        <dl className="relative mt-6 grid grid-cols-2 gap-3">
-          {specs.map(([k, v]) => (
-            <div key={k} className="rounded-2xl border border-line bg-white/35 px-3.5 py-2.5">
-              <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted">{k}</dt>
-              <dd className="mt-0.5 text-[15px] font-semibold">{v}</dd>
-            </div>
-          ))}
-        </dl>
-
-        {(project.note || project.description) && (
-          <p className="relative mt-5 text-sm leading-relaxed text-muted">
-            {project.note ? tr(project.note, lang) : tr(project.description!, lang)}
-          </p>
-        )}
       </HoverLift>
     </Reveal>
   );

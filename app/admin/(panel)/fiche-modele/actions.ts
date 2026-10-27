@@ -6,11 +6,24 @@ import { redirect } from "next/navigation";
 import { requireActionUser } from "@/lib/auth/session";
 import { logAudit } from "@/lib/audit";
 import { getDb, schema } from "@/lib/db";
-import { parseEcooterPage, safeHref } from "@/lib/ecooter-page";
-import type { FormState } from "@/lib/validate";
+import { SHARED_ID, pageKey, parseEcooterPage, safeHref } from "@/lib/ecooter-page";
+import { saveUpload } from "@/lib/media";
+import { s, type FormState } from "@/lib/validate";
+
+/** « commun » ou l'identifiant d'une moto qui existe : on n'écrit jamais un réglage pour un modèle inconnu. */
+async function checkScope(scope: string) {
+  if (scope === SHARED_ID) return { ok: true as const, label: "contenu commun" };
+  const db = await getDb();
+  const [m] = await db.select({ name: schema.ecooters.name }).from(schema.ecooters).where(eq(schema.ecooters.id, scope)).limit(1);
+  return m ? { ok: true as const, label: m.name } : { ok: false as const, label: "" };
+}
 
 export async function saveEcooterPageAction(_: FormState, fd: FormData): Promise<FormState> {
   const user = await requireActionUser("motos.write");
+  const scope = s(fd, "scope");
+  const target = await checkScope(scope);
+  if (!target.ok) return { error: "Modèle introuvable. Rechargez la page." };
+
   let raw: unknown;
   try {
     raw = JSON.parse(String(fd.get("data") ?? ""));
@@ -27,22 +40,35 @@ export async function saveEcooterPageAction(_: FormState, fd: FormData): Promise
     }
   }
   const value = parseEcooterPage(raw);
+
+  // Photos de détail choisies dans le formulaire : un fichier par bloc (champ « image-<id du bloc> »).
+  for (const [i, block] of value.blocks.entries()) {
+    const up = await saveUpload(fd.get(`image-${block.id}`));
+    if (up && "error" in up) return { error: `Bloc ${i + 1} : ${up.error}` };
+    if (up && "url" in up) block.image = up.url;
+  }
+
   const db = await getDb();
+  const key = pageKey(scope);
   await db
     .insert(schema.settings)
-    .values({ key: "ecooterPage", value })
+    .values({ key, value })
     .onConflictDoUpdate({ target: schema.settings.key, set: { value, updatedAt: new Date() } });
-  await logAudit(user, "modification", "fiche modèle Ecooter", "ecooterPage");
+  await logAudit(user, "modification", "fiche modèle Ecooter", key, target.label);
   updateTag("ecooter-page");
-  return { ok: "La fiche des modèles est mise à jour sur le site." };
+  return { ok: scope === SHARED_ID ? "Le contenu commun est mis à jour sur le site." : `La fiche de ${target.label} est mise à jour sur le site.` };
 }
 
-/** Revient au contenu d'origine du site. */
-export async function resetEcooterPageAction() {
+/** Moto : revient au contenu commun. Contenu commun : revient au contenu d'origine du site. */
+export async function resetEcooterPageAction(fd: FormData) {
   const user = await requireActionUser("motos.write");
+  const scope = s(fd, "scope");
+  const target = await checkScope(scope);
+  if (!target.ok) redirect("/admin/fiche-modele?ok=notfound");
   const db = await getDb();
-  await db.delete(schema.settings).where(eq(schema.settings.key, "ecooterPage"));
-  await logAudit(user, "réinitialisation", "fiche modèle Ecooter", "ecooterPage");
+  const key = pageKey(scope);
+  await db.delete(schema.settings).where(eq(schema.settings.key, key));
+  await logAudit(user, "réinitialisation", "fiche modèle Ecooter", key, target.label);
   updateTag("ecooter-page");
-  redirect("/admin/fiche-modele?ok=reset");
+  redirect(`/admin/fiche-modele/${scope}?ok=reset`);
 }

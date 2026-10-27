@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { saveEcooterPageAction, resetEcooterPageAction } from "@/app/admin/(panel)/fiche-modele/actions";
-import { LIMITS, type Bi, type EcooterPageContent, type PageBlock, type PageButton } from "@/lib/ecooter-page";
+import { LIMITS, SHARED_ID, type Bi, type EcooterPageContent, type PageBlock, type PageButton } from "@/lib/ecooter-page";
 import { ConfirmButton, SubmitButton, useActionForm } from "./client";
 import { Field, FormError, Panel, Toggle, btn, inputClass, selectClass, textareaClass } from "./ui";
 
@@ -51,6 +50,29 @@ function BlockEditor({
   onRemove: () => void;
 }) {
   const set = (patch: Partial<PageBlock>) => onChange({ ...block, ...patch });
+  // Photo de détail : celle déjà enregistrée, ou le fichier qui vient d'être choisi (envoyé à l'enregistrement).
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [chosen, setChosen] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+  useEffect(() => () => {
+    if (chosen) URL.revokeObjectURL(chosen);
+  }, [chosen]);
+  const detail = chosen ?? block.image ?? null;
+  const pick = (file: File | undefined) => {
+    setFileError(null);
+    if (!file) return setChosen(null);
+    if (file.size > 2 * 1024 * 1024) {
+      if (fileRef.current) fileRef.current.value = "";
+      return setFileError("Image trop lourde (2 Mo maximum).");
+    }
+    setChosen(URL.createObjectURL(file));
+  };
+  const clearDetail = () => {
+    if (fileRef.current) fileRef.current.value = "";
+    setChosen(null);
+    setFileError(null);
+    set({ image: null });
+  };
   const setButton = (i: number, patch: Partial<PageButton>) => set({ buttons: block.buttons.map((b, k) => (k === i ? { ...b, ...patch } : b)) });
 
   return (
@@ -87,15 +109,13 @@ function BlockEditor({
             className="relative aspect-[4/3] cursor-crosshair overflow-hidden rounded-2xl"
             style={{ background: "linear-gradient(135deg, #175c55 0%, #2f7d6e 52%, #c8e0a2 130%)" }}
           >
-            <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/25" />
-            <Image
-              src={photo}
-              unoptimized={photo.startsWith("/api/")}
+            {!detail && <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/25" />}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={detail ?? photo}
               alt=""
-              width={500}
-              height={500}
               draggable={false}
-              className="pointer-events-none absolute inset-0 size-full select-none object-contain"
+              className={`pointer-events-none absolute inset-0 size-full select-none ${detail ? "object-cover" : "object-contain"}`}
               style={{ transform: `scale(${block.zoom})`, transformOrigin: `${block.originX}% ${block.originY}%` }}
             />
             <span
@@ -105,6 +125,24 @@ function BlockEditor({
             />
           </div>
           <p className="text-xs text-muted">Aperçu du cadrage : cliquez sur l&apos;image pour choisir le point sur lequel zoomer.</p>
+          <div className="grid gap-2 rounded-2xl border border-line/70 bg-white/40 p-3">
+            <p className="text-sm font-semibold">Photo de détail</p>
+            <p className="text-xs text-muted">Sans photo de détail, le bloc recadre la photo principale de la moto. PNG, JPEG ou WebP, 2 Mo maximum.</p>
+            <input
+              ref={fileRef}
+              type="file"
+              name={`image-${block.id}`}
+              accept="image/png,image/jpeg,image/webp"
+              onChange={(e) => pick(e.target.files?.[0])}
+              className="block w-full cursor-pointer text-sm file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-on-accent hover:file:opacity-90"
+            />
+            {fileError && <p role="alert" className="text-xs font-medium text-red-700">{fileError}</p>}
+            {detail && (
+              <button type="button" className={`${btn("soft", "sm")} w-fit`} onClick={clearDetail}>
+                Retirer la photo de détail
+              </button>
+            )}
+          </div>
           <Field label={`Zoom : ×${block.zoom.toFixed(1)}`}>
             <input type="range" min={1} max={3} step={0.1} value={block.zoom} onChange={(e) => set({ zoom: Number(e.target.value) })} className="accent-[#175c55]" />
           </Field>
@@ -194,7 +232,7 @@ function BlockEditor({
   );
 }
 
-export function ModelPageForm({ initial, photo }: { initial: EcooterPageContent; photo: string }) {
+export function ModelPageForm({ initial, photo, scope, custom }: { initial: EcooterPageContent; photo: string; scope: string; custom: boolean }) {
   const [content, setContent] = useState(initial);
   const { state, onSubmit, pending } = useActionForm(saveEcooterPageAction);
   const setBlock = (i: number, b: PageBlock) => setContent({ ...content, blocks: content.blocks.map((x, k) => (k === i ? b : x)) });
@@ -202,6 +240,7 @@ export function ModelPageForm({ initial, photo }: { initial: EcooterPageContent;
   return (
     <div className="grid gap-6">
       <form method="post" onSubmit={onSubmit} className="grid gap-6">
+        <input type="hidden" name="scope" value={scope} />
         <input type="hidden" name="data" value={JSON.stringify(content)} />
 
         {content.blocks.map((b, i) => (
@@ -257,25 +296,32 @@ export function ModelPageForm({ initial, photo }: { initial: EcooterPageContent;
 
         <div className="sticky bottom-4 z-20 flex flex-wrap items-center gap-3 rounded-full glass-nav px-4 py-3">
           <SubmitButton pending={pending} pendingLabel="Enregistrement…">
-            Enregistrer la fiche
+            {scope === SHARED_ID ? "Enregistrer le contenu commun" : "Enregistrer la fiche"}
           </SubmitButton>
           {state?.ok && <p role="status" className="text-sm font-semibold text-accent">{state.ok}</p>}
           <FormError message={state?.error} />
         </div>
       </form>
 
-      <form>
-        <ConfirmButton
-          variant="soft"
-          size="sm"
-          title="Rétablir le contenu d'origine ?"
-          message="Vos modifications de cette page seront remplacées par le contenu d'origine du site."
-          confirmLabel="Rétablir"
-          formAction={resetEcooterPageAction}
-        >
-          Rétablir le contenu d&apos;origine
-        </ConfirmButton>
-      </form>
+      {(custom || scope === SHARED_ID) && (
+        <form>
+          <input type="hidden" name="scope" value={scope} />
+          <ConfirmButton
+            variant="soft"
+            size="sm"
+            title={scope === SHARED_ID ? "Rétablir le contenu d'origine ?" : "Revenir au contenu commun ?"}
+            message={
+              scope === SHARED_ID
+                ? "Vos modifications du contenu commun seront remplacées par le contenu d'origine du site."
+                : "La fiche personnalisée de cette moto sera supprimée : elle reprendra le contenu commun."
+            }
+            confirmLabel={scope === SHARED_ID ? "Rétablir" : "Revenir au commun"}
+            formAction={resetEcooterPageAction}
+          >
+            {scope === SHARED_ID ? "Rétablir le contenu d'origine" : "Revenir au contenu commun"}
+          </ConfirmButton>
+        </form>
+      )}
     </div>
   );
 }

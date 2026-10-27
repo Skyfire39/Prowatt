@@ -42,6 +42,9 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     agentFeedback: true,
+    // Les formulaires d'administration envoient des photos (2 Mo chacune, plusieurs dans la fiche d'un modèle) :
+    // la limite par défaut de 1 Mo les ferait échouer.
+    serverActions: { bodySizeLimit: "20mb" },
   },
   cacheComponents: true,
   partialPrefetching: true,

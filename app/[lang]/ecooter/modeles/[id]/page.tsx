@@ -49,7 +49,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
   const model = ecooters[index];
   const { lang, dict } = await loadPage(params);
   const site = toSiteInfo(await getSettings());
-  const page = await getEcooterPage();
+  const page = await getEcooterPage(model.id);
   // Jetons des textes de l'admin : coordonnées de l'entreprise et adresses relatives au site.
   const fill = (t: string) =>
     t.replaceAll("{address}", site.address[lang]).replaceAll("{hours}", site.hours[lang][0] ?? "").replaceAll("{phone}", site.phone);
@@ -208,6 +208,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
               <ModelFeature
                 key={b.id}
                 photo={model.photo}
+                detail={b.image}
                 name={model.name}
                 side={b.side}
                 zoom={b.zoom}

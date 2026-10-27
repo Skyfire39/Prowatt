@@ -8,6 +8,7 @@ import { Reveal } from "./motion";
  */
 export function ModelFeature({
   photo,
+  detail,
   name,
   side,
   zoom = 1,
@@ -17,6 +18,8 @@ export function ModelFeature({
   children,
 }: {
   photo: string;
+  /** Photo de détail propre au bloc : elle remplit le cadre au lieu de la moto détourée sur fond teal. */
+  detail?: string | null;
   name: string;
   side: "left" | "right";
   zoom?: number;
@@ -34,18 +37,34 @@ export function ModelFeature({
           className="relative aspect-[4/3] overflow-hidden rounded-3xl"
           style={{ background: "linear-gradient(135deg, #175c55 0%, #2f7d6e 52%, #c8e0a2 130%)" }}
         >
-          <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/25" />
-          <Image
-            src={photo}
-            unoptimized={photo.startsWith("/api/")}
-            alt={name}
-            width={1100}
-            height={1100}
-            sizes="(min-width: 1024px) 700px, 92vw"
-            draggable={false}
-            className="absolute inset-0 size-full select-none object-contain drop-shadow-[0_24px_24px_rgb(5_25_22/0.4)]"
-            style={{ transform: `scale(${zoom})`, transformOrigin: origin }}
-          />
+          {detail ? (
+            <Image
+              src={detail}
+              unoptimized
+              alt={name}
+              width={1400}
+              height={1050}
+              sizes="(min-width: 1024px) 700px, 92vw"
+              draggable={false}
+              className="absolute inset-0 size-full select-none object-cover"
+              style={{ transform: `scale(${zoom})`, transformOrigin: origin }}
+            />
+          ) : (
+            <>
+              <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/25" />
+              <Image
+                src={photo}
+                unoptimized={photo.startsWith("/api/")}
+                alt={name}
+                width={1100}
+                height={1100}
+                sizes="(min-width: 1024px) 700px, 92vw"
+                draggable={false}
+                className="absolute inset-0 size-full select-none object-contain drop-shadow-[0_24px_24px_rgb(5_25_22/0.4)]"
+                style={{ transform: `scale(${zoom})`, transformOrigin: origin }}
+              />
+            </>
+          )}
         </div>
       </Reveal>
 

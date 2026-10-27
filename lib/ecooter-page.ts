@@ -1,6 +1,9 @@
 import defaultsJson from "./ecooter-page-defaults.json";
 
-/** Contenu modifiable de la fiche d'un modèle Ecooter (identique pour tous les modèles). */
+/**
+ * Contenu modifiable de la fiche d'un modèle Ecooter. Chaque moto peut avoir sa propre fiche ; sans fiche
+ * personnalisée, elle reprend le contenu commun (lui-même remplaçable par le contenu d'origine du site).
+ */
 export type Bi = { fr: string; en: string };
 export type PageButton = { label: Bi; href: string; style: "primary" | "glass" };
 export type PageBlock = {
@@ -11,6 +14,8 @@ export type PageBlock = {
   zoom: number;
   originX: number;
   originY: number;
+  /** Photo de détail propre au bloc (/api/media/…). Sans elle, le bloc recadre la photo principale de la moto. */
+  image?: string | null;
   title: Bi;
   /** `**gras**` accepté ; {address} {hours} {phone} remplacés par les coordonnées de l'entreprise. */
   bullets: Bi[];
@@ -24,6 +29,11 @@ export type EcooterPageContent = {
 };
 
 export const defaultEcooterPage = defaultsJson as EcooterPageContent;
+
+/** Réglage où est rangé le contenu : « ecooterPage » (commun) ou « ecooterPage:<id de la moto> ». */
+export const SHARED_ID = "commun";
+export const pageKey = (motoId?: string | null) => (motoId && motoId !== SHARED_ID ? `ecooterPage:${motoId}` : "ecooterPage");
+const MEDIA_URL = /^\/api\/media\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export const LIMITS = { blocks: 8, bullets: 8, buttons: 3, title: 120, bullet: 400, label: 40, href: 200 } as const;
 
@@ -54,6 +64,7 @@ export function parseEcooterPage(raw: unknown): EcooterPageContent {
           zoom: num(x.zoom, 1, 3, 1),
           originX: num(x.originX, 0, 100, 50),
           originY: num(x.originY, 0, 100, 50),
+          image: typeof x.image === "string" && MEDIA_URL.test(x.image) ? x.image : null,
           title: bi(x.title, LIMITS.title),
           bullets: (Array.isArray(x.bullets) ? x.bullets : []).slice(0, LIMITS.bullets).map((t) => bi(t, LIMITS.bullet)).filter((t) => t.fr),
           buttons: (Array.isArray(x.buttons) ? x.buttons : [])

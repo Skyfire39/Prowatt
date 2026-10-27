@@ -3,12 +3,12 @@
  * statiques de lib/data.ts quand aucune base n'est configurée ou qu'elle est injoignable.
  * Chaque lecture est mise en cache et étiquetée : l'admin l'invalide avec updateTag(<étiquette>).
  */
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, inArray } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import * as data from "./data";
 import type { EcooterSpecs, L10n } from "./data";
 import { dbConfigured, getDb, schema } from "./db";
-import { defaultEcooterPage, parseEcooterPage, type EcooterPageContent } from "./ecooter-page";
+import { defaultEcooterPage, pageKey, parseEcooterPage, type EcooterPageContent } from "./ecooter-page";
 import { defaultSettings, mergeSettings, type AppSettings } from "./settings";
 
 export type CatalogProduct = {
@@ -163,15 +163,20 @@ export async function getSettings(): Promise<AppSettings> {
   }
 }
 
-/** Contenu des blocs de la fiche d'un modèle Ecooter (modifiable dans l'admin). */
-export async function getEcooterPage(): Promise<EcooterPageContent> {
+/**
+ * Contenu des blocs de la fiche d'un modèle Ecooter (modifiable dans l'admin) : celui de la moto si elle a une
+ * fiche personnalisée, sinon le contenu commun, sinon celui d'origine du site.
+ */
+export async function getEcooterPage(motoId?: string): Promise<EcooterPageContent> {
   "use cache";
   cacheTag("ecooter-page");
   cacheLife("minutes");
   if (!dbConfigured()) return defaultEcooterPage;
   try {
     const db = await getDb();
-    const [row] = await db.select().from(schema.settings).where(eq(schema.settings.key, "ecooterPage")).limit(1);
+    const keys = motoId ? [pageKey(motoId), pageKey()] : [pageKey()];
+    const rows = await db.select().from(schema.settings).where(inArray(schema.settings.key, keys));
+    const row = keys.map((k) => rows.find((r) => r.key === k)).find(Boolean);
     return row ? parseEcooterPage(row.value) : defaultEcooterPage;
   } catch (e) {
     console.error("[content] fiche Ecooter : repli statique", e instanceof Error ? e.message : e);

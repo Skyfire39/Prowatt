@@ -49,6 +49,7 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
+      data-scroll-behavior="smooth"
       className={`${reddit.variable} antialiased`}
     >
       <body className="min-h-dvh overflow-x-hidden">

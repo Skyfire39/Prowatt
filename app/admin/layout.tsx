@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 /** Racine indépendante du site public : pas de navigation du site, ni de panier, ni de bulles de contact. */
 export default function AdminRoot({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${reddit.variable} antialiased`}>
+    <html lang="fr" data-scroll-behavior="smooth" className={`${reddit.variable} antialiased`}>
       <body className="min-h-dvh overflow-x-hidden">
         <div className="ambient" aria-hidden="true">
           <span />

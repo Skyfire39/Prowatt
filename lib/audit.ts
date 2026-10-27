@@ -1,3 +1,4 @@
+import { resetNavCounts } from "./admin/queries";
 import { getDb, schema } from "./db";
 import type { SessionUser } from "./auth/session";
 
@@ -9,6 +10,8 @@ export async function logAudit(
   entityId?: string | null,
   detail?: string,
 ) {
+  // Toute modification journalisée (commande, facture, paiement…) peut changer les badges de la navigation.
+  resetNavCounts();
   try {
     const db = await getDb();
     await db.insert(schema.auditLog).values({

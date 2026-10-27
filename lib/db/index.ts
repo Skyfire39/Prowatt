@@ -38,7 +38,18 @@ async function create(): Promise<Db> {
     holder.kind = "postgres";
     const [{ default: postgres }, { drizzle }] = await Promise.all([import("postgres"), import("drizzle-orm/postgres-js")]);
     // prepare: false → compatible avec les poolers en mode transaction (Supabase, port 6543).
-    const client = postgres(url(), { prepare: false, max: 5, idle_timeout: 20, connect_timeout: 15, ssl: "require" });
+    // Ouvrir une connexion TLS vers un pooler distant coûte plusieurs secondes : on les garde ouvertes
+    // (en développement, jamais fermées pour inactivité) et on en réchauffe quelques-unes tout de suite,
+    // pour que les pages qui lancent plusieurs requêtes en parallèle n'attendent pas chacune une connexion neuve.
+    // `max` dépasse le plus grand nombre de requêtes lancées d'un coup par une page : au-delà, la file d'attente
+    // du pilote restait bloquée derrière un pooler distant (mesuré avec Supabase).
+    const dev = process.env.NODE_ENV === "development";
+    const client = postgres(url(), { prepare: false, max: 16, ...(dev ? {} : { idle_timeout: 60 }), max_lifetime: 60 * 30, connect_timeout: 20, ssl: "require" });
+    const warm = () => Promise.all(Array.from({ length: 6 }, () => client`select 1`)).catch(() => {});
+    void warm();
+    // En développement le pooler finit par couper les connexions inactives : un battement toutes les 40 s évite
+    // de repayer plusieurs secondes de reconnexion au prochain clic.
+    if (dev) setInterval(() => void warm(), 40_000).unref();
     return drizzle(client, { schema }) as unknown as Db;
   }
   if (process.env.NODE_ENV !== "development") throw new Error("DATABASE_URL manquant");

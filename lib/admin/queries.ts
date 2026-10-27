@@ -7,8 +7,26 @@ const { invoices, payments, orders, quotes, customers, auditLog, orderItems } = 
 /** Total encaissé sur une facture (sous-requête réutilisable). */
 export const paidSql = sql<number>`coalesce((select sum(p.amount) from payments p where p.invoice_id = "invoices"."id"), 0)::int`;
 
-/** Compteurs affichés en badge dans la navigation. */
-export async function getNavCounts() {
+type NavCounts = { newOrders: number; overdueInvoices: number };
+let navCache: { at: number; value: NavCounts } | undefined;
+
+/**
+ * Compteurs affichés en badge dans la navigation. Gardés 15 s en mémoire : ils sont demandés à chaque page de
+ * l'administration et la base peut être loin (chaque aller-retour coûte plusieurs centaines de millisecondes).
+ * Les actions qui changent une commande ou une facture appellent `resetNavCounts()`.
+ */
+export function resetNavCounts() {
+  navCache = undefined;
+}
+
+export async function getNavCounts(): Promise<NavCounts> {
+  if (navCache && Date.now() - navCache.at < 15_000) return navCache.value;
+  const value = await loadNavCounts();
+  navCache = { at: Date.now(), value };
+  return value;
+}
+
+async function loadNavCounts(): Promise<NavCounts> {
   const db = await getDb();
   const t = today();
   const [[o], [i]] = await Promise.all([

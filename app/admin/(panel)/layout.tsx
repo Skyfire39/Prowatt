@@ -17,8 +17,8 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
 
 async function PanelShell({ children }: { children: React.ReactNode }) {
   if (!dbConfigured()) return <DatabaseMissing />;
-  const user = await requireUser();
-  const counts = await getNavCounts();
+  // Session et compteurs sont indépendants : on les demande ensemble pour ne payer qu'un aller-retour vers la base.
+  const [user, counts] = await Promise.all([requireUser(), getNavCounts()]);
   const r = user.role;
 
   const groups = [

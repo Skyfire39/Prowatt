@@ -51,7 +51,7 @@ export default async function ModelPageEditor({ params, searchParams }: { params
         actions={
           moto && (
             <div className="flex flex-wrap gap-3 text-sm font-semibold">
-              <Link href={`/fr/ecooter/modeles/${moto.id}`} target="_blank" className="text-accent hover:underline">
+              <Link href={`/ecooter/modeles/${moto.id}`} target="_blank" className="text-accent hover:underline">
                 Voir sur le site ↗
               </Link>
               <Link href={`/admin/motos/${moto.id}`} className="text-accent hover:underline">

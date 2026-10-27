@@ -6,7 +6,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import { slugs } from "@/lib/data";
-import type { Locale } from "@/lib/i18n";
 import { CartIcon, ChevronIcon, CloseIcon, MenuIcon } from "./icons";
 import { cart, useCart } from "@/lib/cart";
 import { Logo } from "./logo";
@@ -18,11 +17,9 @@ type Item = {
 };
 
 export function Navbar({
-  lang,
   nav,
   categories,
 }: {
-  lang: Locale;
   nav: Dictionary["nav"];
   categories: Dictionary["categories"];
 }) {
@@ -30,7 +27,7 @@ export function Navbar({
   const pathname = usePathname();
   const { count } = useCart();
 
-  const base = `/${lang}`;
+  const base = "";
   const items: Item[] = [
     { href: `${base}/avantages`, label: nav.advantages },
     {
@@ -73,7 +70,7 @@ export function Navbar({
       className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6"
     >
       <nav className="glass-nav mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 rounded-full px-3 sm:gap-3 sm:px-5">
-        <Link href={base} aria-label="Prowatt Madagascar" onClick={() => setOpen(false)}>
+        <Link href={base || "/"} aria-label="Prowatt Madagascar" onClick={() => setOpen(false)}>
           <Logo className="h-7 w-auto sm:h-9" />
         </Link>
 

@@ -308,7 +308,7 @@ export type EcooterSpecs = {
   seat?: string;
 };
 
-export const modelHref = (lang: string, id: string) => `/${lang}/ecooter/modeles/${id}`;
+export const modelHref = (lang: string, id: string) => `/ecooter/modeles/${id}`;
 
 const woo = catalog.ecooters as Record<string, { price: number | null; specs: EcooterSpecs }>;
 const baseEcooters: { id: string; name: string; tagline: L10n; photo: string }[] = [

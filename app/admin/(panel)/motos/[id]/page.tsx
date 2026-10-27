@@ -27,7 +27,7 @@ export default async function EditMotoPage({ params }: { params: Promise<{ id: s
         subtitle={m.taglineFr}
         back={{ href: "/admin/motos", label: "Tous les modèles" }}
         actions={
-          <LinkBtn href={`/fr/ecooter/modeles/${m.id}`} target="_blank" variant="soft">
+          <LinkBtn href={`/ecooter/modeles/${m.id}`} target="_blank" variant="soft">
             <EyeIcon className="size-4" />
             Voir la page publique
           </LinkBtn>

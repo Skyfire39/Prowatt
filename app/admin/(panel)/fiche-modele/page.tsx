@@ -54,7 +54,7 @@ export default async function ModelPagesList({ searchParams }: { searchParams: P
                     <EditIcon className="size-4" />
                     Modifier la fiche
                   </Link>
-                  <Link href={`/fr/ecooter/modeles/${m.id}`} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-full px-4 text-sm font-semibold text-muted hover:bg-accent-soft hover:text-ink">
+                  <Link href={`/ecooter/modeles/${m.id}`} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-full px-4 text-sm font-semibold text-muted hover:bg-accent-soft hover:text-ink">
                     <EyeIcon className="size-4" />
                     Voir sur le site
                   </Link>

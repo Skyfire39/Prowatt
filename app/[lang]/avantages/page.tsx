@@ -24,7 +24,7 @@ const solIcons = [HomeIcon, BatteryIcon, GridIcon, ShieldIcon, SunIcon, DropIcon
 const benIcons = [BoltIcon, LeafIcon, PanelIcon, ShieldIcon];
 
 export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avantages">) {
-  const { lang, dict } = await loadPage(params);
+  const { dict } = await loadPage(params);
   const d = dict.advantagesPage;
 
   return (
@@ -96,8 +96,8 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
       <CtaBand
         title={dict.home.cta.title}
         subtitle={dict.home.cta.subtitle}
-        primary={{ href: `/${lang}/devis`, label: dict.home.cta.primary }}
-        secondary={{ href: `/${lang}/contact`, label: dict.home.cta.secondary }}
+        primary={{ href: `/devis`, label: dict.home.cta.primary }}
+        secondary={{ href: `/contact`, label: dict.home.cta.secondary }}
       />
     </>
   );

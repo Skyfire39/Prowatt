@@ -27,7 +27,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     <>
       <SolarParallax />
       <Hero lang={lang} dict={home.hero} message={home.message} statLabels={home.stats} />
-      <Solutions lang={lang} dict={home.solutions} categories={categories} explore={realisations.explore} />
+      <Solutions dict={home.solutions} categories={categories} explore={realisations.explore} />
       <FeaturedSection lang={lang} dict={home.featured} shop={shop} products={products} />
       <EcooterTeaser lang={lang} dict={home.ecooter} models={ecooter} ecooters={ecooters} />
       <Steps dict={home.steps} />
@@ -39,8 +39,8 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <CtaBand
         title={home.cta.title}
         subtitle={home.cta.subtitle}
-        primary={{ href: `/${lang}/devis`, label: home.cta.primary }}
-        secondary={{ href: `/${lang}/contact`, label: home.cta.secondary }}
+        primary={{ href: `/devis`, label: home.cta.primary }}
+        secondary={{ href: `/contact`, label: home.cta.secondary }}
       />
     </>
   );

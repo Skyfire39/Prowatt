@@ -25,7 +25,7 @@ const PATHS = [
  */
 export function BrandWatermark({ lang }: { lang?: Locale }) {
   const pathname = usePathname();
-  if (lang && (pathname === `/${lang}` || pathname === `/${lang}/` || pathname === "/")) return null;
+  if (lang && (pathname === "/" || pathname === `/${lang}`)) return null;
 
   const art = (glow: boolean) => (
     <svg viewBox="0 0 280 270.95" className={`bm-svg ${glow ? "bm-glow" : "bm-line"}`} aria-hidden="true" fill="none">

@@ -61,7 +61,7 @@ export default async function RootLayout({
         <BrandWatermark lang={lang} />
         <MotionProvider>
           <CatalogProvider products={products.map(({ description: _description, ...p }) => p)} site={toSiteInfo(settings)}>
-            <Navbar lang={lang} nav={dict.nav} categories={dict.categories} />
+            <Navbar nav={dict.nav} categories={dict.categories} />
             <main>{children}</main>
             <Footer lang={lang} dict={dict} />
             <FloatingContact dict={dict.floating} />
@@ -69,8 +69,8 @@ export default async function RootLayout({
               lang={lang}
               dict={dict.cart}
               currency={dict.shop.currency}
-              checkoutHref={`/${lang}/commande`}
-              shopHref={`/${lang}/boutique`}
+              checkoutHref={`/commande`}
+              shopHref={`/boutique`}
             />
           </CatalogProvider>
         </MotionProvider>

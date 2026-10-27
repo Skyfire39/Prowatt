@@ -146,7 +146,7 @@ export function CartDrawer({
                           <ProductThumb src={product.image} className="size-20 shrink-0" />
                           <div className="flex min-w-0 flex-1 flex-col">
                             <Link
-                              href={`/${lang}/boutique/${product.id}`}
+                              href={`/boutique/${product.id}`}
                               onClick={() => cart.close()}
                               className="line-clamp-2 text-[15px] font-semibold leading-snug hover:underline"
                             >

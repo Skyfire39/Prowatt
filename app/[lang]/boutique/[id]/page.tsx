@@ -57,7 +57,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
   const nf = new Intl.NumberFormat(lang);
   const name = tr(product.name, lang);
   const category = tr(categories.find((c) => c.id === product.category)!.name, lang);
-  const base = `/${lang}`;
+  const base = "";
 
   const related = [
     ...products.filter((p) => p.category === product.category && p.id !== product.id),
@@ -83,7 +83,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
             <nav aria-label="Breadcrumb" className="mb-8 text-sm text-muted">
               <ol className="flex flex-wrap items-center gap-2">
                 <li>
-                  <Link href={base} className="hover:text-ink">{dict.nav.home}</Link>
+                  <Link href={base || "/"} className="hover:text-ink">{dict.nav.home}</Link>
                 </li>
                 <ChevronIcon className="size-3.5 -rotate-90" />
                 <li>

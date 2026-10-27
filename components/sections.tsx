@@ -34,12 +34,10 @@ const blockIcons = [BoltIcon, DropIcon, WrenchIcon];
 const byNewest = (a: CatalogProduct, b: CatalogProduct) => b.addedAt.localeCompare(a.addedAt) || a.name.fr.localeCompare(b.name.fr, "fr");
 
 export function Solutions({
-  lang,
   dict,
   categories,
   explore,
 }: {
-  lang: Locale;
   dict: Home["solutions"];
   categories: Dictionary["categories"];
   explore: string;
@@ -77,7 +75,7 @@ export function Solutions({
               slug,
               name: categories[slug].name,
               short: categories[slug].short,
-              href: `/${lang}/realisations/${slug}`,
+              href: `/realisations/${slug}`,
             }))}
           />
         </div>
@@ -104,7 +102,7 @@ export function FeaturedSection({
     name: tr(p.name, lang),
     price: money(p.price),
     oldPrice: p.oldPrice ? money(p.oldPrice) : undefined,
-    href: `/${lang}/boutique/${p.id}`,
+    href: `/boutique/${p.id}`,
     image: p.image,
     badge,
   });
@@ -145,7 +143,7 @@ export function FeaturedSection({
           <FeaturedProducts tabs={tabs} labels={shop} groupLabel={dict.label} />
         </Reveal>
         <Reveal className="mt-10 flex justify-center">
-          <ButtonLink href={`/${lang}/boutique`} variant="glass" arrow>
+          <ButtonLink href={`/boutique`} variant="glass" arrow>
             {dict.cta}
           </ButtonLink>
         </Reveal>

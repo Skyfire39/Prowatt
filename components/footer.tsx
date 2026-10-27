@@ -19,7 +19,7 @@ const headClass = "text-sm font-semibold text-white";
 export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const year = await getYear();
   const site = toSiteInfo(await getSettings());
-  const base = `/${lang}`;
+  const base = "";
   const { nav, footer, categories } = dict;
   const explore = [
     { href: `${base}/avantages`, label: nav.advantages },
@@ -38,7 +38,7 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
         <div className="glass-teal mx-auto max-w-6xl rounded-3xl px-5 pb-8 pt-14 sm:px-12 sm:pt-16">
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <Link href={base} aria-label={site.name}>
+              <Link href={base || "/"} aria-label={site.name}>
                 <Logo color="text-lime" className="h-14 w-auto" />
               </Link>
               <p className="mt-8 max-w-sm text-balance text-3xl font-medium leading-tight tracking-[-0.03em]">

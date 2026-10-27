@@ -68,7 +68,7 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
               .map((s) => (
                 <li key={s}>
                   <Link
-                    href={`/${lang}/realisations/${s}`}
+                    href={`/realisations/${s}`}
                     className="glass inline-block rounded-full px-5 py-2.5 text-sm font-medium transition-transform hover:opacity-80"
                   >
                     {dict.categories[s].name}
@@ -82,8 +82,8 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
       <CtaBand
         title={dict.home.cta.title}
         subtitle={dict.home.cta.subtitle}
-        primary={{ href: `/${lang}/devis`, label: dict.home.cta.primary }}
-        secondary={{ href: `/${lang}/contact`, label: dict.home.cta.secondary }}
+        primary={{ href: `/devis`, label: dict.home.cta.primary }}
+        secondary={{ href: `/contact`, label: dict.home.cta.secondary }}
       />
     </>
   );

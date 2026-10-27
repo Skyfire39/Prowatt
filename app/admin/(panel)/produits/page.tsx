@@ -124,7 +124,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                 </Td>
                 <Td right>
                   <div className="flex items-center justify-end gap-1">
-                    <Link href={`/fr/boutique/${r.id}`} target="_blank" aria-label={`Voir ${r.nameFr} sur le site`} className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-accent-soft hover:text-ink">
+                    <Link href={`/boutique/${r.id}`} target="_blank" aria-label={`Voir ${r.nameFr} sur le site`} className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-accent-soft hover:text-ink">
                       <EyeIcon className="size-[18px]" />
                     </Link>
                     {canWrite && (

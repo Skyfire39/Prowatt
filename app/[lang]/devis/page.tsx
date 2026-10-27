@@ -11,11 +11,11 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/devis">): 
 }
 
 export default async function QuotesPage({ params }: PageProps<"/[lang]/devis">) {
-  const { lang, dict } = await loadPage(params);
+  const { dict } = await loadPage(params);
   const q = dict.quotes;
   const cards = [
-    { href: `/${lang}/devis/particulier`, icon: HomeIcon, ...q.individual },
-    { href: `/${lang}/devis/societe`, icon: BuildingIcon, ...q.company },
+    { href: `/devis/particulier`, icon: HomeIcon, ...q.individual },
+    { href: `/devis/societe`, icon: BuildingIcon, ...q.company },
   ];
 
   return (

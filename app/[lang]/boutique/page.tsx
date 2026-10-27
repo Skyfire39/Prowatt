@@ -38,7 +38,7 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">
                 price: `${nf.format(p.price)} ${d.currency}`,
                 priceValue: p.price as number | null,
                 addedAt: p.addedAt,
-                href: `/${lang}/boutique/${p.id}`,
+                href: `/boutique/${p.id}`,
                 image: p.image,
                 oldPrice: p.oldPrice ? `${nf.format(p.oldPrice)} ${d.currency}` : undefined,
               })),

@@ -55,10 +55,10 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
   const fill = (t: string) =>
     t.replaceAll("{address}", site.address[lang]).replaceAll("{hours}", site.hours[lang][0] ?? "").replaceAll("{phone}", site.phone);
   const href = (h: string) =>
-    h === "{phoneHref}" ? site.phoneHref : h === "{emailHref}" ? mailto(subject, "", site.email) : h.startsWith("/") ? `/${lang}${h}` : h;
+    h === "{phoneHref}" ? site.phoneHref : h === "{emailHref}" ? mailto(subject, "", site.email) : h.startsWith("/") ? h : h;
   const d = dict.ecooter;
   const m = d.model;
-  const base = `/${lang}`;
+  const base = "";
   const tagline = tr(model.tagline, lang);
   const specs = model.specs ?? {};
   const onRequest = d.slider.onRequest;
@@ -110,7 +110,7 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
             <nav aria-label={m.breadcrumbAria} className="mb-8 text-sm text-muted">
               <ol className="flex flex-wrap items-center gap-2">
                 <li>
-                  <Link href={base} className="hover:text-ink">{dict.nav.home}</Link>
+                  <Link href={base || "/"} className="hover:text-ink">{dict.nav.home}</Link>
                 </li>
                 <ChevronIcon className="size-3.5 -rotate-90" />
                 <li>

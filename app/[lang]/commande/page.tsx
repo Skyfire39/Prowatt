@@ -24,7 +24,7 @@ export default async function CheckoutPage({ params }: PageProps<"/[lang]/comman
             lang={lang}
             dict={d}
             currency={dict.shop.currency}
-            shopHref={`/${lang}/boutique`}
+            shopHref={`/boutique`}
             pickupAddress={settings.company.address[lang]}
             payment={settings.payment}
             mvolaLive={isMvolaConfigured()}

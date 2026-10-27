@@ -45,7 +45,7 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
           {techs.map((t, i) => (
             <Reveal key={t} delay={i * 0.1}>
               <Link
-                href={`/${lang}/ecooter/${t}`}
+                href={`/ecooter/${t}`}
                 className="glass-teal group flex h-full flex-col rounded-3xl p-8 transition-transform hover:-translate-y-1 sm:p-10"
               >
                 <span className="grid size-12 place-items-center rounded-full bg-lime text-teal">
@@ -99,8 +99,8 @@ export default async function EcooterPage({ params }: PageProps<"/[lang]/ecooter
       <CtaBand
         title={dict.home.cta.title}
         subtitle={dict.home.cta.subtitle}
-        primary={{ href: `/${lang}/contact`, label: dict.home.cta.secondary }}
-        secondary={{ href: `/${lang}/devis`, label: dict.home.cta.primary }}
+        primary={{ href: `/contact`, label: dict.home.cta.secondary }}
+        secondary={{ href: `/devis`, label: dict.home.cta.primary }}
       />
     </>
   );

@@ -50,7 +50,7 @@ export function ModelCard({
             {techs.map((t) => (
               <Link
                 key={t}
-                href={`/${lang}/ecooter/${t}`}
+                href={`/ecooter/${t}`}
                 className={`rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80 ${
                   active === t ? "bg-accent text-on-accent" : "glass-chip"
                 }`}

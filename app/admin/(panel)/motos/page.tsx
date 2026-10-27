@@ -57,7 +57,7 @@ export default async function MotosPage({ searchParams }: { searchParams: Promis
                       <EditIcon className="size-4" />
                       Modifier
                     </LinkBtn>
-                    <LinkBtn href={`/fr/ecooter/modeles/${m.id}`} target="_blank" variant="soft" size="sm">
+                    <LinkBtn href={`/ecooter/modeles/${m.id}`} target="_blank" variant="soft" size="sm">
                       <EyeIcon className="size-4" />
                       Voir
                     </LinkBtn>

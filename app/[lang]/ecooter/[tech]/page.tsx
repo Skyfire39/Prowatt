@@ -63,7 +63,7 @@ async function TechContent({ params }: { params: PageProps<"/[lang]/ecooter/[tec
     <>
       <PageHero eyebrow={`${d.eyebrow} · ${d.battery}`} title={t.title} subtitle={t.intro}>
         <Link
-          href={`/${lang}/ecooter/${other}`}
+          href={`/ecooter/${other}`}
           className="glass inline-flex h-12 items-center gap-2 rounded-full px-6 text-[15px] font-medium transition-opacity hover:opacity-85"
         >
           {d.otherTech} : {d.techs[other].name}
@@ -113,8 +113,8 @@ async function TechContent({ params }: { params: PageProps<"/[lang]/ecooter/[tec
       <CtaBand
         title={dict.home.cta.title}
         subtitle={dict.home.cta.subtitle}
-        primary={{ href: `/${lang}/contact`, label: dict.home.cta.secondary }}
-        secondary={{ href: `/${lang}/ecooter`, label: d.allModels }}
+        primary={{ href: `/contact`, label: dict.home.cta.secondary }}
+        secondary={{ href: `/ecooter`, label: d.allModels }}
       />
     </>
   );

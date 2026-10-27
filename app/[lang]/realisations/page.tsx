@@ -21,7 +21,7 @@ const icons: Record<Slug, typeof HomeIcon> = {
 };
 
 export default async function RealisationsPage({ params }: PageProps<"/[lang]/realisations">) {
-  const { lang, dict } = await loadPage(params);
+  const { dict } = await loadPage(params);
   const d = dict.realisations;
 
   return (
@@ -37,7 +37,7 @@ export default async function RealisationsPage({ params }: PageProps<"/[lang]/re
               <Reveal key={slug} delay={(i % 3) * 0.08}>
                 <HoverLift className="h-full">
                   <Link
-                    href={`/${lang}/realisations/${slug}`}
+                    href={`/realisations/${slug}`}
                     className="glass group relative flex h-full flex-col overflow-hidden rounded-2xl p-8"
                   >
                     <span className="relative grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
@@ -64,8 +64,8 @@ export default async function RealisationsPage({ params }: PageProps<"/[lang]/re
       <CtaBand
         title={dict.home.cta.title}
         subtitle={dict.home.cta.subtitle}
-        primary={{ href: `/${lang}/devis`, label: dict.home.cta.primary }}
-        secondary={{ href: `/${lang}/contact`, label: dict.home.cta.secondary }}
+        primary={{ href: `/devis`, label: dict.home.cta.primary }}
+        secondary={{ href: `/contact`, label: dict.home.cta.secondary }}
       />
     </>
   );

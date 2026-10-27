@@ -113,10 +113,10 @@ export function Hero({
             transition={{ duration: 0.7, ease, delay: 0.45 }}
             className="mt-8 flex flex-wrap gap-3"
           >
-            <ButtonLink href={`/${lang}/contact`} variant="lime" arrow>
+            <ButtonLink href={`/contact`} variant="lime" arrow>
               {dict.primary}
             </ButtonLink>
-            <ButtonLink href={`/${lang}/devis`} variant="glass">
+            <ButtonLink href={`/devis`} variant="glass">
               {dict.secondary}
             </ButtonLink>
           </motion.div>

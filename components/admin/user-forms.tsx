@@ -26,7 +26,7 @@ export function RoleSelect({ defaultValue, disabled }: { defaultValue: string; d
 export function CreateUserForm() {
   const { state, onSubmit, pending } = useActionForm(createUserAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-5">
+    <form method="post" onSubmit={onSubmit} className="grid gap-5">
       <Field label="Nom" required>
         <input name="name" required className={inputClass} />
       </Field>
@@ -48,7 +48,7 @@ export function CreateUserForm() {
 export function EditUserForm({ user, self }: { user: { id: string; name: string; email: string; role: string; active: boolean }; self: boolean }) {
   const { state, onSubmit, pending } = useActionForm(updateUserAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-5">
+    <form method="post" onSubmit={onSubmit} className="grid gap-5">
       <input type="hidden" name="id" value={user.id} />
       <Field label="Nom" required>
         <input name="name" defaultValue={user.name} required className={inputClass} />
@@ -76,7 +76,7 @@ export function EditUserForm({ user, self }: { user: { id: string; name: string;
 export function ResetPasswordForm({ id }: { id: string }) {
   const { state, onSubmit, pending } = useActionForm(resetUserPasswordAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-4">
+    <form method="post" onSubmit={onSubmit} className="grid gap-4">
       <input type="hidden" name="id" value={id} />
       <Field label="Nouveau mot de passe provisoire" hint="L'utilisateur sera déconnecté de tous ses appareils.">
         <input name="password" type="text" autoComplete="off" required className={inputClass} />
@@ -90,7 +90,7 @@ export function ResetPasswordForm({ id }: { id: string }) {
 export function OwnPasswordForm() {
   const { state, onSubmit, pending } = useActionForm(changeOwnPasswordAction);
   return (
-    <form onSubmit={onSubmit}>
+    <form method="post" onSubmit={onSubmit}>
       <Panel title="Mot de passe" subtitle="Changer votre mot de passe déconnecte vos autres appareils.">
         <div className="grid gap-5">
           <Field label="Mot de passe actuel" required>
@@ -113,7 +113,7 @@ export function OwnPasswordForm() {
 export function OwnNameForm({ name }: { name: string }) {
   const { state, onSubmit, pending } = useActionForm(updateOwnNameAction);
   return (
-    <form onSubmit={onSubmit}>
+    <form method="post" onSubmit={onSubmit}>
       <Panel title="Profil">
         <div className="grid gap-5">
           <Field label="Nom affiché" required>

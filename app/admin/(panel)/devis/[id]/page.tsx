@@ -60,7 +60,7 @@ export default async function QuotePage({ params, searchParams }: { params: Prom
         }
       />
 
-      <div className="grid gap-6 xl:grid-cols-[1fr_20rem]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[1fr_20rem]">
         <div className="min-w-0 overflow-x-auto rounded-3xl bg-white/30 p-3 sm:p-6 xl:order-1">
           <DocumentSheet
             kind="quote"

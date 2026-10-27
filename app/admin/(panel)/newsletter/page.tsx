@@ -89,7 +89,7 @@ export default async function NewsletterPage({ searchParams }: { searchParams: P
         <Stat label="Désabonnés" value={num(unsub)} hint="exclus des envois" icon={<MailIcon className="size-5" />} />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-2">
         <Panel title="Connexion Mailchimp" subtitle={cfg ? "Les nouvelles inscriptions partent automatiquement vers votre audience." : "Pas encore reliée : les inscriptions sont sauvegardées ici en attendant."}>
           {cfg ? (
             <div className="grid gap-5">

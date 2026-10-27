@@ -29,7 +29,7 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
 
       <section id="avis" className="scroll-mt-6">
         <h2 className="mb-4 text-2xl tracking-tight">Avis clients</h2>
-        <div className="grid gap-6 xl:grid-cols-5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-5">
           <div className="grid content-start gap-3 xl:col-span-3">
             {testimonials.map((t) => (
               <article key={t.id} className="glass flex gap-4 rounded-3xl p-5">
@@ -76,7 +76,7 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
 
       <section id="partenaires" className="mt-12 scroll-mt-6">
         <h2 className="mb-4 text-2xl tracking-tight">Partenaires</h2>
-        <div className="grid gap-6 xl:grid-cols-5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-5">
           <div className="grid content-start gap-3 sm:grid-cols-2 xl:col-span-3">
             {partners.map((p) => (
               <article key={p.id} className="glass flex items-center gap-4 rounded-3xl p-4">

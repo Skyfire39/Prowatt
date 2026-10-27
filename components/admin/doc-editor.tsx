@@ -73,11 +73,11 @@ export function DocEditor({ kind, values, customers, products, action }: Props) 
   const isInvoice = kind === "invoice";
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-3">
+    <form method="post" onSubmit={onSubmit} className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-3">
       {values.id && <input type="hidden" name="id" value={values.id} />}
       <input type="hidden" name="items" value={payload} />
 
-      <div className="grid content-start gap-6 lg:col-span-2">
+      <div className="grid min-w-0 content-start gap-6 xl:col-span-2">
         <Panel title={isInvoice ? "Facture" : "Devis"}>
           <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Client" className="sm:col-span-2" hint={
@@ -112,7 +112,7 @@ export function DocEditor({ kind, values, customers, products, action }: Props) 
 
         <Panel title="Lignes" subtitle="Choisissez un produit du catalogue ou saisissez une ligne libre (main d'œuvre, transport…).">
           <div className="grid gap-4">
-            <div className="hidden grid-cols-[13rem_1fr_5.5rem_8.5rem_8rem_2.25rem] gap-3 px-1 text-xs font-semibold uppercase tracking-wider text-muted lg:grid">
+            <div className="hidden grid-cols-[13rem_minmax(0,1fr)_5.5rem_8.5rem_8rem_2.25rem] gap-3 px-1 text-xs font-semibold uppercase tracking-wider text-muted 2xl:grid">
               <span>Produit</span>
               <span>Désignation</span>
               <span className="text-right">Qté</span>
@@ -121,7 +121,7 @@ export function DocEditor({ kind, values, customers, products, action }: Props) 
               <span />
             </div>
             {lines.map((l, i) => (
-              <div key={l.key} className="grid gap-3 rounded-2xl border border-line/80 bg-white/55 p-3 lg:grid-cols-[13rem_1fr_5.5rem_8.5rem_8rem_2.25rem] lg:items-center lg:border-0 lg:bg-transparent lg:p-0">
+              <div key={l.key} className="grid grid-cols-[minmax(0,1fr)] gap-3 rounded-2xl border border-line/80 bg-white/55 p-3 2xl:grid-cols-[13rem_minmax(0,1fr)_5.5rem_8.5rem_8rem_2.25rem] 2xl:items-center 2xl:border-0 2xl:bg-transparent 2xl:p-0">
                 <select aria-label={`Produit de la ligne ${i + 1}`} value={l.productId} onChange={(e) => pick(l.key, e.target.value)} className={selectClass}>
                   <option value="">Ligne libre</option>
                   {products.map((p) => (
@@ -133,7 +133,7 @@ export function DocEditor({ kind, values, customers, products, action }: Props) 
                 <input aria-label={`Désignation de la ligne ${i + 1}`} value={l.description} onChange={(e) => patch(l.key, { description: e.target.value })} placeholder="Désignation" className={inputClass} />
                 <input aria-label={`Quantité de la ligne ${i + 1}`} inputMode="numeric" value={l.qty} onChange={(e) => patch(l.key, { qty: e.target.value === "" ? "" : Number(e.target.value.replace(/\D/g, "")) })} className={`${inputClass} text-right tabular-nums`} />
                 <input aria-label={`Prix unitaire de la ligne ${i + 1}`} inputMode="numeric" value={l.unitPrice === "" ? "" : l.unitPrice} onChange={(e) => patch(l.key, { unitPrice: e.target.value === "" ? "" : Number(e.target.value.replace(/[^\d]/g, "")) })} placeholder="0" className={`${inputClass} text-right tabular-nums`} />
-                <p className="px-1 text-right text-sm font-semibold tabular-nums lg:px-0">{ar((Number(l.unitPrice) || 0) * (Number(l.qty) || 0))}</p>
+                <p className="px-1 text-right text-sm font-semibold tabular-nums 2xl:px-0">{ar((Number(l.unitPrice) || 0) * (Number(l.qty) || 0))}</p>
                 <button
                   type="button"
                   onClick={() => setLines((ls) => (ls.length > 1 ? ls.filter((x) => x.key !== l.key) : [newLine()]))}
@@ -165,7 +165,7 @@ export function DocEditor({ kind, values, customers, products, action }: Props) 
         </Panel>
       </div>
 
-      <div className="grid content-start gap-6 lg:sticky lg:top-6 lg:self-start">
+      <div className="grid content-start gap-6 xl:sticky xl:top-6 xl:self-start">
         <Panel title="Montants">
           <div className="grid gap-4">
             <Field label="Remise (Ar)">

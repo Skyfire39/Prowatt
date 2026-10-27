@@ -72,7 +72,7 @@ export function QuoteForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-12">
+    <form method="post" onSubmit={onSubmit} className="grid gap-12">
       {sections.map((section, i) => (
         <fieldset key={section.title} className={`min-w-0 ${i > 0 ? "border-t border-line pt-10" : ""}`}>
           <legend className="mb-7 float-left w-full text-sm font-semibold uppercase tracking-[0.16em] text-accent">

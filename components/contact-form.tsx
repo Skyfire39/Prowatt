@@ -22,7 +22,7 @@ export function ContactForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-6">
+    <form method="post" onSubmit={onSubmit} className="grid gap-6">
       <div className="grid gap-6 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
           {labels.name}

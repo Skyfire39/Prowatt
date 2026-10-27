@@ -20,7 +20,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
     <>
       <Flash code={ok} />
       <PageHeader eyebrow="Système" title="Utilisateurs" subtitle="Chaque membre de l'équipe a son compte et ses droits." />
-      <div className="grid gap-6 xl:grid-cols-3">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-3">
         <Panel flush className="xl:col-span-2">
           <DataTable head={["Utilisateur", "Rôle", "État", "Dernière connexion"]}>
             {users.map((u) => (

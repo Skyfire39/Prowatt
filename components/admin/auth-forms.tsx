@@ -7,7 +7,7 @@ import { SubmitButton, useActionForm } from "./client";
 export function LoginForm() {
   const { state, onSubmit, pending } = useActionForm(loginAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-5" noValidate>
+    <form method="post" onSubmit={onSubmit} className="grid gap-5" noValidate>
       <Field label="Adresse e-mail">
         <input name="email" type="email" required autoComplete="username" autoFocus className={inputClass} placeholder="vous@prowatt.mg" />
       </Field>
@@ -25,7 +25,7 @@ export function LoginForm() {
 export function SetupForm({ needsCode }: { needsCode: boolean }) {
   const { state, onSubmit, pending } = useActionForm(setupAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-5" noValidate>
+    <form method="post" onSubmit={onSubmit} className="grid gap-5" noValidate>
       <Field label="Votre nom" required>
         <input name="name" required autoComplete="name" autoFocus className={inputClass} />
       </Field>

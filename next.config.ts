@@ -27,6 +27,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   // Postgres embarqué du développement : chargé tel quel par Node, jamais empaqueté.
   serverExternalPackages: ["@electric-sql/pglite"],
+  // Les navigateurs demandent toujours /favicon.ico : on les renvoie vers l'icône du site.
+  async redirects() {
+    return [{ source: "/favicon.ico", destination: "/icon.svg", permanent: false }];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

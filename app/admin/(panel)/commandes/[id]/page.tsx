@@ -56,7 +56,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
         }
       />
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-3">
         <div className="grid content-start gap-6 lg:col-span-2">
           <Panel title="Articles commandés" flush>
             <DataTable head={["Désignation", { label: "Prix unitaire", right: true }, { label: "Qté", right: true }, { label: "Total", right: true }]}>

@@ -20,7 +20,7 @@ export default async function EditUserPage({ params }: { params: Promise<{ id: s
   return (
     <>
       <PageHeader eyebrow="Utilisateurs" title={u.name} subtitle={`Créé le ${fmtDateTime(u.createdAt)} · dernière connexion : ${u.lastLoginAt ? fmtDateTime(u.lastLoginAt) : "jamais"}`} back={{ href: "/admin/utilisateurs", label: "Tous les utilisateurs" }} />
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-2">
         <Panel title="Compte">
           <EditUserForm user={{ id: u.id, name: u.name, email: u.email, role: u.role, active: u.active }} self={u.id === me.id} />
         </Panel>

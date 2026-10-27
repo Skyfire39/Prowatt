@@ -31,7 +31,7 @@ export default async function AccountPage() {
   return (
     <>
       <PageHeader eyebrow="Mon compte" title={user.name} subtitle={user.email} />
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-2">
         <div className="grid content-start gap-6">
           <OwnNameForm name={user.name} />
           <OwnPasswordForm />

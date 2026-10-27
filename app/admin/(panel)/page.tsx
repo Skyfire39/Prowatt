@@ -96,7 +96,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       )}
 
       {showFinance && (
-        <div className="mt-6 grid gap-6 xl:grid-cols-3">
+        <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-3">
           <Panel title="Encaissements" subtitle="Six derniers mois, tous modes de paiement" className="xl:col-span-2">
             <RevenueChart months={d.months} />
           </Panel>
@@ -118,7 +118,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
       )}
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-2">
         {showOrders && (
           <Panel
             title="Dernières commandes"

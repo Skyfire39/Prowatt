@@ -13,7 +13,7 @@ function Result({ state }: { state: { error?: string; ok?: string } | null }) {
 export function CompanyForm({ v }: { v: AppSettings["company"] }) {
   const { state, onSubmit, pending } = useActionForm(saveCompanyAction);
   return (
-    <form onSubmit={onSubmit}>
+    <form method="post" onSubmit={onSubmit}>
       <Panel title="Entreprise" subtitle="Coordonnées affichées sur le site (pied de page, contact, bulles WhatsApp et e-mail) et sur les documents.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Nom commercial" required className="sm:col-span-2">
@@ -47,7 +47,7 @@ export function CompanyForm({ v }: { v: AppSettings["company"] }) {
 export function PaymentForm({ v }: { v: AppSettings["payment"] }) {
   const { state, onSubmit, pending } = useActionForm(savePaymentAction);
   return (
-    <form onSubmit={onSubmit}>
+    <form method="post" onSubmit={onSubmit}>
       <Panel title="Coordonnées de paiement" subtitle="Affichées au client à la fin de sa commande (MVola, virement, carte). Un champ vide n'est pas affiché.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Numéro MVola marchand">
@@ -81,7 +81,7 @@ export function PaymentForm({ v }: { v: AppSettings["payment"] }) {
 export function BillingForm({ v }: { v: AppSettings["billing"] }) {
   const { state, onSubmit, pending } = useActionForm(saveBillingAction);
   return (
-    <form onSubmit={onSubmit}>
+    <form method="post" onSubmit={onSubmit}>
       <Panel title="Facturation" subtitle="Mentions légales et règles appliquées à tous les devis et factures.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Raison sociale" className="sm:col-span-2">

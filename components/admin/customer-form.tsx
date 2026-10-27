@@ -21,7 +21,7 @@ export type CustomerValues = {
 export function CustomerForm({ values }: { values: CustomerValues }) {
   const { state, onSubmit, pending } = useActionForm(saveCustomerAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-3">
+    <form method="post" onSubmit={onSubmit} className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-3">
       {values.id && <input type="hidden" name="id" value={values.id} />}
       <div className="grid gap-6 lg:col-span-2">
         <Panel title="Coordonnées">

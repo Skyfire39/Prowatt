@@ -13,7 +13,7 @@ export type PartnerValues = { id?: string; name: string; logo: string | null; so
 export function TestimonialForm({ values }: { values: TestimonialValues }) {
   const { state, onSubmit, pending } = useActionForm(saveTestimonialAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-5">
+    <form method="post" onSubmit={onSubmit} className="grid gap-5">
       {values.id && <input type="hidden" name="id" value={values.id} />}
       <div className="grid gap-5 sm:grid-cols-[1fr_8rem]">
         <Field label="Nom du client" required>
@@ -47,7 +47,7 @@ export function TestimonialForm({ values }: { values: TestimonialValues }) {
 export function PartnerForm({ values }: { values: PartnerValues }) {
   const { state, onSubmit, pending } = useActionForm(savePartnerAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-5">
+    <form method="post" onSubmit={onSubmit} className="grid gap-5">
       {values.id && <input type="hidden" name="id" value={values.id} />}
       <div className="grid gap-5 sm:grid-cols-[1fr_8rem]">
         <Field label="Nom du partenaire" required>

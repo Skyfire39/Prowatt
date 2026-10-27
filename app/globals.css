@@ -330,6 +330,12 @@ body:has([data-sticky-buy]) .floating-contact {
   }
 }
 
+/* Administration : un enfant de grille (tableau, longue valeur, sélecteur) ne doit jamais élargir toute la page
+   sur mobile. Sans cela, sa largeur minimale d'origine impose la largeur de la colonne. */
+.admin-main .grid > * {
+  min-width: 0;
+}
+
 /* Illustrations 3D animées (« Nos solutions » et « Pour qui »). Chaque classe `sa-*` est posée sur un
    élément SVG sans attribut transform : l'animation CSS en remplacerait l'origine. */
 .sa-breathe,

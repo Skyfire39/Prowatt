@@ -80,7 +80,7 @@ export default async function CustomerPage({ params, searchParams }: { params: P
         <Stat label="Reste à payer" value={ar(Math.max(0, billed - paid))} icon={<BagIcon className="size-5" />} hint={billed - paid > 0 ? "À encaisser" : "Compte à jour"} />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-3">
         <div className="grid content-start gap-6 lg:order-2">
           <Panel title="Coordonnées">
             <dl className="grid gap-3.5 text-sm">

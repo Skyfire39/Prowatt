@@ -223,7 +223,7 @@ export function AdminFrame({
         )}
       </AnimatePresence>
 
-      <main className="px-4 pb-20 pt-6 sm:px-6 lg:pl-[18.5rem] lg:pr-8 lg:pt-8">
+      <main className="admin-main px-4 pb-20 pt-6 sm:px-6 lg:pl-[18.5rem] lg:pr-8 lg:pt-8">
         <div className="mx-auto max-w-6xl">{children}</div>
       </main>
     </div>

@@ -201,7 +201,7 @@ export function ModelPageForm({ initial, photo }: { initial: EcooterPageContent;
 
   return (
     <div className="grid gap-6">
-      <form onSubmit={onSubmit} className="grid gap-6">
+      <form method="post" onSubmit={onSubmit} className="grid gap-6">
         <input type="hidden" name="data" value={JSON.stringify(content)} />
 
         {content.blocks.map((b, i) => (

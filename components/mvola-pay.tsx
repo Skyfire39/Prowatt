@@ -113,7 +113,7 @@ export function MvolaPay({
           className={box}
         >
           {(phase === "form" || phase === "starting") && (
-            <form onSubmit={pay} className="grid gap-4" noValidate>
+            <form method="post" onSubmit={pay} className="grid gap-4" noValidate>
               <label className="grid gap-2 text-sm font-medium">
                 {dict.mvolaPhone}
                 <input

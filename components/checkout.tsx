@@ -274,6 +274,7 @@ export function Checkout({
           {step === "form" ? (
             <motion.form
               key="form"
+              method="post"
               onSubmit={submit}
               initial={{ opacity: 0, x: -24 }}
               animate={{ opacity: 1, x: 0 }}

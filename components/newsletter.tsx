@@ -87,6 +87,7 @@ export function Newsletter({ dict }: { dict: Dictionary["newsletter"] }) {
             ) : (
               <motion.form
                 key="form"
+                method="post"
                 onSubmit={onSubmit}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

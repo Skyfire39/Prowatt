@@ -24,7 +24,7 @@ const Ok = ({ message }: { message?: string | null }) =>
 export function ImportForm() {
   const { state, onSubmit, pending } = useActionForm(importSubscribersAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-4">
+    <form method="post" onSubmit={onSubmit} className="grid gap-4">
       <Field label="Adresses e-mail" hint="Une par ligne, ou séparées par des virgules. Les doublons sont ignorés.">
         <textarea name="emails" rows={5} className={textareaClass} placeholder={"client@exemple.com\nautre@exemple.com"} />
       </Field>
@@ -41,7 +41,7 @@ export function ImportForm() {
 export function ConnectionTest() {
   const { state, onSubmit, pending } = useActionForm(testConnectionAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-3">
+    <form method="post" onSubmit={onSubmit} className="grid gap-3">
       <SubmitButton variant="soft" pending={pending} pendingLabel="Test en cours…" className="w-fit">
         Tester la connexion
       </SubmitButton>
@@ -55,7 +55,7 @@ export function ConnectionTest() {
 export function SyncAll({ pendingCount }: { pendingCount: number }) {
   const { state, onSubmit, pending } = useActionForm(syncAllAction);
   return (
-    <form onSubmit={onSubmit} className="grid gap-3">
+    <form method="post" onSubmit={onSubmit} className="grid gap-3">
       <SubmitButton variant={pendingCount > 0 ? "primary" : "soft"} pending={pending} pendingLabel="Envoi en cours…" className="w-fit">
         {pendingCount > 0 ? `Envoyer ${pendingCount} abonné${pendingCount > 1 ? "s" : ""} à Mailchimp` : "Tout est synchronisé"}
       </SubmitButton>
@@ -68,7 +68,7 @@ export function SyncAll({ pendingCount }: { pendingCount: number }) {
 /** Actions d'une ligne : renvoyer à Mailchimp, (ré)abonner, supprimer. */
 export function RowActions({ id, email, status, canSync }: { id: string; email: string; status: string; canSync: boolean }) {
   return (
-    <form className="flex justify-end gap-1.5">
+    <form className="relative flex justify-end gap-1.5">
       <input type="hidden" name="id" value={id} />
       {canSync && status === "subscribed" && (
         <SubmitButton formAction={syncOneAction} variant="soft" size="icon" title="Envoyer à Mailchimp" aria-label={`Envoyer ${email} à Mailchimp`}>

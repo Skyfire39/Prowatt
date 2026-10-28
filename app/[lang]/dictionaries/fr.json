@@ -438,6 +438,14 @@
     "installed": "Installé en",
     "moreInfo": "À propos du projet",
     "pagination": "Pages des réalisations",
+    "antiScene": {
+      "aria": "Illustration animée : le réseau électrique est coupé, mais la batterie de la maison bascule toute seule et garde le frigo, la télé et la lumière allumés, ainsi que le commerce et l'usine voisins.",
+      "cut": "Coupure du réseau",
+      "switch": "Bascule automatique",
+      "battery": "Batteries lithium",
+      "home": "Équipements en marche",
+      "business": "Commerces & industries"
+    },
     "waterScene": {
       "aria": "Illustration animée au coucher du soleil : des panneaux solaires alimentent une pompe immergée qui remplit un château d'eau, puis un chauffe-eau solaire et un robinet.",
       "sun": "Énergie 100 % solaire",

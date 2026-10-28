@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/json-ld";
 import { PaginatedGrid } from "@/components/paginated-grid";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/motion";
+import { AntiDelestageBanner } from "@/components/anti-delestage-banner";
 import { WaterBanner } from "@/components/water-banner";
 import { CtaBand, PageHero } from "@/components/ui";
 import { getProjects } from "@/lib/content";
@@ -51,6 +52,10 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
   const { lang, dict } = await loadPage(params);
   const c = dict.categories[slug];
   const list = (await getProjects()).filter((p) => p.slug === slug);
+  const scenes: Partial<Record<Slug, ReactNode>> = {
+    "anti-delestage": <AntiDelestageBanner labels={dict.realisations.antiScene} />,
+    "acces-a-eau": <WaterBanner labels={dict.realisations.waterScene} />,
+  };
 
   return (
     <>
@@ -66,7 +71,7 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
         title={c.name}
         subtitle={c.intro}
         photo={crops[slug]}
-        scene={slug === "acces-a-eau" ? <WaterBanner labels={dict.realisations.waterScene} /> : undefined}
+        scene={scenes[slug]}
       />
 
       <section className="px-4 pb-12 sm:px-6">

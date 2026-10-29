@@ -8,7 +8,7 @@ const { invoices, payments, orders, quotes, customers, auditLog, orderItems } = 
 /** Total encaissé sur une facture (sous-requête réutilisable). */
 export const paidSql = sql<number>`coalesce((select sum(p.amount) from payments p where p.invoice_id = "invoices"."id"), 0)::int`;
 
-type NavCounts = { newOrders: number; overdueInvoices: number };
+type NavCounts = { newOrders: number; overdueInvoices: number; newRequests: number };
 let navCache: { at: number; value: NavCounts } | undefined;
 
 /**
@@ -31,14 +31,15 @@ export async function getNavCounts(): Promise<NavCounts> {
 async function loadNavCounts(): Promise<NavCounts> {
   const db = await getDb();
   const t = today();
-  const [[o], [i]] = await Promise.all([
+  const [[o], [i], [r]] = await Promise.all([
     db.select({ n: sql<number>`count(*)::int` }).from(orders).where(eq(orders.status, "new")),
     db
       .select({ n: sql<number>`count(*)::int` })
       .from(invoices)
       .where(and(eq(invoices.status, "issued"), sql`${invoices.dueAt} < ${t}`, sql`${invoices.total} > ${paidSql}`)),
+    db.select({ n: sql<number>`count(*)::int` }).from(schema.quoteRequests).where(eq(schema.quoteRequests.status, "new")),
   ]);
-  return { newOrders: o.n, overdueInvoices: i.n };
+  return { newOrders: o.n, overdueInvoices: i.n, newRequests: r.n };
 }
 
 const monthKey = (d: Date) => d.toISOString().slice(0, 7);

@@ -405,3 +405,41 @@ export const subscribers = pgTable(
   },
   (t) => [uniqueIndex("subscribers_email_uq").on(t.email), index("subscribers_status_idx").on(t.status)],
 );
+
+/* ───────────── Demandes de devis du site ───────────── */
+
+export type QuoteRequestAnswers = { section: string; items: { label: string; value: string }[] }[];
+
+/**
+ * Demandes de devis envoyées depuis les formulaires « Particulier » et « Société » du site.
+ * `answers` garde les questions et les réponses telles que le visiteur les a vues : le PDF reste fidèle
+ * même si le formulaire change plus tard. Nom, téléphone, e-mail et ville sont repris à part pour la liste et la recherche.
+ */
+export const quoteRequests = pgTable(
+  "quote_requests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    ref: text("ref").notNull(),
+    /** individual | company */
+    kind: text("kind").notNull(),
+    name: text("name").notNull(),
+    /** Personne à contacter (société) ; vide pour un particulier. */
+    contact: text("contact"),
+    phone: text("phone").notNull(),
+    email: text("email"),
+    city: text("city"),
+    goal: text("goal"),
+    answers: jsonb("answers").$type<QuoteRequestAnswers>().notNull().default([]),
+    /** new | contacted | quoted | closed */
+    status: text("status").notNull().default("new"),
+    note: text("note"),
+    customerId: uuid("customer_id").references(() => customers.id, { onDelete: "set null" }),
+    createdAt: stamp("created_at"),
+    updatedAt: stamp("updated_at"),
+  },
+  (t) => [
+    uniqueIndex("quote_requests_ref_idx").on(t.ref),
+    index("quote_requests_status_idx").on(t.status),
+    index("quote_requests_created_idx").on(t.createdAt),
+  ],
+);

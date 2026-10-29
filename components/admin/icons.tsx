@@ -23,6 +23,7 @@ const make = (d: string) =>
 
 export const DashboardIcon = make("M4 4h7v7H4z M13 4h7v4h-7z M13 11h7v9h-7z M4 14h7v6H4z");
 export const BoxIcon = make("M21 8l-9-5-9 5v8l9 5 9-5z M3 8l9 5 9-5 M12 13v8");
+export const InboxIcon = make("M22 12h-6l-2 3h-4l-2-3H2 M5.5 5h13l3.5 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z");
 export const QuoteIcon = make("M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h4");
 export const InvoiceIcon = make("M6 3h12v18l-3-2-3 2-3-2-3 2z M9 8h6 M9 12h6");
 export const ScooterIcon = make("M6 18a2 2 0 1 0 0-.01 M19 18a2 2 0 1 0 0-.01 M8 18h7 M15 18l3-9h-3 M12 6h3 M5 14l2-4h4");

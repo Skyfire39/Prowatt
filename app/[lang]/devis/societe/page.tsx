@@ -22,6 +22,7 @@ export default async function CompanyQuotePage({ params }: PageProps<"/[lang]/de
         <Reveal className="mx-auto max-w-6xl">
           <div className="glass-strong rounded-3xl px-5 py-7 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
             <QuoteForm
+              kind="company"
               sections={resolveForm(companyForm, lang)}
               labels={dict.form}
               subject={dict.form.subjectCompany}

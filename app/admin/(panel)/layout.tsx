@@ -30,6 +30,7 @@ async function PanelShell({ children }: { children: React.ReactNode }) {
       label: "Ventes",
       items: [
         can(r, "orders.read") && { href: "/admin/commandes", label: "Commandes", icon: "orders" as const, badge: counts.newOrders },
+        can(r, "quotes.read") && { href: "/admin/demandes", label: "Demandes de devis", icon: "requests" as const, badge: counts.newRequests },
         can(r, "quotes.read") && { href: "/admin/devis", label: "Devis", icon: "quotes" as const },
         can(r, "invoices.read") && { href: "/admin/factures", label: "Factures", icon: "invoices" as const, badge: counts.overdueInvoices },
         can(r, "customers.read") && { href: "/admin/clients", label: "Clients", icon: "customers" as const },

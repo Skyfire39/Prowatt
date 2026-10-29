@@ -546,10 +546,15 @@
     "submit": "Envoyer la demande",
     "required": "Champ obligatoire",
     "choose": "Choisir…",
-    "note": "En envoyant, votre messagerie s'ouvre avec votre demande pré-remplie. Pensez à joindre votre facture Jirama (les trois dernières pour une société).",
+    "note": "Votre demande est enregistrée et l'équipe Prowatt vous répond rapidement. Pensez à préparer votre facture Jirama (les trois dernières pour une société).",
     "subjectIndividual": "Demande de devis — Particulier",
     "subjectCompany": "Demande de devis — Société",
-    "subjectContact": "Message depuis le site Prowatt Madagascar"
+    "subjectContact": "Message depuis le site Prowatt Madagascar",
+    "sending": "Envoi en cours…",
+    "sentTitle": "Merci, votre demande est envoyée.",
+    "sentText": "L'équipe Prowatt étudie votre besoin et vous recontacte rapidement pour la suite : pré-analyse, visite technique et devis détaillé.",
+    "sentRef": "Votre référence :",
+    "fallback": "Nous n'avons pas pu enregistrer la demande en ligne : votre messagerie s'ouvre avec votre demande pré-remplie, il suffit de l'envoyer."
   },
   "ecooter": {
     "eyebrow": "Ecooter",

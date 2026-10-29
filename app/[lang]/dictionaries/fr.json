@@ -95,27 +95,52 @@
     "100-autonome": {
       "name": "Solutions 100 % autonomes",
       "short": "Indépendance totale vis-à-vis du réseau, jour et nuit.",
-      "intro": "Des installations solaires sans raccordement au réseau : panneaux, batteries lithium et onduleurs dimensionnés pour une électricité verte, sans coupures, sans facture mensuelle et sans variation de tension."
+      "intro": "Des installations solaires sans raccordement au réseau : panneaux, batteries lithium et onduleurs dimensionnés pour une électricité verte, sans coupures, sans facture mensuelle et sans variation de tension.",
+      "points": [
+        "Sans raccordement au réseau",
+        "Zéro facture mensuelle",
+        "Tension stable jour et nuit"
+      ]
     },
     "hybride": {
       "name": "Solutions hybrides",
       "short": "Solaire, batteries et réseau ou groupe électrogène en parfaite harmonie.",
-      "intro": "Le solaire et les batteries s'associent au réseau ou à un groupe électrogène pour une alimentation continue, avec une gestion automatique des sources."
+      "intro": "Le solaire et les batteries s'associent au réseau ou à un groupe électrogène pour une alimentation continue, avec une gestion automatique des sources.",
+      "points": [
+        "Bascule automatique des sources",
+        "Réseau ou groupe électrogène",
+        "Alimentation continue"
+      ]
     },
     "ongrid": {
       "name": "Solutions on-grid",
       "short": "Consommez votre propre énergie et réduisez votre facture.",
-      "intro": "Des centrales solaires raccordées au réseau pour produire et consommer sur place. Idéal pour les entreprises, commerces et bâtiments déjà raccordés qui veulent alléger leur facture."
+      "intro": "Des centrales solaires raccordées au réseau pour produire et consommer sur place. Idéal pour les entreprises, commerces et bâtiments déjà raccordés qui veulent alléger leur facture.",
+      "points": [
+        "Production et consommation sur place",
+        "Facture allégée",
+        "Pour les bâtiments déjà raccordés"
+      ]
     },
     "anti-delestage": {
       "name": "Solutions anti-délestage",
       "short": "Les batteries prennent le relais dès que le courant s'arrête.",
-      "intro": "Pour les particuliers, commerçants et industriels excédés par les coupures programmées : un kit de batteries qui bascule automatiquement et garde vos équipements en marche."
+      "intro": "Pour les particuliers, commerçants et industriels excédés par les coupures programmées : un kit de batteries qui bascule automatiquement et garde vos équipements en marche.",
+      "points": [
+        "Bascule automatique",
+        "Équipements toujours en marche",
+        "Particuliers, commerçants, industriels"
+      ]
     },
     "acces-a-eau": {
       "name": "Accès à l'eau",
       "short": "Chauffe-eau solaires, forage et pompage solaire.",
-      "intro": "Des chauffe-eau solaires et des pompes immergées solaires, accessibles à tous, pour l'eau chaude et l'approvisionnement en eau sans dépendre du réseau ni du carburant."
+      "intro": "Des chauffe-eau solaires et des pompes immergées solaires, accessibles à tous, pour l'eau chaude et l'approvisionnement en eau sans dépendre du réseau ni du carburant.",
+      "points": [
+        "Chauffe-eau solaires",
+        "Pompes immergées solaires",
+        "Sans réseau ni carburant"
+      ]
     }
   },
   "common": {
@@ -471,6 +496,32 @@
       "years": "ans",
       "hours": "h",
       "tons": "t"
+    },
+    "autoScene": {
+      "aria": "Illustration animée : des panneaux solaires chargent des batteries lithium en journée et la maison reste éclairée jour et nuit, sans aucun raccordement au réseau.",
+      "sun": "Panneaux solaires",
+      "battery": "Batteries lithium",
+      "home": "Alimentée jour et nuit",
+      "grid": "Sans réseau"
+    },
+    "hybScene": {
+      "aria": "Illustration animée : panneaux solaires, réseau et groupe électrogène alimentent un boîtier de gestion automatique qui charge les batteries et garde la maison alimentée sans interruption.",
+      "grid": "Réseau",
+      "gen": "Groupe électrogène",
+      "sun": "Soleil en priorité",
+      "hub": "Gestion automatique",
+      "home": "Toujours alimentée"
+    },
+    "gridScene": {
+      "aria": "Illustration animée : des panneaux sur le toit d'un commerce produisent sur place, le compteur intelligent envoie le surplus au réseau et complète au besoin, et la facture baisse.",
+      "roof": "Production sur place",
+      "meter": "Compteur intelligent",
+      "grid": "Réseau en appoint",
+      "bill": "Facture réduite"
+    },
+    "hero": {
+      "solutions": "solutions",
+      "delivered": "réalisés"
     }
   },
   "quotes": {

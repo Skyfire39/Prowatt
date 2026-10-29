@@ -7,8 +7,12 @@ import { PaginatedGrid } from "@/components/paginated-grid";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/motion";
 import { AntiDelestageBanner } from "@/components/anti-delestage-banner";
+import { AutonomeBanner } from "@/components/autonome-banner";
+import { HybrideBanner } from "@/components/hybride-banner";
+import { OngridBanner } from "@/components/ongrid-banner";
+import { RealisationsHero } from "@/components/realisations-hero";
 import { WaterBanner } from "@/components/water-banner";
-import { CtaBand, PageHero } from "@/components/ui";
+import { CtaBand } from "@/components/ui";
 import { getProjects } from "@/lib/content";
 import { isSlug, slugs } from "@/lib/data";
 import type { Slug } from "@/lib/data";
@@ -16,14 +20,6 @@ import { hasLocale, locales } from "@/lib/i18n";
 import { loadPage } from "@/lib/page";
 import { breadcrumbLd, pageMetadata } from "@/lib/seo";
 import { getDictionary } from "../../dictionaries";
-
-const crops: Record<Slug, { pos: string; zoom: number }> = {
-  "100-autonome": { pos: "20% 30%", zoom: 1.4 },
-  hybride: { pos: "55% 60%", zoom: 1.4 },
-  ongrid: { pos: "85% 30%", zoom: 1.5 },
-  "anti-delestage": { pos: "15% 75%", zoom: 1.5 },
-  "acces-a-eau": { pos: "70% 90%", zoom: 1.6 },
-};
 
 export function generateStaticParams() {
   return locales.flatMap((lang) => slugs.map((slug) => ({ lang, slug })));
@@ -52,9 +48,13 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
   const { lang, dict } = await loadPage(params);
   const c = dict.categories[slug];
   const list = (await getProjects()).filter((p) => p.slug === slug);
-  const scenes: Partial<Record<Slug, ReactNode>> = {
-    "anti-delestage": <AntiDelestageBanner labels={dict.realisations.antiScene} />,
-    "acces-a-eau": <WaterBanner labels={dict.realisations.waterScene} />,
+  const r = dict.realisations;
+  const scenes: Record<Slug, ReactNode> = {
+    "100-autonome": <AutonomeBanner labels={r.autoScene} />,
+    hybride: <HybrideBanner labels={r.hybScene} />,
+    ongrid: <OngridBanner labels={r.gridScene} />,
+    "anti-delestage": <AntiDelestageBanner labels={r.antiScene} />,
+    "acces-a-eau": <WaterBanner labels={r.waterScene} />,
   };
 
   return (
@@ -66,11 +66,12 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
           { name: c.name, path: `/realisations/${slug}` },
         ])}
       />
-      <PageHero
-        eyebrow={dict.realisations.eyebrow}
+      <RealisationsHero
+        eyebrow={r.eyebrow}
         title={c.name}
         subtitle={c.intro}
-        photo={crops[slug]}
+        points={c.points}
+        stats={[{ value: list.length, label: list.length > 1 ? r.projects : r.project }]}
         scene={scenes[slug]}
       />
 

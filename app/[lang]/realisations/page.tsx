@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ArrowIcon, BatteryIcon, DropIcon, GridIcon, HomeIcon, ShieldIcon } from "@/components/icons";
 import { HoverLift, Reveal } from "@/components/motion";
 import { RealisationsBanner } from "@/components/realisations-banner";
-import { CtaBand, PageHero } from "@/components/ui";
+import { RealisationsHero } from "@/components/realisations-hero";
+import { CtaBand } from "@/components/ui";
 import { getProjects } from "@/lib/content";
 import { slugs } from "@/lib/data";
 import type { Slug } from "@/lib/data";
@@ -47,7 +48,15 @@ export default async function RealisationsPage({ params }: PageProps<"/[lang]/re
 
   return (
     <>
-      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} />
+      <RealisationsHero
+        eyebrow={d.eyebrow}
+        title={d.title}
+        subtitle={d.subtitle}
+        stats={[
+          { value: projects.length, label: `${d.projects} ${d.hero.delivered}` },
+          { value: slugs.length, label: d.hero.solutions },
+        ]}
+      />
       <RealisationsBanner
         total={projects.length}
         items={slugs.map((slug) => ({

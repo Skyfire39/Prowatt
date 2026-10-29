@@ -518,10 +518,6 @@
       "meter": "Compteur intelligent",
       "grid": "Réseau en appoint",
       "bill": "Facture réduite"
-    },
-    "hero": {
-      "solutions": "solutions",
-      "delivered": "réalisés"
     }
   },
   "quotes": {

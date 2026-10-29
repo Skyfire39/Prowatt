@@ -52,21 +52,15 @@ export default async function RealisationsPage({ params }: PageProps<"/[lang]/re
         eyebrow={d.eyebrow}
         title={d.title}
         subtitle={d.subtitle}
-        stats={[
-          { value: projects.length, label: `${d.projects} ${d.hero.delivered}` },
-          { value: slugs.length, label: d.hero.solutions },
-        ]}
       />
       <RealisationsBanner
-        total={projects.length}
         items={slugs.map((slug) => ({
           slug,
           name: dict.categories[slug].name,
           chip: d.banner.chips[slug],
           scene: d.banner.scenes[slug],
-          count: projects.filter((p) => p.slug === slug).length,
         }))}
-        labels={{ kicker: d.banner.kicker, hint: d.banner.hint, project: d.project, projects: d.projects, explore: d.explore, aria: d.banner.aria }}
+        labels={{ kicker: d.banner.kicker, hint: d.banner.hint, explore: d.explore, aria: d.banner.aria }}
       />
       <section className="px-4 pb-16 sm:px-6">
         {/* Bulles rondes posées en désordre : tailles et décalages différents, jamais alignées */}

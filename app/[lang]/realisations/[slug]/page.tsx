@@ -71,7 +71,6 @@ async function CategoryContent({ params }: { params: PageProps<"/[lang]/realisat
         title={c.name}
         subtitle={c.intro}
         points={c.points}
-        stats={[{ value: list.length, label: list.length > 1 ? r.projects : r.project }]}
         scene={scenes[slug]}
       />
 

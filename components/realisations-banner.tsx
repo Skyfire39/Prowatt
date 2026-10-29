@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import { SceneBanner } from "./scene-banner";
 import { BODY, Battery, DEEP, Flow, LIME, MID, Panel, SceneFrame, WARM, WATER, Window } from "./scene-parts";
 
-export type BannerItem = { slug: string; name: string; chip: string; scene: string; count: number };
-type Labels = { kicker: string; hint: string; project: string; projects: string; explore: string; aria: string };
+export type BannerItem = { slug: string; name: string; chip: string; scene: string };
+type Labels = { kicker: string; hint: string; explore: string; aria: string };
 
 const CX = [600, 725, 848, 968, 1090] as const;
 
@@ -107,19 +107,17 @@ const zones = (panel: string): ReactNode[] => [
  * Bannière « Réalisations » : une scène SVG animée qui raconte les cinq solutions affichées en dessous
  * (maison autonome, hybride, raccordée au réseau, anti-délestage, accès à l'eau).
  */
-export function RealisationsBanner({ items, labels, total }: { items: BannerItem[]; labels: Labels; total: number }) {
+export function RealisationsBanner({ items, labels }: { items: BannerItem[]; labels: Labels }) {
   return (
     <SceneBanner
       kicker={labels.kicker}
       hint={labels.hint}
-      stat={{ value: total, label: total > 1 ? labels.projects : labels.project }}
       items={items.map((it) => ({
         key: it.slug,
         name: it.name,
         chip: it.chip,
         text: it.scene,
-        badge: String(it.count),
-        meta: `${it.count} ${it.count > 1 ? labels.projects : labels.project} · ${labels.explore}`,
+        meta: labels.explore,
         href: `/realisations/${it.slug}`,
       }))}
       scene={(active, onPick) => (
@@ -130,9 +128,7 @@ export function RealisationsBanner({ items, labels, total }: { items: BannerItem
           keys={items.map((it) => it.slug)}
           zones={zones}
           pin={(i, on) => (
-            <text textAnchor="middle" dy="0.36em" fontSize="16" fontWeight="700" fill={on ? DEEP : "#fff"} style={{ transition: "fill .4s" }}>
-              {items[i].count}
-            </text>
+            <path d="M2 -9L-5.5 2H-0.5L-2 9L5.5 -2H0.5Z" fill={on ? DEEP : "#fff"} style={{ transition: "fill .4s" }} />
           )}
           onPick={onPick}
         />

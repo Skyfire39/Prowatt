@@ -31,7 +31,7 @@ export function SceneBanner({
   items: ShellItem[];
   kicker: string;
   hint: string;
-  stat: { value: number; label: string };
+  stat?: { value: number; label: string };
   scene: (active: number, onPick: (i: number) => void) => ReactNode;
   /** « dark » : paysage nocturne, texte à gauche. « light » : fond lime clair, scène à gauche, texte à droite. */
   variant?: "dark" | "light";
@@ -75,12 +75,14 @@ export function SceneBanner({
               <span className={`size-1.5 rounded-full sa-blink ${light ? "bg-teal" : "bg-lime"}`} />
               {kicker}
             </p>
-            <p className="mt-4 flex items-baseline gap-3">
-              <span className="text-6xl font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-7xl">
-                <Counter value={stat.value} display={String(stat.value)} locale="fr" />
-              </span>
-              <span className={`text-lg ${light ? "text-muted" : "text-white/70"}`}>{stat.label}</span>
-            </p>
+            {stat && (
+              <p className="mt-4 flex items-baseline gap-3">
+                <span className="text-6xl font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-7xl">
+                  <Counter value={stat.value} display={String(stat.value)} locale="fr" />
+                </span>
+                <span className={`text-lg ${light ? "text-muted" : "text-white/70"}`}>{stat.label}</span>
+              </p>
+            )}
           </div>
 
           <div aria-live="polite" className="min-h-[7.5rem]">

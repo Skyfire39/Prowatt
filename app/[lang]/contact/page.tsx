@@ -26,7 +26,7 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
 
   return (
     <>
-      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} photo={{ src: "/images/contact-prowatt.webp", pos: "50% 40%", alt: dict.contact.photoAlt }} />
+      <PageHero eyebrow={d.eyebrow} title={d.title} subtitle={d.subtitle} photo={{ src: "/images/contact-prowatt.webp", pos: "50% 50%", ratio: "1448 / 892", alt: dict.contact.photoAlt }} />
       <section className="px-4 pb-24 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-5">
           <Reveal className="lg:col-span-2">

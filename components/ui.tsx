@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { ArrowIcon } from "./icons";
 import { Reveal } from "./motion";
 
@@ -56,6 +56,7 @@ export function Photo({
   pos = "50% 50%",
   zoom = 1,
   className = "",
+  style,
   priority = false,
   sizes = "(min-width: 1152px) 1152px, 100vw",
   alt = "",
@@ -64,12 +65,13 @@ export function Photo({
   pos?: string;
   zoom?: number;
   className?: string;
+  style?: CSSProperties;
   priority?: boolean;
   sizes?: string;
   alt?: string;
 }) {
   return (
-    <div className={`${className.includes("absolute") ? "" : "relative"} overflow-hidden ${className}`}>
+    <div className={`${className.includes("absolute") ? "" : "relative"} overflow-hidden ${className}`} style={style}>
       <Image
         src={src}
         alt={alt}
@@ -121,7 +123,8 @@ export function PageHero({
   eyebrow: string;
   title: string;
   subtitle?: string;
-  photo?: { src?: string; pos: string; zoom?: number; alt?: string };
+  /** `ratio` (ex. « 1448 / 892 ») affiche la photo en entier, à ses proportions, au lieu d'un cadre recadré. */
+  photo?: { src?: string; pos: string; zoom?: number; alt?: string; ratio?: string };
   /** Illustration animée à la place de la photo. */
   scene?: ReactNode;
   children?: ReactNode;
@@ -150,7 +153,8 @@ export function PageHero({
             alt={photo.alt}
             pos={photo.pos}
             zoom={photo.zoom}
-            className="h-72 rounded-3xl sm:h-[28rem]"
+            className={`rounded-3xl ${photo.ratio ? "" : "h-72 sm:h-[28rem]"}`}
+            style={photo.ratio ? { aspectRatio: photo.ratio } : undefined}
             priority
           />
         </Reveal>

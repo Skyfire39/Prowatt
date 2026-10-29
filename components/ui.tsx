@@ -121,7 +121,7 @@ export function PageHero({
   eyebrow: string;
   title: string;
   subtitle?: string;
-  photo?: { pos: string; zoom?: number };
+  photo?: { src?: string; pos: string; zoom?: number; alt?: string };
   /** Illustration animée à la place de la photo. */
   scene?: ReactNode;
   children?: ReactNode;
@@ -146,6 +146,8 @@ export function PageHero({
       {!scene && photo && (
         <Reveal y={30} delay={0.1} className="mx-auto mt-14 max-w-6xl">
           <Photo
+            src={photo.src}
+            alt={photo.alt}
             pos={photo.pos}
             zoom={photo.zoom}
             className="h-72 rounded-3xl sm:h-[28rem]"

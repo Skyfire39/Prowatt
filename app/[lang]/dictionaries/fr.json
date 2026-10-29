@@ -753,7 +753,8 @@
     "name": "Nom complet",
     "emailField": "Adresse e-mail",
     "message": "Votre message",
-    "send": "Envoyer le message"
+    "send": "Envoyer le message",
+    "photoAlt": "La boutique Prowatt Madagascar : façade blanche, enseigne « Éclairons l'avenir avec l'énergie verte » et grandes vitrines."
   },
   "footer": {
     "tagline": "Éclairons l'avenir avec l'énergie verte.",

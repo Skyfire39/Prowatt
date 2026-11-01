@@ -10,6 +10,7 @@ import { AudienceArt } from "./audience-art";
 import { SolutionArt } from "./solution-art";
 import { SolutionPicker } from "./solution-picker";
 import { TestimonialSlider } from "./testimonial-slider";
+import { WhyCards } from "./why-cards";
 import {
   BatteryIcon,
   BoltIcon,
@@ -17,8 +18,6 @@ import {
   DropIcon,
   FactoryIcon,
   HomeIcon,
-  LampIcon,
-  MapPinIcon,
   PanelIcon,
   ShieldIcon,
   WrenchIcon,
@@ -311,29 +310,16 @@ export function Partners({ dict, items }: { dict: Home["partners"]; items: Catal
   );
 }
 
-const whyIcons = [WrenchIcon, ShieldIcon, LampIcon, MapPinIcon];
-
 export function Why({ dict }: { dict: Home["why"] }) {
   return (
-    <section className="px-4 py-24 sm:px-6 sm:py-32">
+    <section className="relative isolate overflow-hidden px-4 py-24 sm:px-6 sm:py-32">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <span className="sa-float absolute -left-24 top-1/4 size-96 rounded-full bg-lime/40 blur-3xl" style={{ animationDuration: "12s" }} />
+        <span className="sa-float absolute -right-24 bottom-0 size-[28rem] rounded-full bg-accent-soft blur-3xl" style={{ animationDuration: "15s", animationDelay: "-6s" }} />
+      </div>
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {dict.items.map((item, i) => {
-            const Icon = whyIcons[i];
-            return (
-              <Reveal key={item.title} delay={i * 0.08}>
-                <div className="glass flex h-full flex-col rounded-3xl p-8">
-                  <span className="grid size-12 place-items-center rounded-full bg-accent text-on-accent">
-                    <Icon className="size-6" />
-                  </span>
-                  <h3 className="mt-6 text-2xl leading-snug tracking-tight">{item.title}</h3>
-                  <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
+        <WhyCards items={dict.items} />
       </div>
     </section>
   );

@@ -174,6 +174,93 @@ const Shadow = ({ cx, cy, rx, ry }: { cx: number; cy: number; rx: number; ry: nu
   <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill={SHADOW} fillOpacity="0.25" />
 );
 
+/* ───────────── Décor : collines, arbres et nuages en arrière-plan ───────────── */
+
+type Tones = [string, string, string];
+const LEAF: Tones = ["#3a9c8e", "#237a70", "#8fb55a"];
+const LEAF_DARK: Tones = ["#237a70", "#175c55", "#5f9a50"];
+const PINE = ["#175c55", "#1d6b61", "#237a70"];
+
+/** Arbre rond : tronc et feuillage en trois masses qui ondulent doucement. */
+const Tree = ({ x, y, s = 1, tones = LEAF, delay = 0 }: { x: number; y: number; s?: number; tones?: Tones; delay?: number }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`}>
+    <rect x="-2.5" y="-20" width="5" height="20" rx="2" fill="#0a2f2b" />
+    <g className="sa-sway" style={{ animationDelay: `${delay}s` }}>
+      <circle cx="0" cy="-36" r="17" fill={tones[0]} />
+      <circle cx="-11" cy="-27" r="12" fill={tones[1]} />
+      <circle cx="11" cy="-28" r="12" fill={tones[1]} />
+      <circle cx="-4" cy="-41" r="9" fill={tones[2]} fillOpacity="0.75" />
+    </g>
+  </g>
+);
+
+/** Sapin en trois étages. */
+const Pine = ({ x, y, s = 1, delay = 0 }: { x: number; y: number; s?: number; delay?: number }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`}>
+    <rect x="-2" y="-8" width="4" height="8" rx="1.5" fill="#0a2f2b" />
+    <g className="sa-sway" style={{ animationDelay: `${delay}s` }}>
+      <path d="M0 -64L-13 -38H13Z" fill={PINE[2]} />
+      <path d="M0 -50L-17 -22H17Z" fill={PINE[1]} />
+      <path d="M0 -34L-21 -6H21Z" fill={PINE[0]} />
+    </g>
+  </g>
+);
+
+/** Touffe de buisson posée au sol. */
+const Shrub = ({ x, y, s = 1, tones = LEAF }: { x: number; y: number; s?: number; tones?: Tones }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`}>
+    <ellipse cx="0" cy="-8" rx="17" ry="11" fill={tones[1]} />
+    <ellipse cx="-9" cy="-6" rx="10" ry="8" fill={tones[0]} />
+    <ellipse cx="9" cy="-7" rx="10" ry="8" fill={tones[2]} fillOpacity="0.8" />
+  </g>
+);
+
+const Cloud = ({ x, y, w = 1, delay = 0 }: { x: number; y: number; w?: number; delay?: number }) => (
+  <g transform={`translate(${x} ${y}) scale(${w})`}>
+    <g className="rb-cloud" fill="#e6f1cf" fillOpacity="0.12" style={{ animationDelay: `${delay}s` }}>
+      <ellipse cx="0" cy="0" rx="26" ry="7" />
+      <ellipse cx="-9" cy="-5" rx="12" ry="7" />
+      <ellipse cx="8" cy="-6" rx="14" ry="8" />
+    </g>
+  </g>
+);
+
+/** Fond de chaque vignette : collines et arbres qui changent selon le public (maison, ville, campagne). */
+function Environment({ index }: { index: number }) {
+  return (
+    <>
+      <Cloud x={300} y={40} w={1.1} />
+      <Cloud x={120} y={26} w={0.8} delay={-20} />
+      <path d="M0 150C60 128 120 152 200 140S340 122 400 142V224H0Z" fill="#1d6b61" fillOpacity="0.55" />
+      {index === 0 && (
+        <>
+          <Tree x={354} y={176} s={0.8} tones={LEAF_DARK} delay={0.4} />
+          <Tree x={383} y={190} s={1.05} delay={1.2} />
+        </>
+      )}
+      {index === 1 && (
+        <>
+          <Tree x={24} y={188} s={1.05} delay={0.3} />
+          <Tree x={54} y={178} s={0.75} tones={LEAF_DARK} delay={1.1} />
+          <Tree x={378} y={190} s={1} delay={0.7} />
+        </>
+      )}
+      {index === 2 && (
+        <>
+          <Pine x={22} y={192} s={1.25} />
+          <Pine x={50} y={184} s={0.85} delay={0.8} />
+          <Pine x={380} y={186} s={1.1} delay={1.5} />
+          <Pine x={356} y={178} s={0.7} delay={0.4} />
+        </>
+      )}
+      <path d="M0 192C80 174 160 198 250 184S350 172 400 186V224H0Z" fill="#0f4a44" fillOpacity="0.85" />
+      {index === 0 && <Shrub x={26} y={216} s={0.9} />}
+      {index === 1 && <Shrub x={340} y={218} s={0.85} tones={LEAF_DARK} />}
+      {index === 2 && <Shrub x={330} y={219} s={0.8} />}
+    </>
+  );
+}
+
 // Cadrage de chaque scène (translation + échelle) pour qu'elle remplisse la vignette sans plaque de sol.
 const FIT: Record<number, string> = {
   0: "translate(4.2 -7.2) scale(1.38)",
@@ -213,8 +300,7 @@ export function AudienceArt({ index, className = "" }: { index: number; classNam
         </radialGradient>
       </defs>
       <rect width="400" height="224" fill={`url(#${uid}-bg)`} />
-      <circle cx="350" cy="0" r="120" fill={LIME} fillOpacity="0.07" />
-      <circle cx="20" cy="224" r="90" fill={LIME} fillOpacity="0.06" />
+      <Environment index={index} />
       <g transform={FIT[index]}>
         <g className="sa-breathe">{scenes[index]?.(uid)}</g>
       </g>

@@ -917,5 +917,15 @@
     "mvolaBadPhone": "Entrez un numéro MVola valide (034 ou 038 + 7 chiffres).",
     "mvolaError": "Le paiement MVola est momentanément indisponible. Réessayez, ou choisissez un autre mode de paiement.",
     "msgPaid": "Paiement MVola confirmé (transaction {id})"
+  },
+  "notFound": {
+    "eyebrow": "Erreur 404",
+    "title": "Oups… cette page est débranchée.",
+    "text": "La page que vous cherchez n'existe pas ou a changé d'adresse. Pas de panique : tout le reste du site est bien sous tension.",
+    "scene": "Illustration animée : deux fiches électriques débranchées, chacune au bout de son câble, s'approchent et s'écartent sans se toucher pendant que des étincelles jaillissent entre elles, devant un grand 404 en filigrane.",
+    "tagline": "Rebranchez-vous : on vous remet le courant.",
+    "home": "Retour à l'accueil",
+    "contact": "Nous contacter",
+    "links": "Ou allez directement à"
   }
 }

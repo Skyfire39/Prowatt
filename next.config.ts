@@ -48,6 +48,8 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     agentFeedback: true,
+    // 404 des adresses qui ne correspondent à aucune page (le layout racine est sous un segment dynamique [lang]).
+    globalNotFound: true,
     // Les formulaires d'administration envoient des photos (2 Mo chacune, plusieurs dans la fiche d'un modèle) :
     // la limite par défaut de 1 Mo les ferait échouer.
     serverActions: { bodySizeLimit: "20mb" },

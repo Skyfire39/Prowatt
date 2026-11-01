@@ -553,6 +553,36 @@ body:has([data-sticky-buy]) .floating-contact {
   .wh-card:hover .wh-shine { transition: none; }
 }
 
+/* Page 404 : prise débranchée */
+.pc-flicker { animation: pc-flicker 3.8s steps(1, end) infinite; }
+@keyframes pc-flicker {
+  0%, 100% { opacity: 1; }
+  6% { opacity: 0.12; }
+  8% { opacity: 0.9; }
+  10% { opacity: 0.08; }
+  14% { opacity: 1; }
+  52% { opacity: 1; }
+  54% { opacity: 0.18; }
+  57% { opacity: 0.85; }
+  59% { opacity: 0.04; }
+  63% { opacity: 1; }
+}
+.pu-left { animation: pu-left 3.8s ease-in-out infinite; }
+.pu-right { animation: pu-right 3.8s ease-in-out infinite; }
+.pu-burst { animation: pu-burst 3.8s ease-out infinite; opacity: 0; }
+@keyframes pu-left { 0%, 100% { transform: translateX(-4px); } 45%, 55% { transform: translateX(16px); } }
+@keyframes pu-right { 0%, 100% { transform: translateX(4px); } 45%, 55% { transform: translateX(-16px); } }
+@keyframes pu-burst {
+  0%, 30% { opacity: 0; transform: translate(0, 0); }
+  44% { opacity: 1; }
+  58% { opacity: 1; transform: translate(var(--dx), var(--dy)); }
+  72%, 100% { opacity: 0; transform: translate(calc(var(--dx) * 1.6), calc(var(--dy) * 1.6)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-flicker, .pu-left, .pu-right { animation: none; }
+  .pu-burst { animation: none; opacity: 0.9; }
+}
+
 /* Impression des devis et factures (« Imprimer / PDF » dans l'administration). */
 @page {
   size: A4;

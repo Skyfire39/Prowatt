@@ -39,7 +39,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           addedAt: p.addedAt,
           bestSeller: p.bestSeller,
           active: p.active,
-          image: p.image,
+          photos: [p.image, ...p.images].filter((u): u is string => Boolean(u)).slice(0, 4),
           options: parseOptions(p.options),
         }}
       />

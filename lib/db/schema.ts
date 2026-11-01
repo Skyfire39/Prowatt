@@ -117,8 +117,10 @@ export const products = pgTable(
     /** Options au choix du client (couleur, type…), avec supplément de prix facultatif : voir lib/options.ts. */
     options: jsonb("options").$type<ProductOption[]>().notNull().default([]),
     stock: integer("stock"),
-    /** Adresse de l'image (/api/media/<id>) envoyée depuis l'admin. */
+    /** Adresse de l'image (/api/media/<id>) envoyée depuis l'admin : la photo principale. */
     image: text("image"),
+    /** Photos supplémentaires de la fiche produit (3 au plus : avec la principale, 4 photos en tout). */
+    images: jsonb("images").$type<string[]>().notNull().default([]),
     active: boolean("active").notNull().default(true),
     addedAt: date("added_at").notNull().defaultNow(),
     createdAt: stamp("created_at"),

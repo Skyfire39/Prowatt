@@ -57,6 +57,13 @@
       "when": 1793273115692,
       "tag": "0007_quote_requests",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793565186359,
+      "tag": "0008_product_photos",
+      "breakpoints": true
     }
   ]
 }

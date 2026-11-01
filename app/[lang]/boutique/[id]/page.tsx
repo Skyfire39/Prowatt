@@ -83,6 +83,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
     path: `/boutique/${product.id}`,
     description: clip(product.description ? tr(product.description, lang) : dict.product.about.replace("{name}", name).replace("{category}", category)),
     image: product.image,
+    images: product.images,
     sku: product.id,
     category,
     price: range.min,
@@ -125,7 +126,7 @@ async function ProductContent({ params }: { params: PageProps<"/[lang]/boutique/
                 <span className="glass-chip relative z-10 inline-block rounded-full px-4 py-1.5 text-xs font-semibold">
                   {category}
                 </span>
-                <ProductPhoto image={product.image} name={name} />
+                <ProductPhoto image={product.image} images={product.images} name={name} />
                 {product.id.length <= 24 && (
                   <p className="relative mt-2 text-xs font-semibold uppercase tracking-wider text-muted">
                     {d.ref} {product.id.toUpperCase()}

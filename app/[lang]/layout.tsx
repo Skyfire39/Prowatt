@@ -10,7 +10,7 @@ import { FloatingContact } from "@/components/floating-contact";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion";
 import { Navbar } from "@/components/navbar";
-import { getSellable, getSettings } from "@/lib/content";
+import { getSellable, getSettings, toCartProduct } from "@/lib/content";
 import { hasLocale, locales } from "@/lib/i18n";
 import { organizationLd, SITE_URL } from "@/lib/seo";
 import { toSiteInfo } from "@/lib/site-info";
@@ -71,7 +71,7 @@ export default async function RootLayout({
         </div>
         <BrandWatermark lang={lang} />
         <MotionProvider>
-          <CatalogProvider products={products.map(({ description: _description, ...p }) => p)} site={toSiteInfo(settings)}>
+          <CatalogProvider products={products.map(toCartProduct)} site={toSiteInfo(settings)}>
             <Navbar nav={dict.nav} categories={dict.categories} />
             <main>{children}</main>
             <Suspense fallback={<div className="min-h-96" aria-hidden="true" />}>

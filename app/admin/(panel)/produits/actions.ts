@@ -11,6 +11,11 @@ import { getDb, schema } from "@/lib/db";
 import { saveUpload } from "@/lib/media";
 import { bool, int, isIsoDate, opt, optInt, s, slugify, type FormState } from "@/lib/validate";
 
+/** Photos d'une fiche produit : la principale et trois autres. */
+const MAX_PHOTOS = 4;
+/** Une photo déjà enregistrée : image envoyée depuis l'admin ou image du site, jamais une adresse extérieure. */
+const isOwnPhoto = (u: string) => /^\/(api\/media|images)\/[\w./-]+$/.test(u);
+
 export async function saveProductAction(_: FormState, fd: FormData): Promise<FormState> {
   const user = await requireActionUser("products.write");
   const db = await getDb();
@@ -29,8 +34,17 @@ export async function saveProductAction(_: FormState, fd: FormData): Promise<For
   if (oldPrice !== null && oldPrice <= price) return { error: "L'ancien prix doit être supérieur au prix actuel pour afficher une promotion." };
   if (addedAt && !isIsoDate(addedAt)) return { error: "Date d'ajout invalide." };
 
-  const upload = await saveUpload(fd.get("image"));
-  if (upload && "error" in upload) return { error: upload.error };
+  // Quatre emplacements photo (le premier est la photo principale). Chaque emplacement garde sa photo actuelle,
+  // en reçoit une nouvelle ou est vidé ; les photos restantes sont ensuite remontées sans trou.
+  const photos: string[] = [];
+  for (let i = 0; i < MAX_PHOTOS; i++) {
+    const upload = await saveUpload(fd.get(`photo${i}`));
+    if (upload && "error" in upload) return { error: `Photo ${i + 1} : ${upload.error}` };
+    const current = s(fd, `current${i}`);
+    const keep = current && !bool(fd, `remove${i}`) && isOwnPhoto(current) ? current : null;
+    const url = upload && "url" in upload ? upload.url : keep;
+    if (url) photos.push(url);
+  }
 
   const opts = await readOptions(fd);
   if ("error" in opts) return { error: opts.error };
@@ -49,8 +63,8 @@ export async function saveProductAction(_: FormState, fd: FormData): Promise<For
     active: bool(fd, "active"),
     options: opts.options,
     ...(addedAt ? { addedAt } : {}),
-    ...(upload && "url" in upload ? { image: upload.url } : {}),
-    ...(bool(fd, "removeImage") && !upload ? { image: null } : {}),
+    image: photos[0] ?? null,
+    images: photos.slice(1),
     updatedAt: new Date(),
   };
 

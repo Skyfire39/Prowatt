@@ -6,6 +6,7 @@ import { Field, FormError, Panel, Toggle, inputClass, selectClass, textareaClass
 import type { ProductOption } from "@/lib/options";
 import { SubmitButton, useActionForm } from "./client";
 import { OptionsEditor } from "./options-editor";
+import { ProductPhotos } from "./product-photos";
 
 export type ProductFormValues = {
   id?: string;
@@ -21,7 +22,8 @@ export type ProductFormValues = {
   addedAt: string;
   bestSeller: boolean;
   active: boolean;
-  image: string | null;
+  /** Photos actuelles : la principale d'abord, 4 au plus. */
+  photos: string[];
   options: ProductOption[];
 };
 
@@ -89,23 +91,8 @@ export function ProductForm({ values, categories }: { values: ProductFormValues;
           </div>
         </Panel>
 
-        <Panel title="Image" subtitle="PNG, JPEG ou WebP, 2 Mo maximum.">
-          {values.image && (
-            <div className="mb-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={values.image} alt="" className="aspect-[4/3] w-full rounded-2xl bg-accent-soft object-contain" />
-              <label className="mt-3 flex items-center gap-2 text-sm text-muted">
-                <input type="checkbox" name="removeImage" className="size-4 accent-[var(--accent)]" />
-                Retirer l&apos;image actuelle
-              </label>
-            </div>
-          )}
-          <input
-            type="file"
-            name="image"
-            accept="image/png,image/jpeg,image/webp"
-            className="block w-full cursor-pointer text-sm file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-on-accent hover:file:opacity-90"
-          />
+        <Panel title="Photos" subtitle="Jusqu'à 4 photos par produit. PNG, JPEG ou WebP, 2 Mo chacune. La première est la photo principale.">
+          <ProductPhotos photos={values.photos} />
         </Panel>
 
         <FormError message={state?.error} />

@@ -15,7 +15,7 @@ export default async function NewProductPage() {
       <PageHeader eyebrow="Catalogue" title="Nouveau produit" back={{ href: "/admin/produits", label: "Tous les produits" }} />
       <ProductForm
         categories={categories}
-        values={{ nameFr: "", nameEn: "", category: "", price: "", oldPrice: "", descriptionFr: "", descriptionEn: "", sku: "", stock: "", addedAt: today(), bestSeller: false, active: true, image: null, options: [] }}
+        values={{ nameFr: "", nameEn: "", category: "", price: "", oldPrice: "", descriptionFr: "", descriptionEn: "", sku: "", stock: "", addedAt: today(), bestSeller: false, active: true, photos: [], options: [] }}
       />
     </>
   );

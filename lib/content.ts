@@ -23,6 +23,8 @@ export type CatalogProduct = {
   bestSeller: boolean;
   addedAt: string;
   image: string | null;
+  /** Photos supplémentaires de la fiche (3 au plus) ; la photo principale est `image`. */
+  images: string[];
   /** Page du produit quand ce n'est pas /boutique/<id> (motos Ecooter). */
   href?: string;
   /** Choix proposés au client (couleur, type…), avec supplément de prix facultatif. */
@@ -30,7 +32,14 @@ export type CatalogProduct = {
 };
 
 /** Version allégée pour le panier côté navigateur : sans les descriptions, trop lourdes à envoyer sur chaque page. */
-export type CartProduct = Omit<CatalogProduct, "description">;
+export type CartProduct = Omit<CatalogProduct, "description" | "images">;
+
+export function toCartProduct(p: CatalogProduct): CartProduct {
+  const { description, images, ...light } = p;
+  void description;
+  void images;
+  return light;
+}
 
 export type CatalogEcooter = {
   id: string;
@@ -65,8 +74,13 @@ const staticProducts = (): CatalogProduct[] =>
       bestSeller: p.bestSeller ?? false,
       addedAt: p.addedAt,
       image: p.image ?? null,
+      images: [],
       options: [],
     }));
+
+/** Photos supplémentaires venant de la base : seules les adresses de médias ou d'images du site sont gardées. */
+const parsePhotos = (raw: unknown): string[] =>
+  Array.isArray(raw) ? raw.filter((u): u is string => typeof u === "string" && /^\/(api\/media|images)\//.test(u)).slice(0, 3) : [];
 
 export async function getProducts(): Promise<CatalogProduct[]> {
   "use cache";
@@ -87,6 +101,7 @@ export async function getProducts(): Promise<CatalogProduct[]> {
         bestSeller: r.bestSeller,
         addedAt: r.addedAt,
         image: r.image,
+        images: parsePhotos(r.images),
         options: parseOptions(r.options),
       }))
       .sort((a, b) => b.addedAt.localeCompare(a.addedAt) || a.name.fr.localeCompare(b.name.fr, "fr"));
@@ -169,6 +184,7 @@ export async function getSellable(): Promise<CatalogProduct[]> {
       bestSeller: false,
       addedAt: "2025-01-01",
       image: m.productPhoto ?? m.photo,
+      images: [],
       href: data.modelHref("fr", m.id),
       options: m.options,
     }));

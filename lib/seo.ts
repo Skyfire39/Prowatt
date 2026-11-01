@@ -106,14 +106,14 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
 }
 
 /** Fiche produit avec son prix en ariary (le moins cher des choix possibles). */
-export function productLd(p: { name: string; path: string; description?: string; image?: string | null; sku?: string; category?: string; price?: number | null; brand?: string }) {
+export function productLd(p: { name: string; path: string; description?: string; image?: string | null; images?: string[]; sku?: string; category?: string; price?: number | null; brand?: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
     name: p.name,
     url: absoluteUrl(p.path),
     ...(p.description ? { description: p.description } : {}),
-    ...(p.image ? { image: absoluteUrl(p.image) } : {}),
+    ...(p.image ? { image: [p.image, ...(p.images ?? [])].map(absoluteUrl) } : {}),
     ...(p.sku ? { sku: p.sku } : {}),
     ...(p.category ? { category: p.category } : {}),
     brand: { "@type": "Brand", name: p.brand ?? SITE_NAME },

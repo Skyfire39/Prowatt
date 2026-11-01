@@ -38,10 +38,10 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <Hero lang={lang} dict={home.hero} message={home.message} statLabels={home.stats} />
       <Solutions dict={home.solutions} categories={categories} explore={realisations.explore} />
       <FeaturedSection lang={lang} dict={home.featured} shop={shop} products={products} />
-      <EcooterTeaser lang={lang} dict={home.ecooter} models={ecooter} ecooters={ecooters} />
       <Steps dict={home.steps} />
       <SolarAdvantages dict={home.advantages} />
       <Audiences dict={home.audiences} />
+      <EcooterTeaser lang={lang} dict={home.ecooter} models={ecooter} ecooters={ecooters} />
       <Testimonials lang={lang} dict={home.testimonials} items={testimonials} />
       <Partners dict={home.partners} items={partners} />
       <Why dict={home.why} />

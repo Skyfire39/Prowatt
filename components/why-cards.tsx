@@ -1,10 +1,10 @@
 "use client";
 
 import type { PointerEvent } from "react";
-import { LampIcon, MapPinIcon, ShieldIcon, WrenchIcon } from "./icons";
+import { KeyIcon, LampIcon, MapPinIcon, ShieldIcon } from "./icons";
 import { Reveal } from "./motion";
 
-const icons = [WrenchIcon, ShieldIcon, LampIcon, MapPinIcon];
+const icons = [KeyIcon, ShieldIcon, LampIcon, MapPinIcon];
 
 /** Suit le curseur : la lueur de la carte se place sous le doigt ou la souris (variables CSS --mx / --my). */
 function track(e: PointerEvent<HTMLDivElement>) {
@@ -30,7 +30,8 @@ export function WhyCards({ items }: { items: { title: string; text: string }[] }
             >
               <span aria-hidden="true" className="wh-spot pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <span aria-hidden="true" className="wh-shine pointer-events-none absolute inset-y-0 -left-1/2 -z-10 w-1/2" />
-              <span aria-hidden="true" className="absolute inset-x-8 top-0 h-[3px] origin-left scale-x-0 rounded-b-full bg-gradient-to-r from-lime via-teal to-lime transition-transform duration-700 group-hover:scale-x-100" />
+              <span aria-hidden="true" className="wh-blob pointer-events-none absolute -left-10 -top-10 -z-10 size-48 rounded-full bg-lime/70 blur-3xl transition-opacity duration-500 group-hover:opacity-100" style={{ animationDuration: `${9 + i * 1.5}s`, animationDelay: `${-i * 2}s` }} />
+              <span aria-hidden="true" className="wh-blob pointer-events-none absolute -bottom-12 -right-8 -z-10 size-44 rounded-full bg-[#5fd0a0]/60 blur-3xl transition-opacity duration-500 group-hover:opacity-100" style={{ animationDuration: `${12 + i}s`, animationDelay: `${-i * 3.5}s`, animationDirection: "reverse" }} />
               <span aria-hidden="true" className="pointer-events-none absolute right-6 top-3 select-none text-7xl font-semibold leading-none tracking-tighter text-teal/10 transition-all duration-500 group-hover:-translate-y-1 group-hover:text-teal/20">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -44,9 +45,6 @@ export function WhyCards({ items }: { items: { title: string; text: string }[] }
 
               <h3 className="mt-7 text-2xl leading-snug tracking-tight">{item.title}</h3>
               <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
-              <span aria-hidden="true" className="mt-auto block pt-6">
-                <span className="block h-1 w-10 rounded-full bg-lime transition-all duration-500 group-hover:w-full group-hover:bg-teal/40" />
-              </span>
             </div>
           </Reveal>
         );

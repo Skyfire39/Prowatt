@@ -88,6 +88,14 @@ export const WrenchIcon = (p: IconProps) => (
   </svg>
 );
 
+export const KeyIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <circle cx="8" cy="15" r="4.5" />
+    <path d="M11.2 11.8L20 3M16 7l3 3M13.5 9.5l2 2" />
+    <circle cx="8" cy="15" r="1.1" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 export const ShieldIcon = (p: IconProps) => (
   <svg {...base} {...p}>
     <path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3ZM9 12l2 2 4-4" />

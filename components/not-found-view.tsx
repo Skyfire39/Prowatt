@@ -16,8 +16,15 @@ const links = [
  */
 export function NotFoundView() {
   return (
-    <section className="px-4 pb-20 pt-32 sm:px-6 sm:pt-40">
-      <div className="mx-auto max-w-4xl text-center">
+    // Le fond de l'ancienne carte (dégradé vert pâle et points) couvre toute la page ; l'illustration va de bord à bord.
+    <section
+      className="relative isolate min-h-dvh overflow-hidden pb-20 pt-32 sm:pt-40"
+      style={{
+        backgroundImage: "radial-gradient(circle, rgb(23 92 85 / 0.13) 1.4px, transparent 1.7px), linear-gradient(135deg, #ffffff 0%, #f6faee 50%, #e4efcb 100%)",
+        backgroundSize: "26px 26px, auto",
+      }}
+    >
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
         <p className="eyebrow ch-fade" style={{ "--d": "0s" } as React.CSSProperties}>
           {d.eyebrow}
         </p>
@@ -27,12 +34,12 @@ export function NotFoundView() {
         </p>
       </div>
 
-      <div className="mx-auto mt-12 max-w-6xl">
+      <div className="mt-10 sm:mt-14">
         <UnpluggedScene label={d.scene} />
-        <p className="mt-5 text-center text-sm font-semibold uppercase tracking-[0.18em] text-teal/70">{d.tagline}</p>
+        <p className="mt-2 px-4 text-center text-sm font-semibold uppercase tracking-[0.18em] text-teal/70">{d.tagline}</p>
       </div>
 
-      <div className="mx-auto mt-10 flex max-w-4xl flex-col items-center gap-6 text-center">
+      <div className="mx-auto mt-10 flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6">
         <div className="flex flex-wrap justify-center gap-3">
           <ButtonLink href="/" variant="primary" arrow>
             {d.home}

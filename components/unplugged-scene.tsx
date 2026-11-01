@@ -33,8 +33,9 @@ const line = { stroke: INK, strokeWidth: 5, strokeLinecap: "round", strokeLinejo
  */
 export function UnpluggedScene({ label }: { label: string }) {
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-[#f6faee] to-[#e4efcb] shadow-[0_24px_60px_-28px_rgb(23_92_85/0.55)] ring-1 ring-teal/10 max-sm:h-64 sm:h-[28rem]">
-      <svg viewBox="0 0 1000 450" role="img" aria-label={label} className="absolute inset-0 size-full" preserveAspectRatio="xMidYMid slice">
+    <div className="relative h-64 w-full overflow-hidden sm:h-[28rem]">
+      {/* L'illustration garde ses proportions au centre ; les câbles, eux, débordent du dessin jusqu'aux bords de la page. */}
+      <svg viewBox="0 0 1000 450" role="img" aria-label={label} className="absolute left-1/2 top-0 h-full w-full min-w-[680px] -translate-x-1/2 overflow-visible" preserveAspectRatio="xMidYMid meet">
         <defs>
           <radialGradient id="pu-glow" cx="50%" cy="50%" r="50%">
             <stop offset="0" stopColor="#fff7c9" stopOpacity="0.95" />
@@ -46,12 +47,7 @@ export function UnpluggedScene({ label }: { label: string }) {
             <stop offset="0.55" stopColor="#f1f8e6" />
             <stop offset="1" stopColor={LIME} />
           </linearGradient>
-          <pattern id="pu-dots" width="26" height="26" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1.4" fill={TEAL} fillOpacity="0.12" />
-          </pattern>
         </defs>
-
-        <rect width="1000" height="450" fill="url(#pu-dots)" />
 
         {/* 404 en filigrane, le « 0 » encadre le point de contact */}
         <text
@@ -72,10 +68,10 @@ export function UnpluggedScene({ label }: { label: string }) {
 
         {/* Câbles : ils partent des bords et rejoignent l'arrière de chaque fiche */}
         <g fill="none" {...line}>
-          <path d="M-10 318C60 318 96 150 168 170S214 292 262 256S296 236 323 235" />
-          <path d="M-10 318C60 318 96 150 168 170S214 292 262 256S296 236 323 235" stroke="#fff" strokeOpacity="0.55" strokeWidth="1.6" transform="translate(0 -1.5)" />
-          <path d="M704 237C748 214 770 118 836 132S890 292 952 266S1000 206 1012 214" />
-          <path d="M704 237C748 214 770 118 836 132S890 292 952 266S1000 206 1012 214" stroke="#fff" strokeOpacity="0.55" strokeWidth="1.6" transform="translate(0 -1.5)" />
+          <path d="M-4000 318H-10C60 318 96 150 168 170S214 292 262 256S296 236 323 235" />
+          <path d="M-4000 318H-10C60 318 96 150 168 170S214 292 262 256S296 236 323 235" stroke="#fff" strokeOpacity="0.55" strokeWidth="1.6" transform="translate(0 -1.5)" />
+          <path d="M704 237C748 214 770 118 836 132S890 292 952 266S980 252 1010 252H5000" />
+          <path d="M704 237C748 214 770 118 836 132S890 292 952 266S980 252 1010 252H5000" stroke="#fff" strokeOpacity="0.55" strokeWidth="1.6" transform="translate(0 -1.5)" />
         </g>
 
         {/* Fiche femelle (gauche) : glisse vers la droite puis recule */}

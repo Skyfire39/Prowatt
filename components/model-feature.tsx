@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "./sk-image";
 import type { ReactNode } from "react";
 import { Reveal } from "./motion";
 

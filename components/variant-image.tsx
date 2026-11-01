@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./sk-image";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { ProductArt } from "./product-art";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./sk-image";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 

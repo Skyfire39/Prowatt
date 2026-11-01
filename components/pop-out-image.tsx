@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./sk-image";
 import { useRef, type PointerEvent } from "react";
 
 /**

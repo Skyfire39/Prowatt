@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "./sk-image";
 import Link from "next/link";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import type { CatalogEcooter } from "@/lib/content";

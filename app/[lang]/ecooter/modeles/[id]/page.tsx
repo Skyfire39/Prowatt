@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ProductSkeleton } from "@/components/skeleton";
 import { AddToCart } from "@/components/add-to-cart";
 import { VariantImageProvider } from "@/components/variant-image";
 import { ArrowIcon, CheckIcon, ChevronIcon, MailIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
@@ -47,7 +48,7 @@ export async function generateMetadata({
 
 export default function ModelPage({ params }: PageProps<"/[lang]/ecooter/modeles/[id]">) {
   return (
-    <Suspense fallback={<div className="min-h-dvh" />}>
+    <Suspense fallback={<ProductSkeleton />}>
       <ModelContent params={params} />
     </Suspense>
   );

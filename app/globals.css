@@ -583,6 +583,23 @@ body:has([data-sticky-buy]) .floating-contact {
   .pu-burst { animation: none; opacity: 0.9; }
 }
 
+/* Chargement « à la Facebook » : rectangles gris à reflet qui défile, puis fondu à l'arrivée du contenu */
+.skeleton {
+  background-color: rgb(23 92 85 / 0.1);
+  background-image: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 0.7) 50%, transparent 80%);
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  animation: sk-shimmer 1.5s ease-in-out infinite;
+}
+@keyframes sk-shimmer {
+  from { background-position: 160% 0; }
+  to { background-position: -90% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+  .sk-img { transition: none; }
+}
+
 /* Impression des devis et factures (« Imprimer / PDF » dans l'administration). */
 @page {
   size: A4;

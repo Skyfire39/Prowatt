@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "./sk-image";
 
 type Logo = { name: string; logo: string };
 

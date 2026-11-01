@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ProductSkeleton } from "@/components/skeleton";
 import { AddToCart } from "@/components/add-to-cart";
 import { CheckIcon, ChevronIcon, PhoneIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
@@ -51,7 +52,7 @@ export async function generateMetadata({
 
 export default function ProductPage({ params }: PageProps<"/[lang]/boutique/[id]">) {
   return (
-    <Suspense fallback={<div className="min-h-dvh" />}>
+    <Suspense fallback={<ProductSkeleton />}>
       <ProductContent params={params} />
     </Suspense>
   );

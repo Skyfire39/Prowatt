@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "./sk-image";
 import Link from "next/link";
 import { ArrowIcon } from "./icons";
 

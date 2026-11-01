@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
+import { BannerSkeleton } from "@/components/skeleton";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/json-ld";
 import { PaginatedGrid } from "@/components/paginated-grid";
@@ -36,7 +37,7 @@ export async function generateMetadata({
 
 export default function CategoryPage({ params }: PageProps<"/[lang]/realisations/[slug]">) {
   return (
-    <Suspense fallback={<div className="min-h-dvh" />}>
+    <Suspense fallback={<BannerSkeleton />}>
       <CategoryContent params={params} />
     </Suspense>
   );

@@ -63,6 +63,10 @@ export default async function RootLayout({
       className={`${reddit.variable} antialiased`}
     >
       <body className="min-h-dvh overflow-x-hidden">
+        {/* Sans JavaScript, les images n'attendent pas leur fondu et les squelettes n'ont rien à annoncer. */}
+        <noscript>
+          <style>{".sk-img{opacity:1!important}.skeleton{display:none!important}"}</style>
+        </noscript>
         <JsonLd data={organizationLd(toSiteInfo(settings))} />
         <div className="ambient" aria-hidden="true">
           <span />

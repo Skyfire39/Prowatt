@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { GridSkeleton } from "@/components/skeleton";
 import { ArrowIcon, BatteryIcon, BoltIcon, ClockIcon, LeafIcon, ShieldIcon } from "@/components/icons";
 import { ModelCard } from "@/components/model-card";
 import { ModelSlider } from "@/components/model-slider";
@@ -35,7 +36,7 @@ export async function generateMetadata({
 
 export default function TechPage({ params }: PageProps<"/[lang]/ecooter/[tech]">) {
   return (
-    <Suspense fallback={<div className="min-h-dvh" />}>
+    <Suspense fallback={<GridSkeleton cards={3} />}>
       <TechContent params={params} />
     </Suspense>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./sk-image";
 import type { ProductOption, Selection } from "@/lib/options";
 
 const fmt = (n: number, lang: string, currency: string) => `${n > 0 ? "+" : "−"}${new Intl.NumberFormat(lang).format(Math.abs(n))} ${currency}`;

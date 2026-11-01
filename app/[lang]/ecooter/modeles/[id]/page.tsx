@@ -311,7 +311,6 @@ async function ModelContent({ params }: { params: PageProps<"/[lang]/ecooter/mod
                   <div className={`overflow-hidden rounded-2xl bg-accent-soft/60 ${o.productPhoto ? "" : "p-2"}`}>
                     <Image
                       src={o.productPhoto ?? o.photo}
-                      unoptimized={(o.productPhoto ?? o.photo).startsWith("/api/")}
                       alt=""
                       width={400}
                       height={400}

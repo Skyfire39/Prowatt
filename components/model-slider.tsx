@@ -137,7 +137,6 @@ export function ModelSlider({
               <div className="relative aspect-[4/3] w-full max-w-[22rem] overflow-hidden rounded-3xl shadow-[0_24px_40px_-18px_rgb(10_35_32/0.35)] ring-1 ring-white/70 sm:max-w-[28rem] md:max-w-[33rem]">
                 <Image
                   src={slide.photo}
-                  unoptimized={slide.photo.startsWith("/api/")}
                   alt={slide.name}
                   fill
                   priority={index === 0}
@@ -154,7 +153,6 @@ export function ModelSlider({
             >
               <Image
                 src={slide.photo}
-                unoptimized={slide.photo.startsWith("/api/")}
                 alt={slide.name}
                 width={1100}
                 height={1100}

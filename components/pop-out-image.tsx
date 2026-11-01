@@ -7,7 +7,7 @@ import { useRef, type PointerEvent } from "react";
  * Moto détourée qui sort de son cadre : le fond teinté reste en bas, la moto le dépasse par le haut avec une ombre au sol.
  * À la souris, elle s'incline légèrement vers le pointeur (effet 3D) ; au toucher, elle reste simplement posée.
  */
-export function PopOutImage({ src, alt, unoptimized, sizes }: { src: string; alt: string; unoptimized?: boolean; sizes: string }) {
+export function PopOutImage({ src, alt, sizes }: { src: string; alt: string; sizes: string }) {
   const tilt = useRef<HTMLDivElement>(null);
 
   const move = (e: PointerEvent<HTMLDivElement>) => {
@@ -34,7 +34,6 @@ export function PopOutImage({ src, alt, unoptimized, sizes }: { src: string; alt
       >
         <Image
           src={src}
-          unoptimized={unoptimized}
           alt={alt}
           width={700}
           height={700}

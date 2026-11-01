@@ -52,6 +52,12 @@ const nextConfig: NextConfig = {
     // la limite par défaut de 1 Mo les ferait échouer.
     serverActions: { bodySizeLimit: "20mb" },
   },
+  images: {
+    // AVIF puis WebP : bien plus léger que le PNG ou le JPEG d'origine, avec une qualité visuelle identique.
+    formats: ["image/avif", "image/webp"],
+    // Une image optimisée reste 31 jours en cache (les photos du site ne changent pas à l'adresse près).
+    minimumCacheTTL: 60 * 60 * 24 * 31,
+  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

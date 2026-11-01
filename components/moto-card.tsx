@@ -22,7 +22,6 @@ export function MotoCard({ item }: { item: MotoCardItem }) {
       >
         <Image
           src={item.photo}
-          unoptimized={item.photo.startsWith("/api/")}
           alt={`Ecooter ${item.name}`}
           width={400}
           height={400}

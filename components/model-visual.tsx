@@ -57,7 +57,6 @@ export function ModelVisual({ photo: base, name, cutout: baseCutout = true }: { 
           {cutout ? (
             <Image
               src={photo}
-              unoptimized={photo.startsWith("/api/")}
               alt={name}
               width={1100}
               height={1100}
@@ -70,7 +69,6 @@ export function ModelVisual({ photo: base, name, cutout: baseCutout = true }: { 
             <div className="relative aspect-square w-full overflow-hidden rounded-3xl">
               <Image
                 src={photo}
-                unoptimized={photo.startsWith("/api/")}
                 alt={name}
                 fill
                 priority

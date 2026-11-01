@@ -86,7 +86,7 @@ export default async function ProjectsAdminPage({ searchParams }: { searchParams
               <article key={p.id} className="glass flex flex-col overflow-hidden rounded-3xl p-5">
                 <Link href={`/admin/realisations/${p.id}`} className="relative block aspect-[16/10] overflow-hidden rounded-2xl bg-accent-soft">
                   {cover ? (
-                    <Image src={cover} alt="" fill sizes="(min-width: 1280px) 28vw, (min-width: 640px) 45vw, 90vw" unoptimized={cover.startsWith("/api/")} className="object-cover" />
+                    <Image src={cover} alt="" fill sizes="(min-width: 1280px) 28vw, (min-width: 640px) 45vw, 90vw" className="object-cover" />
                   ) : (
                     <span className="grid size-full place-items-center text-muted">
                       <ProjectsIcon className="size-8" />

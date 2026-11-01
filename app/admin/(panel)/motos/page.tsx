@@ -42,7 +42,7 @@ export default async function MotosPage({ searchParams }: { searchParams: Promis
             return (
               <article key={m.id} className="glass group flex flex-col overflow-hidden rounded-3xl p-5">
                 <Link href={`/admin/motos/${m.id}`} className="relative grid place-items-center overflow-hidden rounded-2xl bg-accent-soft p-3">
-                  <Image src={m.photo} alt="" width={400} height={400} unoptimized={m.photo.startsWith("/api/")} className="h-44 w-auto object-contain drop-shadow-[0_14px_14px_rgb(10_35_32/0.22)] transition-transform duration-500 group-hover:scale-105" />
+                  <Image src={m.photo} alt="" width={400} height={400} className="h-44 w-auto object-contain drop-shadow-[0_14px_14px_rgb(10_35_32/0.22)] transition-transform duration-500 group-hover:scale-105" />
                   {!m.active && <Badge tone="neutral">Masqué</Badge>}
                 </Link>
                 <div className="mt-4 flex flex-1 flex-col">

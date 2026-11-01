@@ -25,7 +25,6 @@ export function LogoMarquee({ items, label }: { items: Logo[]; label: string }) 
               >
                 <Image
                   src={p.logo}
-                  unoptimized={p.logo.startsWith("/api/")}
                   alt={copy === 0 && i < items.length ? p.name : ""}
                   width={225}
                   height={225}

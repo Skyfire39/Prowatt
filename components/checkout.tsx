@@ -240,7 +240,7 @@ export function Checkout({
         {views.map(({ key, product, qty, total, optionsLabel, image }) => (
           <li key={key} className="flex gap-3">
             <div className="relative">
-              <ProductThumb src={image} className="size-16" />
+              <ProductThumb src={image} className="size-16" sizes="64px" />
               <span className="absolute -right-1.5 -top-1.5 grid min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold leading-5 text-on-accent tabular-nums">
                 {qty}
               </span>

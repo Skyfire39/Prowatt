@@ -32,7 +32,6 @@ export function ModelCard({
             <div className="overflow-hidden rounded-2xl bg-accent-soft/60">
               <Image
                 src={model.productPhoto}
-                unoptimized={model.productPhoto.startsWith("/api/")}
                 alt={model.name}
                 width={700}
                 height={700}
@@ -41,7 +40,7 @@ export function ModelCard({
               />
             </div>
           ) : (
-            <PopOutImage src={model.photo} unoptimized={model.photo.startsWith("/api/")} alt={model.name} sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 90vw" />
+            <PopOutImage src={model.photo} alt={model.name} sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 90vw" />
           )}
         </Link>
         <div className="flex flex-1 flex-col px-2 pb-2 pt-6">

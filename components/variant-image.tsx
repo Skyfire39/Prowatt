@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { ProductArt } from "./product-art";
 
@@ -42,8 +43,7 @@ export function ProductPhoto({ image, images = [], name }: { image: string | nul
       {!src && <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime/55" />}
       {src ? (
         <div className="relative mx-auto mt-3 aspect-[4/3] w-full max-w-xl overflow-hidden rounded-2xl border border-teal/15 bg-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img key={src} src={src} alt={name} className="rb-in absolute inset-0 size-full object-contain p-6" />
+          <Image key={src} src={src} alt={name} fill priority sizes="(min-width: 1024px) 560px, 92vw" className="rb-in object-contain p-6" />
         </div>
       ) : (
         <div className="relative mx-auto aspect-[4/3] w-full max-w-xl">
@@ -63,8 +63,7 @@ export function ProductPhoto({ image, images = [], name }: { image: string | nul
                   u === src ? "border-accent ring-2 ring-accent/40" : "border-teal/15 opacity-75 hover:opacity-100"
                 }`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={u} alt="" className="absolute inset-0 size-full object-contain p-1.5" />
+                <Image src={u} alt="" fill sizes="140px" className="object-contain p-1.5" />
               </button>
             </li>
           ))}

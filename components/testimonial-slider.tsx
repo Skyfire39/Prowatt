@@ -112,7 +112,7 @@ export function TestimonialSlider({ items, labels, interval = 5000 }: { items: I
               </span>
               <div className="relative flex items-center gap-3">
                 {t.photo ? (
-                  <Image src={t.photo} alt="" width={96} height={96} unoptimized={t.photo.startsWith("/api/")} className="size-12 rounded-full object-cover ring-2 ring-lime/40" />
+                  <Image src={t.photo} alt="" width={96} height={96} className="size-12 rounded-full object-cover ring-2 ring-lime/40" />
                 ) : (
                   <span aria-hidden="true" className="grid size-12 place-items-center rounded-full bg-lime text-lg font-bold text-teal ring-2 ring-lime/40">
                     {t.name.slice(0, 1).toUpperCase()}

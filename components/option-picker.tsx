@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { ProductOption, Selection } from "@/lib/options";
 
 const fmt = (n: number, lang: string, currency: string) => `${n > 0 ? "+" : "−"}${new Intl.NumberFormat(lang).format(Math.abs(n))} ${currency}`;
@@ -64,8 +65,9 @@ export function OptionPicker({
                       onClick={pick}
                       className={`group w-[5.25rem] rounded-2xl p-1.5 text-center ring-2 transition-all ${on ? "bg-accent-soft ring-accent" : "glass-chip ring-transparent hover:ring-ink/20"}`}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={v.image} alt="" className="aspect-square w-full rounded-xl object-cover transition-transform duration-300 group-hover:scale-[1.04]" />
+                      <span className="relative block aspect-square w-full overflow-hidden rounded-xl">
+                        <Image src={v.image} alt="" fill sizes="112px" className="object-cover transition-transform duration-300 group-hover:scale-[1.04]" />
+                      </span>
                       <span className="mt-1.5 block truncate text-xs font-semibold leading-tight">{v.label}</span>
                       <span className={`block min-h-4 text-[11px] font-medium tabular-nums ${extra ? "text-muted" : ""}`}>{extra}</span>
                     </button>
@@ -84,8 +86,7 @@ export function OptionPicker({
                   >
                     <span className="inline-flex items-center gap-2">
                       {v.image && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={v.image} alt="" className="size-7 rounded-md object-cover" />
+                        <Image src={v.image} alt="" width={28} height={28} className="size-7 rounded-md object-cover" />
                       )}
                       {v.label}
                     </span>

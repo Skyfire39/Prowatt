@@ -97,12 +97,12 @@ export function SceneFrame({
       viewBox="0 50 1200 410"
       role="img"
       aria-label={aria}
-      className="absolute bottom-0 right-0 h-full w-full max-w-none xl:h-[90%] xl:w-auto"
+      className="absolute bottom-0 right-0 h-full w-full max-w-none overflow-visible xl:h-[90%] xl:w-auto"
       style={{ aspectRatio: "1200 / 410" }}
       preserveAspectRatio="xMaxYMax slice"
     >
       <defs>
-        <linearGradient id={u("sky")} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={u("sky")} gradientUnits="userSpaceOnUse" x1="0" y1="50" x2="0" y2="460">
           <stop offset="0" stopColor="#0b3f3a" />
           <stop offset="0.55" stopColor="#14594f" />
           <stop offset="1" stopColor="#3b8d78" />
@@ -129,7 +129,8 @@ export function SceneFrame({
         </filter>
       </defs>
 
-      <rect y="50" width="1200" height="410" fill={ref("sky")} />
+      {/* Le ciel déborde du dessin (en haut et sur les côtés) : sinon son bord et les nuages coupés se voient dans le cadre. */}
+      <rect x="-1500" y="-800" width="4200" height="1260" fill={ref("sky")} />
 
       {/* Étoiles et nuages */}
       <g fill="#fff">

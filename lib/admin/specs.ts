@@ -3,7 +3,7 @@ export const specFields = [
   { key: "power", label: "Puissance du moteur", placeholder: "ex. 3 000 W" },
   { key: "speed", label: "Vitesse maximale", placeholder: "ex. 75 km/h" },
   { key: "range", label: "Autonomie", placeholder: "ex. 120 km" },
-  { key: "battery", label: "Type de batterie", placeholder: "ex. Lithium" },
+  { key: "battery", label: "Type de batterie", placeholder: "ex. Lithium, ou « Lithium, Graphène » si la moto existe dans les deux" },
   { key: "batteryPower", label: "Capacité de la batterie", placeholder: "ex. 28A 74V" },
   { key: "charge", label: "Temps de charge", placeholder: "ex. 6 à 8 h" },
   { key: "warranty", label: "Garantie", placeholder: "ex. 2 ans ou 20 000 km" },

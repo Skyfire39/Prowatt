@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Shop } from "@/components/shop";
 import { PageHero } from "@/components/ui";
 import { getCategories, getEcooters, getProducts, getSettings } from "@/lib/content";
-import { modelHref, motoCartId, tr } from "@/lib/data";
+import { batteryTechs, modelHref, motoCartId, techs, tr } from "@/lib/data";
 import { cardPrice, priceRange } from "@/lib/options";
 import { loadPage } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
@@ -36,6 +36,10 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">
                 count: products.filter((p) => p.category === c.id).length + (c.id === "motos-electriques" ? ecooters.length : 0),
               }))
               .filter((c) => c.count > 0)}
+            // Sous-catégories des motos : une moto proposée en Graphène et en Lithium figure dans les deux.
+            subs={techs
+              .map((t) => ({ id: t, name: dict.ecooter.techs[t].name, count: ecooters.filter((m) => batteryTechs(m.specs.battery, m.options).includes(t)).length }))
+              .filter((t) => t.count > 0)}
             items={[
               ...products.map((p) => ({
                 id: p.id,
@@ -59,6 +63,7 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">
                   addedAt: "2025-01-01",
                   href: modelHref(lang, m.id),
                   image: m.productPhoto ?? m.photo,
+                  techs: batteryTechs(m.specs.battery, m.options),
                 })),
               // Motos sans prix : fiche dédiée, prix sur demande.
               ...ecooters
@@ -71,6 +76,7 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/boutique">
                   priceValue: null as number | null,
                   addedAt: "2025-01-01",
                   href: modelHref(lang, m.id),
+                  techs: batteryTechs(m.specs.battery, m.options),
                   moto: {
                     name: m.name,
                     href: modelHref(lang, m.id),

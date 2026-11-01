@@ -738,7 +738,8 @@
     "view": "Voir le produit",
     "addToCartAria": "Ajouter au panier",
     "chooseOptions": "Choisir",
-    "from": "À partir de"
+    "from": "À partir de",
+    "subLabel": "Batterie"
   },
   "contact": {
     "eyebrow": "Contact",

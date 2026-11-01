@@ -335,6 +335,28 @@ export const techs = ["lithium", "graphene"] as const;
 export type Tech = (typeof techs)[number];
 export const isTech = (v: string): v is Tech => (techs as readonly string[]).includes(v);
 
+const fold = (v: string) => v.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const techsIn = (text: string): Tech[] => {
+  const t = fold(text);
+  return techs.filter((x) => t.includes(x));
+};
+
+/**
+ * Types de batterie d'une moto : ceux écrits dans sa fiche technique (« Lithium », « Lithium, Graphène »…) et ceux de
+ * ses attributs (une option « Batterie » proposant Graphène et Lithium). Une moto peut donc avoir les deux.
+ * Fiche vide et aucun attribut de batterie : « Lithium ou graphène », comme sur la fiche du modèle.
+ */
+export function batteryTechs(spec: string | undefined, options: { name: string; values: { label: string }[] }[]): Tech[] {
+  const found = new Set<Tech>(techsIn(spec ?? ""));
+  for (const o of options) {
+    const named = /batter/i.test(o.name);
+    for (const v of o.values) for (const x of techsIn(v.label)) if (named || techsIn(o.name).length === 0) found.add(x);
+    for (const x of techsIn(o.name)) found.add(x);
+  }
+  if (found.size === 0 && !(spec ?? "").trim()) return [...techs];
+  return techs.filter((x) => found.has(x));
+}
+
 // Accueil
 // Logos repris de l'ancien site (public/images/partners), dans le même ordre.
 export const partners: { name: string; logo: string }[] = [

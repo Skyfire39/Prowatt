@@ -41,10 +41,16 @@ type Item = {
   hasOptions?: boolean;
   /** Présent pour une moto : carte dédiée, sans panier. */
   moto?: MotoCardItem;
+  /** Types de batterie d'une moto (une moto peut en avoir plusieurs). */
+  techs?: string[];
 };
+/** Sous-catégorie des motos électriques (type de batterie). */
+type Sub = { id: string; name: string; count: number };
+const MOTOS = "motos-electriques";
 type Sort = "newest" | "oldest" | "priceAsc" | "priceDesc";
 type Labels = {
   all: string;
+  subLabel: string;
   order: string;
   emptyTitle: string;
   emptyText: string;
@@ -90,18 +96,21 @@ const compare: Record<Sort, (a: Item, b: Item) => number> = {
 
 export function Shop({
   categories,
+  subs,
   items,
   labels,
   contactHref,
   bounds,
 }: {
   categories: Cat[];
+  subs: Sub[];
   items: Item[];
   labels: Labels;
   contactHref: string;
   bounds: { min: string; max: string };
 }) {
   const [active, setActive] = useState<string>("all");
+  const [sub, setSub] = useState<string>("all");
   const [page, setPage] = useState(1);
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -112,7 +121,9 @@ export function Shop({
 
   const lo = min === "" ? 0 : Number(min);
   const hi = max === "" ? Infinity : Number(max);
-  const inCategory = active === "all" ? items : items.filter((i) => i.category === active);
+  const inCategory = (active === "all" ? items : items.filter((i) => i.category === active)).filter(
+    (i) => active !== MOTOS || sub === "all" || (i.techs ?? []).includes(sub),
+  );
   const terms = fold(query).split(/\s+/).filter(Boolean);
   const categoryName = new Map(categories.map((c) => [c.id, c.name]));
   const filtered = inCategory
@@ -132,6 +143,12 @@ export function Shop({
 
   function choose(id: string) {
     setActive(id);
+    setSub("all");
+    setPage(1);
+  }
+
+  function chooseSub(id: string) {
+    setSub(id);
     setPage(1);
   }
 
@@ -190,6 +207,28 @@ export function Shop({
           </button>
         ))}
       </div>
+
+      {/* Sous-catégories des motos : Graphène / Lithium (une moto proposée dans les deux apparaît dans chacune) */}
+      {active === MOTOS && subs.length > 0 && (
+        <div className="rb-in mt-3 flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label={labels.subLabel}>
+          <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-muted">{labels.subLabel}</span>
+          {[{ id: "all", name: labels.all, count: items.filter((i) => i.category === MOTOS).length }, ...subs].map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              role="tab"
+              aria-selected={sub === c.id}
+              onClick={() => chooseSub(c.id)}
+              className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium ring-1 transition-colors ${
+                sub === c.id ? "bg-lime text-teal ring-teal/20" : "glass text-muted ring-transparent hover:text-ink"
+              }`}
+            >
+              {c.name}
+              <span className="ml-1.5 opacity-60">{c.count}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Tri et fourchette de prix */}
       <div

@@ -1,8 +1,9 @@
 "use client";
 
-import { saveBillingAction, saveCompanyAction, savePaymentAction } from "@/app/admin/(panel)/parametres/actions";
+import { saveBillingAction, saveCompanyAction, saveMailAction, savePaymentAction, sendTestMailAction } from "@/app/admin/(panel)/parametres/actions";
 import type { AppSettings } from "@/lib/settings";
-import { Field, FormError, Panel, inputClass, textareaClass } from "./ui";
+import { mailFields } from "@/lib/mail-templates";
+import { Field, FormError, Panel, Toggle, inputClass, selectClass, textareaClass } from "./ui";
 import { SubmitButton, useActionForm } from "./client";
 
 function Result({ state }: { state: { error?: string; ok?: string } | null }) {
@@ -131,5 +132,90 @@ export function BillingForm({ v }: { v: AppSettings["billing"] }) {
         </div>
       </Panel>
     </form>
+  );
+}
+
+export function MailForm({ v, configured, from }: { v: AppSettings["mail"]; configured: boolean; from: string | null }) {
+  const { state, onSubmit, pending } = useActionForm(saveMailAction);
+  const test = useActionForm(sendTestMailAction);
+  return (
+    <div className="grid gap-6">
+      <form method="post" onSubmit={onSubmit}>
+        <Panel title="E-mails des demandes de devis" subtitle="À chaque demande envoyée depuis le site, elle est sauvegardée ici puis envoyée par e-mail à vos commerciaux, avec une confirmation au demandeur.">
+          <div className={`mb-6 rounded-2xl border px-4 py-3 text-sm ${configured ? "border-lime bg-lime/40 text-teal" : "border-amber-300 bg-amber-50 text-amber-900"}`}>
+            {configured ? (
+              <>Envoi actif via Resend, expéditeur : <strong>{from}</strong>.</>
+            ) : (
+              <>
+                L&apos;envoi n&apos;est pas encore relié : ajoutez <code className="rounded bg-black/5 px-1">RESEND_API_KEY</code> et <code className="rounded bg-black/5 px-1">MAIL_FROM</code> dans <code className="rounded bg-black/5 px-1">.env.local</code> (et chez votre hébergeur), puis redémarrez. Tant que ce n&apos;est pas fait, les demandes restent sauvegardées ici sans e-mail.
+              </>
+            )}
+          </div>
+
+          <div className="grid gap-5">
+            <Toggle name="notifySales" label="Prévenir les commerciaux à chaque demande" defaultChecked={v.notifySales} />
+            <Field label="Adresses des commerciaux" hint="Une adresse par ligne (ou séparées par des virgules). Elles reçoivent toutes la demande ; « Répondre » écrit directement au client.">
+              <textarea name="salesEmails" defaultValue={v.salesEmails.join("\n")} rows={3} className={textareaClass} placeholder="commercial1@prowattmadagascar.com" />
+            </Field>
+            <Field label="Sujet de l'e-mail aux commerciaux">
+              <input name="salesSubject" defaultValue={v.salesSubject} className={inputClass} />
+            </Field>
+            <Field label="Texte de l'e-mail aux commerciaux">
+              <textarea name="salesBody" defaultValue={v.salesBody} rows={10} className={textareaClass} />
+            </Field>
+
+            <hr className="border-line" />
+
+            <Toggle name="confirmCustomer" label="Envoyer une confirmation au demandeur" defaultChecked={v.confirmCustomer} hint="Seulement s'il a renseigné son adresse e-mail dans le formulaire." />
+            <Field label="Sujet de la confirmation">
+              <input name="customerSubject" defaultValue={v.customerSubject} className={inputClass} />
+            </Field>
+            <Field label="Texte de la confirmation">
+              <textarea name="customerBody" defaultValue={v.customerBody} rows={9} className={textareaClass} />
+            </Field>
+            <Field label="Adresse de réponse du client" hint="Où arrivent les réponses à la confirmation. Vide : l'e-mail de l'entreprise.">
+              <input name="replyTo" type="email" defaultValue={v.replyTo} className={inputClass} placeholder="info@prowattmadagascar.com" />
+            </Field>
+
+            <div className="rounded-2xl bg-accent-soft/60 p-4 text-sm">
+              <p className="font-semibold">Champs à insérer dans vos textes et sujets</p>
+              <p className="mt-0.5 text-muted">Écrivez-les tels quels, avec les doubles accolades : ils sont remplacés par les informations de la demande.</p>
+              <ul className="mt-3 grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+                {mailFields.map(([k, d]) => (
+                  <li key={k} className="flex gap-2">
+                    <code className="shrink-0 rounded bg-white/70 px-1.5 py-0.5 text-xs font-semibold text-teal">{`{{${k}}}`}</code>
+                    <span className="text-muted">{d}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-4">
+            <Result state={state} />
+            <SubmitButton pending={pending} pendingLabel="Enregistrement…" className="w-fit">Enregistrer les e-mails</SubmitButton>
+          </div>
+        </Panel>
+      </form>
+
+      <form method="post" onSubmit={test.onSubmit}>
+        <Panel title="Envoyer un essai" subtitle="Reçoit un exemple avec une demande fictive, à partir des textes enregistrés ci-dessus (enregistrez d'abord vos modifications).">
+          <div className="grid gap-5 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+            <Field label="Adresse de test" required>
+              <input name="to" type="email" required className={inputClass} placeholder="vous@exemple.com" />
+            </Field>
+            <Field label="Quel e-mail ?">
+              <select name="which" className={selectClass} defaultValue="sales">
+                <option value="sales">Alerte aux commerciaux</option>
+                <option value="customer">Confirmation au client</option>
+              </select>
+            </Field>
+            <SubmitButton pending={test.pending} pendingLabel="Envoi…" variant="soft">Envoyer l&apos;essai</SubmitButton>
+          </div>
+          <div className="mt-4 grid gap-4">
+            <Result state={test.state} />
+          </div>
+        </Panel>
+      </form>
+    </div>
   );
 }

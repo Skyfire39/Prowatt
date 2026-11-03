@@ -6,6 +6,7 @@ import { upsertCustomer } from "@/lib/admin/customers";
 import { requireActionUser } from "@/lib/auth/session";
 import { logAudit } from "@/lib/audit";
 import { getDb, schema } from "@/lib/db";
+import { sendRequestMails } from "@/lib/quote-mails";
 import { requestStatusList } from "@/lib/quote-requests";
 import { isUuid, opt, s } from "@/lib/validate";
 
@@ -47,4 +48,13 @@ export async function deleteRequestAction(fd: FormData) {
   await db.delete(schema.quoteRequests).where(eq(schema.quoteRequests.id, r.id));
   await logAudit(user, "suppression", "demande", r.id, `${r.ref} · ${r.name}`);
   redirect("/admin/demandes?ok=deleted");
+}
+
+/** Renvoie les e-mails de la demande (aux commerciaux et au demandeur) : après un échec, ou si une adresse a changé dans les réglages. */
+export async function resendRequestMailsAction(fd: FormData) {
+  const user = await requireActionUser("quotes.write");
+  const { r } = await load(s(fd, "id"));
+  await sendRequestMails(r.id, "both");
+  await logAudit(user, "e-mails renvoyés", "demande", r.id, r.ref);
+  redirect(`/admin/demandes/${r.id}?ok=req-mailed`);
 }

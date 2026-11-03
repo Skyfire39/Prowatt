@@ -34,10 +34,30 @@ export type BillingSettings = {
   invoiceFooter: string;
 };
 
+/**
+ * E-mails envoyés à chaque demande de devis du site. Les textes acceptent des champs entre doubles accolades
+ * ({{nom}}, {{reference}}, {{reponses}}…) : voir lib/mail-templates.ts.
+ */
+export type MailSettings = {
+  /** Prévenir les commerciaux à chaque nouvelle demande. */
+  notifySales: boolean;
+  /** Adresses des commerciaux qui reçoivent la demande. */
+  salesEmails: string[];
+  salesSubject: string;
+  salesBody: string;
+  /** Envoyer une confirmation au demandeur (s'il a donné son adresse). */
+  confirmCustomer: boolean;
+  customerSubject: string;
+  customerBody: string;
+  /** Adresse où arrivent les réponses du client ; vide : l'e-mail de l'entreprise. */
+  replyTo: string;
+};
+
 export type AppSettings = {
   company: CompanySettings;
   payment: PaymentSettings;
   billing: BillingSettings;
+  mail: MailSettings;
 };
 
 export const defaultSettings: AppSettings = {
@@ -69,6 +89,18 @@ export const defaultSettings: AppSettings = {
     quoteTerms:
       "Devis valable pour la durée indiquée. Acompte à la commande, solde à la livraison ou à l'installation. Délais et disponibilité confirmés à l'acceptation du devis.",
     invoiceFooter: "Merci pour votre confiance.",
+  },
+  mail: {
+    notifySales: true,
+    salesEmails: [],
+    salesSubject: "Nouvelle demande de devis {{type}} — {{nom}} ({{reference}})",
+    salesBody:
+      "Bonjour,\n\nUne nouvelle demande de devis vient d'arriver sur le site.\n\nDemandeur : {{nom}}\nTéléphone : {{telephone}}\nE-mail : {{email}}\nVille : {{ville}}\nObjectif : {{objectif}}\n\n{{reponses}}\n\nMerci de contacter le client rapidement.\nRéférence {{reference}}, reçue le {{date}}.\nVoir dans l'administration : {{lien_admin}}",
+    confirmCustomer: true,
+    customerSubject: "Nous avons bien reçu votre demande de devis ({{reference}})",
+    customerBody:
+      "Bonjour {{nom}},\n\nMerci d'avoir demandé un devis à {{entreprise}}. Votre demande {{reference}} est bien enregistrée : un conseiller vous recontacte très prochainement au {{telephone}}.\n\nRécapitulatif de votre demande :\n\n{{reponses}}\n\nÀ très vite,\nL'équipe {{entreprise}}\n{{telephone_entreprise}} · {{email_entreprise}}",
+    replyTo: "",
   },
 };
 

@@ -1,7 +1,9 @@
+import { after } from "next/server";
 import { upsertCustomer } from "@/lib/admin/customers";
 import { logAudit } from "@/lib/audit";
 import { dbConfigured, getDb, schema } from "@/lib/db";
 import { buildRequest, isRequestKind, newRequestRef } from "@/lib/quote-requests";
+import { sendRequestMails } from "@/lib/quote-mails";
 
 const json = (body: object, status = 200) => Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
 
@@ -17,7 +19,8 @@ function limited(ip: string) {
 
 /**
  * Enregistre une demande de devis envoyée depuis les formulaires du site.
- * Elle apparaît dans l'administration (« Demandes de devis ») et peut être exportée en PDF. Le client est retrouvé
+ * Elle apparaît dans l'administration (« Demandes de devis »), peut être exportée en PDF et part par e-mail aux
+ * commerciaux (et en confirmation au demandeur). Le client est retrouvé
  * (téléphone ou e-mail) ou créé, comme pour une commande, pour garder tout son historique au même endroit.
  */
 export async function POST(request: Request) {
@@ -56,6 +59,8 @@ export async function POST(request: Request) {
       .values({ ref, customerId, ...built })
       .returning({ id: schema.quoteRequests.id });
     await logAudit(null, "nouvelle demande de devis", "demande", row.id, `${ref} · ${built.name}`);
+    // Les e-mails partent après la réponse au visiteur : un envoi lent ou en panne ne le fait jamais attendre.
+    after(() => sendRequestMails(row.id));
     return json({ ok: true, ref });
   } catch (e) {
     console.error("[devis] échec d'enregistrement", e instanceof Error ? e.message : e);

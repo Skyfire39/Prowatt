@@ -300,6 +300,7 @@ const flashMessages: Record<string, { tone: "ok" | "err"; text: string }> = {
   overpay: { tone: "err", text: "Le montant dépasse le reste à payer." },
   notissued: { tone: "err", text: "Émettez d'abord la facture pour enregistrer un paiement." },
   issued: { tone: "ok", text: "Document émis." },
+  "req-mailed": { tone: "ok", text: "Envoi des e-mails relancé : le résultat est indiqué dans le bloc « E-mails »." },
   "req-customer": { tone: "ok", text: "Fiche client prête : vous pouvez maintenant lui préparer un devis." },
   "nl-synced": { tone: "ok", text: "Abonné envoyé à Mailchimp." },
   "nl-failed": { tone: "err", text: "Mailchimp a refusé l'envoi : le motif est indiqué dans la colonne « Mailchimp »." },

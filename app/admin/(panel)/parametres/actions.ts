@@ -5,7 +5,11 @@ import { sql } from "drizzle-orm";
 import { requireActionUser } from "@/lib/auth/session";
 import { logAudit } from "@/lib/audit";
 import { getDb, schema } from "@/lib/db";
-import { isEmail, int, num, s, type FormState } from "@/lib/validate";
+import { getSettings } from "@/lib/content";
+import { sendMail } from "@/lib/mail";
+import { renderMail } from "@/lib/mail-templates";
+import { buildRequest } from "@/lib/quote-requests";
+import { bool, isEmail, int, num, s, type FormState } from "@/lib/validate";
 
 async function put(key: string, value: object) {
   const db = await getDb();
@@ -90,6 +94,64 @@ export async function saveBillingAction(_: FormState, fd: FormData): Promise<For
   await logAudit(user, "modification", "réglages", "billing");
   updateTag("settings");
   return { ok: "Paramètres de facturation enregistrés." };
+}
+
+const MAX_RECIPIENTS = 10;
+
+/** Textes et destinataires des e-mails envoyés à chaque demande de devis du site. */
+export async function saveMailAction(_: FormState, fd: FormData): Promise<FormState> {
+  const user = await requireActionUser("settings.manage");
+  const salesEmails = [...new Set(s(fd, "salesEmails").split(/[\s,;]+/).map((e) => e.trim().toLowerCase()).filter(Boolean))];
+  const bad = salesEmails.find((e) => !isEmail(e));
+  if (bad) return { error: `Adresse invalide dans la liste des commerciaux : « ${bad.slice(0, 60)} ».` };
+  if (salesEmails.length > MAX_RECIPIENTS) return { error: `${MAX_RECIPIENTS} adresses au plus pour les commerciaux.` };
+  const notifySales = bool(fd, "notifySales");
+  if (notifySales && salesEmails.length === 0) return { error: "Ajoutez au moins une adresse de commercial, ou décochez l'alerte aux commerciaux." };
+  const replyTo = s(fd, "replyTo");
+  if (replyTo && !isEmail(replyTo)) return { error: "Adresse de réponse invalide." };
+
+  const salesSubject = s(fd, "salesSubject").slice(0, 200);
+  const customerSubject = s(fd, "customerSubject").slice(0, 200);
+  const salesBody = s(fd, "salesBody").slice(0, 8000);
+  const customerBody = s(fd, "customerBody").slice(0, 8000);
+  if ((notifySales && (!salesSubject || !salesBody)) || (bool(fd, "confirmCustomer") && (!customerSubject || !customerBody))) {
+    return { error: "Le sujet et le texte d'un e-mail activé ne peuvent pas être vides." };
+  }
+
+  await put("mail", { notifySales, salesEmails, salesSubject, salesBody, confirmCustomer: bool(fd, "confirmCustomer"), customerSubject, customerBody, replyTo });
+  await logAudit(user, "modification", "réglages", "mail");
+  updateTag("settings");
+  return { ok: "E-mails des demandes de devis enregistrés." };
+}
+
+/** Envoie un exemple de chaque e-mail (avec une demande fictive) pour vérifier la configuration et les textes enregistrés. */
+export async function sendTestMailAction(_: FormState, fd: FormData): Promise<FormState> {
+  await requireActionUser("settings.manage");
+  const to = s(fd, "to").toLowerCase();
+  if (!isEmail(to)) return { error: "Indiquez l'adresse qui doit recevoir l'essai." };
+  const kind = s(fd, "which") === "customer" ? "customer" : "sales";
+  const built = buildRequest("individual", {
+    firstName: ["Rina"],
+    lastName: ["Rakoto"],
+    phone: ["034 00 000 00"],
+    email: [to],
+    city: ["Antananarivo"],
+    housing: ["Maison"],
+    bedrooms: ["3"],
+    jirama: ["Oui"],
+    goal: ["Système hybride"],
+    budget: ["6 à 10 millions Ar"],
+    options: ["Monitoring à distance"],
+  });
+  if (!built) return { error: "Impossible de préparer l'exemple." };
+  const settings = await getSettings();
+  const mail = renderMail(
+    kind === "sales" ? { subject: settings.mail.salesSubject, body: settings.mail.salesBody } : { subject: settings.mail.customerSubject, body: settings.mail.customerBody },
+    { id: "00000000-0000-4000-8000-000000000000", ref: "DD-EXEMPLE", createdAt: new Date(), ...built },
+    settings,
+  );
+  const res = await sendMail({ to: [to], ...mail, subject: `[ESSAI] ${mail.subject}` });
+  return res.ok ? { ok: `E-mail d'essai envoyé à ${to}. Vérifiez aussi vos courriers indésirables.` } : { error: res.error };
 }
 
 void sql;

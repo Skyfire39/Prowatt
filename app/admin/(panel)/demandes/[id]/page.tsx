@@ -11,7 +11,7 @@ import { getDb, schema } from "@/lib/db";
 import { fmtDate, fmtDateTime } from "@/lib/format";
 import { requestKinds, requestStatusList, requestStatuses, type RequestStatus } from "@/lib/quote-requests";
 import { isUuid } from "@/lib/validate";
-import { createRequestCustomerAction, deleteRequestAction, updateRequestAction } from "../actions";
+import { createRequestCustomerAction, deleteRequestAction, resendRequestMailsAction, updateRequestAction } from "../actions";
 
 export const metadata: Metadata = { title: "Demande de devis" };
 
@@ -104,6 +104,36 @@ export default async function RequestPage({ params, searchParams }: { params: Pr
               </form>
             </Panel>
           )}
+
+          <Panel title="E-mails" subtitle="Alerte aux commerciaux et confirmation au demandeur, selon les réglages.">
+            <dl className="grid gap-2.5 text-sm">
+              {(
+                [
+                  ["Commerciaux", r.mailSales],
+                  ["Demandeur", r.mailCustomer],
+                ] as const
+              ).map(([label, st]) => (
+                <div key={label} className="flex items-center justify-between gap-3">
+                  <dt className="text-muted">{label}</dt>
+                  <dd>
+                    <Badge tone={st === "sent" ? "teal" : st === "failed" ? "red" : "neutral"}>
+                      {st === "sent" ? "Envoyé" : st === "failed" ? "Échec" : st === "skipped" ? "Non envoyé" : "En attente"}
+                    </Badge>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            {r.mailedAt && <p className="mt-3 text-xs text-muted">Dernier essai : {fmtDateTime(r.mailedAt)}</p>}
+            {r.mailError && <p className="mt-3 break-words rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-xs text-red-800">{r.mailError}</p>}
+            {canWrite && (
+              <form action={resendRequestMailsAction} className="mt-4">
+                <input type="hidden" name="id" value={r.id} />
+                <SubmitButton variant="soft" pendingLabel="Envoi…" className="w-full">
+                  Renvoyer les e-mails
+                </SubmitButton>
+              </form>
+            )}
+          </Panel>
 
           <Panel title="Client et devis">
             {customer ? (

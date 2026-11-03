@@ -436,6 +436,12 @@ export const quoteRequests = pgTable(
     status: text("status").notNull().default("new"),
     note: text("note"),
     customerId: uuid("customer_id").references(() => customers.id, { onDelete: "set null" }),
+    /** Résultat de l'e-mail aux commerciaux et de la confirmation au client : sent | failed | skipped (ou vide : pas encore tenté). */
+    mailSales: text("mail_sales"),
+    mailCustomer: text("mail_customer"),
+    /** Dernier message d'erreur d'envoi, pour comprendre un échec depuis l'administration. */
+    mailError: text("mail_error"),
+    mailedAt: timestamp("mailed_at", { withTimezone: true }),
     createdAt: stamp("created_at"),
     updatedAt: stamp("updated_at"),
   },

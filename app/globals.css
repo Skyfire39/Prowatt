@@ -567,6 +567,12 @@ body:has([data-sticky-buy]) .floating-contact {
   59% { opacity: 0.04; }
   63% { opacity: 1; }
 }
+.ws-gloss { animation: ws-sweep 5s ease-in-out infinite; opacity: 0; }
+@keyframes ws-sweep {
+  0%, 55% { transform: translateX(-50px) skewX(-18deg); opacity: 0; }
+  62% { opacity: 1; }
+  100% { transform: translateX(170px) skewX(-18deg); opacity: 0; }
+}
 .pu-left { animation: pu-left 3.8s ease-in-out infinite; }
 .pu-right { animation: pu-right 3.8s ease-in-out infinite; }
 .pu-burst { animation: pu-burst 3.8s ease-out infinite; opacity: 0; }
@@ -580,6 +586,7 @@ body:has([data-sticky-buy]) .floating-contact {
 }
 @media (prefers-reduced-motion: reduce) {
   .pc-flicker, .pu-left, .pu-right { animation: none; }
+  .ws-gloss { animation: none; }
   .pu-burst { animation: none; opacity: 0.9; }
 }
 

@@ -15,7 +15,9 @@ import { Faq } from "@/components/faq";
 import { EquipmentGrid } from "@/components/equipment-grid";
 import { Reveal, HoverLift } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { getSettings } from "@/lib/content";
+import { LogoMarquee } from "@/components/logo-marquee";
+import { WarrantySection } from "@/components/warranty-section";
+import { getPartners, getSettings } from "@/lib/content";
 import { loadPage } from "@/lib/page";
 import { toSiteInfo } from "@/lib/site-info";
 import { pageMetadata } from "@/lib/seo";
@@ -31,7 +33,8 @@ const benIcons = [BoltIcon, LeafIcon, PanelIcon, ShieldIcon];
 export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avantages">) {
   const { dict } = await loadPage(params);
   const d = dict.advantagesPage;
-  const site = toSiteInfo(await getSettings());
+  const [settings, partners] = await Promise.all([getSettings(), getPartners()]);
+  const site = toSiteInfo(settings);
   const faq = d.faq.items.map((it) => ({ q: it.q, a: it.a.replace("{address}", site.address.fr).replace("{hours}", site.hours.fr.join(" ; ")) }));
 
   return (
@@ -88,6 +91,17 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
         </div>
       </section>
 
+      <WarrantySection
+        eyebrow={d.warranty.eyebrow}
+        title={d.warranty.title}
+        text={d.warranty.text}
+        badge={d.warranty.badge}
+        items={d.warranty.items}
+        note={d.warranty.note}
+        cta={d.warranty.cta}
+        ctaHref="/devis"
+      />
+
       <section className="px-4 py-6 sm:px-6">
         <Reveal className="mx-auto max-w-6xl">
           <div className="glass-strong rounded-3xl p-8 text-center sm:p-12">
@@ -96,6 +110,17 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
           </div>
         </Reveal>
       </section>
+
+      {partners.length > 0 && (
+        <section className="py-16 sm:py-24">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <SectionHead eyebrow={d.brands.eyebrow} title={d.brands.title} subtitle={d.brands.text} />
+          </div>
+          <Reveal className="mx-auto mt-12 w-[calc(100%-1.5rem)] max-w-6xl sm:w-[calc(100%-3rem)]">
+            <LogoMarquee items={partners} label={d.brands.title} />
+          </Reveal>
+        </section>
+      )}
 
       <Faq eyebrow={d.faq.eyebrow} title={d.faq.title} items={faq} />
 

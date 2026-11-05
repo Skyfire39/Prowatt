@@ -431,6 +431,42 @@
           "a": "Nous sommes à {address}. Horaires : {hours}."
         }
       ]
+    },
+    "warranty": {
+      "eyebrow": "Garantie",
+      "title": "Une installation garantie, du matériel à la pose.",
+      "text": "Nous installons du matériel fiable et nous restons à vos côtés après la mise en service : jusqu'à 10 ans de garantie sur le matériel et la pose.",
+      "badge": {
+        "lead": "Jusqu'à",
+        "value": "10",
+        "unit": "ans",
+        "label": "Garantie jusqu'à 10 ans sur le matériel et la pose"
+      },
+      "items": [
+        {
+          "title": "Matériel garanti",
+          "text": "Un équipement fiable, choisi pour durer et couvert par la garantie."
+        },
+        {
+          "title": "Pose garantie",
+          "text": "De l'étude à la mise en service, nous nous occupons de tout, et la pose est couverte par la garantie."
+        },
+        {
+          "title": "Suivi 24h/24",
+          "text": "Un système connecté pour surveiller votre installation à tout moment."
+        },
+        {
+          "title": "Maintenance locale",
+          "text": "Une équipe qui connaît le contexte local et ses contraintes, pour le suivi et l'entretien."
+        }
+      ],
+      "note": "La durée et les conditions exactes de la garantie sont indiquées sur votre devis.",
+      "cta": "Demander un devis"
+    },
+    "brands": {
+      "eyebrow": "Nos marques",
+      "title": "Les marques et partenaires qui nous font confiance.",
+      "text": "Des équipements et des partenaires de confiance, pour une installation qui dure."
     }
   },
   "realisations": {

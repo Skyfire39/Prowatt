@@ -3,7 +3,7 @@
  * statiques de lib/data.ts quand aucune base n'est configurée ou qu'elle est injoignable.
  * Chaque lecture est mise en cache et étiquetée : l'admin l'invalide avec updateTag(<étiquette>).
  */
-import { asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import * as data from "./data";
 import type { EcooterSpecs, L10n, Project } from "./data";
@@ -257,11 +257,27 @@ export async function getPartners(): Promise<CatalogPartner[]> {
   if (!dbConfigured()) return data.partners;
   try {
     const db = await getDb();
-    const rows = await db.select().from(schema.partners).where(eq(schema.partners.active, true)).orderBy(asc(schema.partners.sort));
+    const rows = await db.select().from(schema.partners).where(and(eq(schema.partners.active, true), eq(schema.partners.kind, "partner"))).orderBy(asc(schema.partners.sort));
     return rows.map((r) => ({ name: r.name, logo: r.logo }));
   } catch (e) {
     console.error("[content] partenaires : repli statique", e instanceof Error ? e.message : e);
     return data.partners;
+  }
+}
+
+/** Marques de Prowatt (logos de la page Avantages), gérées dans l'admin ; vide tant qu'aucun logo n'a été ajouté. */
+export async function getBrands(): Promise<CatalogPartner[]> {
+  "use cache";
+  cacheTag("partners");
+  cacheLife("hours");
+  if (!dbConfigured()) return data.brands;
+  try {
+    const db = await getDb();
+    const rows = await db.select().from(schema.partners).where(and(eq(schema.partners.active, true), eq(schema.partners.kind, "brand"))).orderBy(asc(schema.partners.sort));
+    return rows.length ? rows.map((r) => ({ name: r.name, logo: r.logo })) : data.brands;
+  } catch (e) {
+    console.error("[content] marques : repli statique", e instanceof Error ? e.message : e);
+    return data.brands;
   }
 }
 

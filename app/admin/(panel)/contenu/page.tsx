@@ -9,7 +9,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db";
 import { deletePartnerAction, deleteTestimonialAction } from "./actions";
 
-export const metadata: Metadata = { title: "Avis et partenaires" };
+export const metadata: Metadata = { title: "Avis, marques et partenaires" };
 
 export default async function ContentPage({ searchParams }: { searchParams: Promise<{ ok?: string; edit?: string }> }) {
   await requireUser("content.write");
@@ -20,12 +20,13 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
     db.select().from(schema.partners).orderBy(asc(schema.partners.sort), asc(schema.partners.name)),
   ]);
   const editingT = testimonials.find((t) => t.id === edit);
-  const editingP = partners.find((p) => p.id === edit);
+  const editingL = partners.find((p) => p.id === edit);
+  const list = (kind: string) => partners.filter((p) => p.kind === kind);
 
   return (
     <>
       <Flash code={ok} />
-      <PageHeader eyebrow="Site" title="Avis et partenaires" subtitle="Ce que voient vos visiteurs sur l'accueil : témoignages clients et bandeau de logos." />
+      <PageHeader eyebrow="Site" title="Avis, marques et partenaires" subtitle="Témoignages clients, logos de vos marques (page Avantages) et logos de vos partenaires (accueil)." />
 
       <section id="avis" className="scroll-mt-6">
         <h2 className="mb-4 text-2xl tracking-tight">Avis clients</h2>
@@ -74,11 +75,12 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
         </div>
       </section>
 
-      <section id="partenaires" className="mt-12 scroll-mt-6">
-        <h2 className="mb-4 text-2xl tracking-tight">Partenaires</h2>
+      <section id="marques" className="mt-12 scroll-mt-6">
+        <h2 className="mb-4 text-2xl tracking-tight">Marques</h2>
         <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-5">
           <div className="grid content-start gap-3 sm:grid-cols-2 xl:col-span-3">
-            {partners.map((p) => (
+            {list("brand").length === 0 && <Panel>Aucune marque : le bandeau « Nos marques » n&apos;apparaît pas sur la page Avantages tant qu&apos;aucun logo n&apos;est ajouté.</Panel>}
+            {list("brand").map((p) => (
               <article key={p.id} className="glass flex items-center gap-4 rounded-3xl p-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={p.logo} alt="" className="size-16 shrink-0 rounded-2xl bg-white object-contain p-1.5" />
@@ -88,12 +90,12 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
                     #{p.sort} {!p.active && "· masqué"}
                   </p>
                   <div className="mt-2 flex items-center gap-2">
-                    <Link href={`/admin/contenu?edit=${p.id}#form-partenaire`} className="rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent hover:bg-accent hover:text-on-accent">
+                    <Link href={`/admin/contenu?edit=${p.id}#form-marques`} className="rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent hover:bg-accent hover:text-on-accent">
                       Modifier
                     </Link>
                     <form action={deletePartnerAction}>
                       <input type="hidden" name="id" value={p.id} />
-                      <ConfirmButton title="Retirer ce partenaire ?" message={`${p.name} disparaîtra du bandeau de logos.`} confirmLabel="Retirer" size="sm" variant="ghost">
+                      <ConfirmButton title="Retirer cette marque ?" message={`${p.name} disparaîtra du site.`} confirmLabel="Retirer" size="sm" variant="ghost">
                         <TrashIcon className="size-3.5" />
                       </ConfirmButton>
                     </form>
@@ -102,9 +104,45 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
               </article>
             ))}
           </div>
-          <div id="form-partenaire" className="xl:col-span-2">
-            <Panel title={editingP ? "Modifier le partenaire" : "Ajouter un partenaire"} actions={editingP ? <Link href="/admin/contenu#form-partenaire" className="inline-flex items-center gap-1 text-sm font-semibold text-accent"><PlusIcon className="size-4" />Nouveau</Link> : undefined}>
-              <PartnerForm key={editingP?.id ?? "new"} values={{ id: editingP?.id, name: editingP?.name ?? "", logo: editingP?.logo ?? null, sort: editingP?.sort ?? partners.length, active: editingP?.active ?? true }} />
+          <div id="form-marques" className="xl:col-span-2">
+            <Panel title={editingL?.kind === "brand" ? "Modifier la marque" : "Ajouter une marque"} actions={editingL?.kind === "brand" ? <Link href="/admin/contenu#form-marques" className="inline-flex items-center gap-1 text-sm font-semibold text-accent"><PlusIcon className="size-4" />Nouveau</Link> : undefined}>
+              <PartnerForm kind="brand" key={editingL?.kind === "brand" ? editingL.id : "new"} values={{ id: editingL?.id, name: editingL?.name ?? "", logo: editingL?.logo ?? null, sort: editingL?.sort ?? list("brand").length, active: editingL?.active ?? true }} />
+            </Panel>
+          </div>
+        </div>
+      </section>
+
+      <section id="partenaires" className="mt-12 scroll-mt-6">
+        <h2 className="mb-4 text-2xl tracking-tight">Partenaires</h2>
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-5">
+          <div className="grid content-start gap-3 sm:grid-cols-2 xl:col-span-3">
+            {list("partner").map((p) => (
+              <article key={p.id} className="glass flex items-center gap-4 rounded-3xl p-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.logo} alt="" className="size-16 shrink-0 rounded-2xl bg-white object-contain p-1.5" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-semibold">{p.name}</p>
+                  <p className="text-xs text-muted">
+                    #{p.sort} {!p.active && "· masqué"}
+                  </p>
+                  <div className="mt-2 flex items-center gap-2">
+                    <Link href={`/admin/contenu?edit=${p.id}#form-partenaires`} className="rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent hover:bg-accent hover:text-on-accent">
+                      Modifier
+                    </Link>
+                    <form action={deletePartnerAction}>
+                      <input type="hidden" name="id" value={p.id} />
+                      <ConfirmButton title="Retirer ce partenaire ?" message={`${p.name} disparaîtra du site.`} confirmLabel="Retirer" size="sm" variant="ghost">
+                        <TrashIcon className="size-3.5" />
+                      </ConfirmButton>
+                    </form>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div id="form-partenaires" className="xl:col-span-2">
+            <Panel title={editingL?.kind === "partner" ? "Modifier le partenaire" : "Ajouter un partenaire"} actions={editingL?.kind === "partner" ? <Link href="/admin/contenu#form-partenaires" className="inline-flex items-center gap-1 text-sm font-semibold text-accent"><PlusIcon className="size-4" />Nouveau</Link> : undefined}>
+              <PartnerForm kind="partner" key={editingL?.kind === "partner" ? editingL.id : "new"} values={{ id: editingL?.id, name: editingL?.name ?? "", logo: editingL?.logo ?? null, sort: editingL?.sort ?? list("partner").length, active: editingL?.active ?? true }} />
             </Panel>
           </div>
         </div>

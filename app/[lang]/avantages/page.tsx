@@ -17,7 +17,7 @@ import { Reveal, HoverLift } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
 import { LogoMarquee } from "@/components/logo-marquee";
 import { WarrantySection } from "@/components/warranty-section";
-import { getPartners, getSettings } from "@/lib/content";
+import { getBrands, getSettings } from "@/lib/content";
 import { loadPage } from "@/lib/page";
 import { toSiteInfo } from "@/lib/site-info";
 import { pageMetadata } from "@/lib/seo";
@@ -33,7 +33,7 @@ const benIcons = [BoltIcon, LeafIcon, PanelIcon, ShieldIcon];
 export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avantages">) {
   const { dict } = await loadPage(params);
   const d = dict.advantagesPage;
-  const [settings, partners] = await Promise.all([getSettings(), getPartners()]);
+  const [settings, brands] = await Promise.all([getSettings(), getBrands()]);
   const site = toSiteInfo(settings);
   const faq = d.faq.items.map((it) => ({ q: it.q, a: it.a.replace("{address}", site.address.fr).replace("{hours}", site.hours.fr.join(" ; ")) }));
 
@@ -111,13 +111,13 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
         </Reveal>
       </section>
 
-      {partners.length > 0 && (
+      {brands.length > 0 && (
         <section className="py-16 sm:py-24">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <SectionHead eyebrow={d.brands.eyebrow} title={d.brands.title} subtitle={d.brands.text} />
           </div>
           <Reveal className="mx-auto mt-12 w-[calc(100%-1.5rem)] max-w-6xl sm:w-[calc(100%-3rem)]">
-            <LogoMarquee items={partners} label={d.brands.title} />
+            <LogoMarquee items={brands} label={d.brands.title} />
           </Reveal>
         </section>
       )}

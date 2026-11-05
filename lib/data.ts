@@ -358,6 +358,9 @@ export function batteryTechs(spec: string | undefined, options: { name: string; 
 }
 
 // Accueil
+// Marques de Prowatt (page Avantages) : logos à ajouter depuis l'admin, « Avis et partenaires » → Marques.
+export const brands: { name: string; logo: string }[] = [];
+
 // Logos repris de l'ancien site (public/images/partners), dans le même ordre.
 export const partners: { name: string; logo: string }[] = [
   { name: "Rapide Service", logo: "/images/partners/rapide-service.png" },

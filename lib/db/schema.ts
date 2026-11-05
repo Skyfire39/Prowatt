@@ -377,8 +377,10 @@ export const projects = pgTable(
   (t) => [index("projects_slug_idx").on(t.slug)],
 );
 
+/** Logos affichés sur le site : `kind` « partner » (partenaires de l'accueil) ou « brand » (nos marques, page Avantages). */
 export const partners = pgTable("partners", {
   id: uuid("id").primaryKey().defaultRandom(),
+  kind: text("kind").notNull().default("partner"),
   name: text("name").notNull(),
   logo: text("logo").notNull(),
   sort: integer("sort").notNull().default(0),

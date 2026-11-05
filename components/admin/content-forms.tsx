@@ -9,6 +9,7 @@ const fileClass =
 
 export type TestimonialValues = { id?: string; name: string; textFr: string; textEn: string; photo: string | null; sort: number; active: boolean };
 export type PartnerValues = { id?: string; name: string; logo: string | null; sort: number; active: boolean };
+export type LogoKind = "partner" | "brand";
 
 export function TestimonialForm({ values }: { values: TestimonialValues }) {
   const { state, onSubmit, pending } = useActionForm(saveTestimonialAction);
@@ -44,13 +45,15 @@ export function TestimonialForm({ values }: { values: TestimonialValues }) {
   );
 }
 
-export function PartnerForm({ values }: { values: PartnerValues }) {
+export function PartnerForm({ values, kind = "partner" }: { values: PartnerValues; kind?: LogoKind }) {
+  const brand = kind === "brand";
   const { state, onSubmit, pending } = useActionForm(savePartnerAction);
   return (
     <form method="post" onSubmit={onSubmit} className="grid gap-5">
       {values.id && <input type="hidden" name="id" value={values.id} />}
+      <input type="hidden" name="kind" value={kind} />
       <div className="grid gap-5 sm:grid-cols-[1fr_8rem]">
-        <Field label="Nom du partenaire" required>
+        <Field label={brand ? "Nom de la marque" : "Nom du partenaire"} required>
           <input name="name" defaultValue={values.name} required className={inputClass} />
         </Field>
         <Field label="Ordre">
@@ -69,7 +72,7 @@ export function PartnerForm({ values }: { values: PartnerValues }) {
       <Toggle name="active" label="Affiché sur le site" defaultChecked={values.active} />
       <FormError message={state?.error} />
       <SubmitButton pending={pending} pendingLabel="Enregistrement…" className="w-fit">
-        {values.id ? "Enregistrer le partenaire" : "Ajouter le partenaire"}
+        {brand ? (values.id ? "Enregistrer la marque" : "Ajouter la marque") : values.id ? "Enregistrer le partenaire" : "Ajouter le partenaire"}
       </SubmitButton>
     </form>
   );

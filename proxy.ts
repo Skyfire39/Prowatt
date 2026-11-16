@@ -11,20 +11,46 @@ const WP_PARAMS = ["s", "p", "page_id", "cat", "tag", "author", "paged", "post_t
 
 /** Rubriques de l'ancien site → page équivalente du nouveau site. */
 const OLD_SECTIONS: Record<string, string> = {
+  // Catalogue : plus de pages par étiquette, marque ou catégorie (le filtre est dans /boutique)
   "categorie-produit": "/boutique",
   "product-category": "/boutique",
   "etiquette-produit": "/boutique",
   "product-tag": "/boutique",
+  marque: "/boutique",
   shop: "/boutique",
   magasin: "/boutique",
+  search: "/boutique",
   panier: "/boutique",
   cart: "/boutique",
   commander: "/boutique",
   checkout: "/boutique",
   paiement: "/boutique",
+  ...Object.fromEntries(
+    [
+      "accessoire",
+      "batterie-gel",
+      "batterie-lithium",
+      "cables-electriques",
+      "chauffe-eau-solaire",
+      "convertisseur",
+      "disjoncteur",
+      "luminaire-solaire",
+      "mini-kit-solaire",
+      "motos-electriques",
+      "panneaux-solaires",
+      "pompe-solaire",
+      "powerbank",
+      "regulateur",
+      "solis",
+      "stabilisateur",
+      "structure-en-aluminium",
+    ].map((c) => [c, "/boutique"]),
+  ),
+  // Pages de l'ancien site vitrine
   "mon-compte": "/",
   "my-account": "/",
   account: "/",
+  "accueil-2": "/",
   "a-propos": "/avantages",
   "a-propos-de-nous": "/avantages",
   about: "/avantages",
@@ -36,16 +62,29 @@ const OLD_SECTIONS: Record<string, string> = {
   "demande-de-devis": "/devis",
   "demander-un-devis": "/devis",
   quote: "/devis",
-  category: "/",
-  tag: "/",
-  author: "/",
-  blog: "/",
-  actualites: "/",
+  particulier: "/devis/particulier",
+  societe: "/devis/societe",
+  realisation: "/realisations",
+  "100-autonome": "/realisations/100-autonome",
+  hybride: "/realisations/hybride",
+  ongrid: "/realisations/ongrid",
+  "anti-delestage": "/realisations/anti-delestage",
+  "acces-a-leau": "/realisations/acces-a-eau",
+  service: "/installation-solaire-madagascar",
+  services: "/installation-solaire-madagascar",
+  "nos-services": "/installation-solaire-madagascar",
+  blog: "/guides",
+  actualites: "/guides",
   page: "/",
 };
 
 /** Fichiers et dossiers WordPress qui n'existent plus : « 410 Gone » pour que Google les retire plus vite qu'avec un 404. */
 const GONE = ["wp-content", "wp-includes", "wp-admin", "wp-json", "wp-login.php", "wp-cron.php", "xmlrpc.php", "feed", "comments"];
+
+/** Contenu de démonstration ou piraté de l'ancien WordPress (blog d'exemple, pages « SITUS … » de casinos en ligne indonésiens) : 410 Gone. */
+const DEMO_SECTIONS = ["category", "tag", "author", "designs", "stores", "ccpa", "terms", "green-interior-design-inspiration", "path-to-100-coalition-secures-50-renewable"];
+const SPAM = /situs|togel|gacor|maxwin|link alternatif|slot\d{2,}|slot-?machine|casino|poker|jackpot|gambl/i;
+const gone = () => new NextResponse("Gone", { status: 410, headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex" } });
 
 const permanent = (url: URL) => NextResponse.redirect(url, 301);
 
@@ -63,12 +102,28 @@ export function proxy(request: NextRequest) {
   const [, first = "", ...rest] = pathname.split("/");
   const lower = first.toLowerCase();
 
-  if (GONE.includes(lower)) return new NextResponse("Gone", { status: 410, headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex" } });
+  let readable = pathname;
+  try {
+    readable = decodeURIComponent(pathname);
+  } catch {
+    // adresse mal encodée : on garde le texte tel quel
+  }
+
+  // Fichiers WordPress, flux RSS (/…/feed), archives par année (/2021/06), blog d'exemple et pages de spam : « 410 Gone ».
+  if (GONE.includes(lower) || DEMO_SECTIONS.includes(lower) || /^(19|20)\d{2}$/.test(first) || /^[^a-z0-9]/i.test(first) && first !== "" || rest.at(-1)?.toLowerCase() === "feed" || SPAM.test(readable)) return gone();
 
   if (first === "fr" || first === "en") {
     const url = request.nextUrl.clone();
     url.pathname = `/${rest.join("/")}`.replace(/\/+$/, "") || "/";
     return NextResponse.redirect(url, 308);
+  }
+
+  // Pagination de l'ancienne boutique (/boutique/page/5/) : le nouveau catalogue n'a qu'une page.
+  if (lower === "boutique" && rest[0] === "page") {
+    const url = request.nextUrl.clone();
+    url.search = "";
+    url.pathname = "/boutique";
+    return permanent(url);
   }
 
   // Fiche produit de l'ancien site : /produit/<nom> ou /product/<nom> → la fiche du même nom, la moto Ecooter, sinon la boutique.

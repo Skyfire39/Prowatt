@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getEcooters, getProducts } from "@/lib/content";
 import { slugs, techs } from "@/lib/data";
+import { guides } from "@/lib/guides";
 import { absoluteUrl } from "@/lib/seo";
 
 type Entry = MetadataRoute.Sitemap[number];
@@ -24,6 +25,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     page("/ecooter", 0.9, "weekly"),
     ...techs.map((t) => page(`/ecooter/${t}`, 0.6, "monthly")),
     ...ecooters.map((m) => page(`/ecooter/modeles/${m.id}`, 0.8, "weekly")),
+    page("/installation-solaire-madagascar", 0.9, "monthly"),
+    page("/batterie-solaire-madagascar", 0.9, "weekly"),
+    page("/moto-electrique-madagascar", 0.9, "weekly"),
+    page("/guides", 0.8, "weekly"),
+    ...guides.map((g) => page(`/guides/${g.slug}`, 0.7, "monthly", new Date(g.updated))),
     page("/avantages", 0.7, "monthly"),
     page("/devis", 0.8, "monthly"),
     page("/devis/particulier", 0.6, "monthly"),

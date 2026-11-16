@@ -29,6 +29,7 @@ export async function Footer({ lang, dict }: { lang: Locale; dict: Dictionary })
     { href: `${base}/devis`, label: nav.quotes },
     { href: `${base}/ecooter`, label: nav.ecooter },
     { href: `${base}/boutique`, label: nav.shop },
+    { href: `${base}/guides`, label: "Guides" },
     { href: `${base}/contact`, label: nav.contact },
   ];
 

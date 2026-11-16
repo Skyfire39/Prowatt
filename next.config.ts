@@ -42,7 +42,8 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: securityHeaders },
       // L'administration et les API ne doivent jamais être indexées.
       { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
-      { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      // Les photos de /api/media/ restent indexables (images des fiches produit) ; le reste de l'API ne l'est jamais.
+      { source: "/api/:path((?!media/).*)", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
     ];
   },
   /* config options here */

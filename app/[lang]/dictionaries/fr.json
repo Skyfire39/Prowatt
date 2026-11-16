@@ -775,7 +775,9 @@
     "addToCartAria": "Ajouter au panier",
     "chooseOptions": "Choisir",
     "from": "À partir de",
-    "subLabel": "Batterie"
+    "subLabel": "Batterie",
+    "catalogue": "Tout le catalogue",
+    "catalogueHint": "Tous les produits Prowatt, par catégorie."
   },
   "contact": {
     "eyebrow": "Contact",

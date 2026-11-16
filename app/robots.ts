@@ -3,8 +3,10 @@ import { SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/api/", "/commande"] }],
+    // /commande (paiement) n'est PAS bloquée ici : elle porte « noindex », et Google doit pouvoir la lire pour la retirer
+    // de ses résultats (une page bloquée par robots.txt peut rester indexée sans description). Les photos des produits,
+    // servies par /api/media/, doivent rester accessibles aux robots ; le reste de /api/ et l'administration sont fermés.
+    rules: [{ userAgent: "*", allow: ["/", "/api/media/"], disallow: ["/admin", "/api/"] }],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }

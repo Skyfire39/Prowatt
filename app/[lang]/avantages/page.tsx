@@ -15,7 +15,7 @@ import { Faq } from "@/components/faq";
 import { EquipmentGrid } from "@/components/equipment-grid";
 import { Reveal, HoverLift } from "@/components/motion";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { LogoMarquee } from "@/components/logo-marquee";
+import { BrandWall } from "@/components/brand-wall";
 import { WarrantySection } from "@/components/warranty-section";
 import { getBrands, getSettings } from "@/lib/content";
 import { loadPage } from "@/lib/page";
@@ -116,9 +116,9 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <SectionHead eyebrow={d.brands.eyebrow} title={d.brands.title} subtitle={d.brands.text} />
           </div>
-          <Reveal className="mx-auto mt-12 w-[calc(100%-1.5rem)] max-w-6xl sm:w-[calc(100%-3rem)]">
-            <LogoMarquee items={brands} label={d.brands.title} />
-          </Reveal>
+          <div className="mx-auto mt-12 w-[calc(100%-2rem)] max-w-6xl sm:w-[calc(100%-3rem)]">
+            <BrandWall items={brands} label={d.brands.title} />
+          </div>
         </section>
       )}
 

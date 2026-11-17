@@ -1,8 +1,10 @@
 import { eq } from "drizzle-orm";
+import { after } from "next/server";
 import { upsertCustomer } from "@/lib/admin/customers";
 import { logAudit } from "@/lib/audit";
 import { getSellable } from "@/lib/content";
 import { atomic, dbConfigured, getDb, schema } from "@/lib/db";
+import { sendOrderMail } from "@/lib/order-mails";
 import { resolveSelection, selectionDelta, selectionLabel } from "@/lib/options";
 import { isEmail } from "@/lib/validate";
 
@@ -25,6 +27,7 @@ const clean = (v: unknown, max: number) => (typeof v === "string" ? v.trim().sli
  * Enregistre une commande passée depuis le site (étape « Valider ma commande »).
  * Montants et noms viennent du catalogue côté serveur ; le navigateur n'envoie que des identifiants et des quantités.
  * Appel idempotent : renvoyer la même référence met à jour la commande tant qu'elle est « nouvelle ».
+ * À la création, la commande part par e-mail aux commerciaux (Paramètres → E-mails).
  */
 export async function POST(request: Request) {
   if (!dbConfigured()) return json({ ok: false, error: "not_configured" }, 503);
@@ -90,6 +93,8 @@ export async function POST(request: Request) {
         q.insert(schema.orderItems).values(items.map((i) => ({ orderId: id, ...i }))),
       ]);
       await logAudit(null, "nouvelle commande", "commande", id, `${ref} · ${name}`);
+      // Alerte aux commerciaux, une seule fois par commande, après la réponse : un envoi lent ne fait jamais attendre le client.
+      after(() => sendOrderMail(id));
     }
     return json({ ok: true });
   } catch (e) {

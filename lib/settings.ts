@@ -51,6 +51,10 @@ export type MailSettings = {
   customerBody: string;
   /** Adresse où arrivent les réponses du client ; vide : l'e-mail de l'entreprise. */
   replyTo: string;
+  /** Prévenir les commerciaux (mêmes adresses) à chaque commande passée sur la boutique. */
+  notifyOrders: boolean;
+  orderSubject: string;
+  orderBody: string;
 };
 
 export type AppSettings = {
@@ -101,6 +105,10 @@ export const defaultSettings: AppSettings = {
     customerBody:
       "Bonjour {{nom}},\n\nMerci d'avoir demandé un devis à {{entreprise}}. Votre demande {{reference}} est bien enregistrée : un conseiller vous recontacte très prochainement au {{telephone}}.\n\nRécapitulatif de votre demande :\n\n{{reponses}}\n\nÀ très vite,\nL'équipe {{entreprise}}\n{{telephone_entreprise}} · {{email_entreprise}}",
     replyTo: "",
+    notifyOrders: true,
+    orderSubject: "Nouvelle commande {{reference}} — {{nom}} ({{total}})",
+    orderBody:
+      "Bonjour,\n\nUne nouvelle commande vient d'être passée sur la boutique.\n\nClient : {{nom}}\nTéléphone : {{telephone}}\nE-mail : {{email}}\nRéception : {{reception}}\nPaiement : {{paiement}}\nNote du client : {{note}}\n\n{{articles}}\n\nMerci de contacter le client rapidement pour confirmer la commande.\nRéférence {{reference}}, passée le {{date}}.\nVoir dans l'administration : {{lien_admin}}",
   },
 };
 

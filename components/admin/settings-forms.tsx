@@ -2,7 +2,7 @@
 
 import { saveBillingAction, saveCompanyAction, saveMailAction, savePaymentAction, sendTestMailAction } from "@/app/admin/(panel)/parametres/actions";
 import type { AppSettings } from "@/lib/settings";
-import { mailFields } from "@/lib/mail-templates";
+import { mailFields, orderMailFields } from "@/lib/mail-templates";
 import { Field, FormError, Panel, Toggle, inputClass, selectClass, textareaClass } from "./ui";
 import { SubmitButton, useActionForm } from "./client";
 
@@ -154,7 +154,7 @@ export function MailForm({ v, configured, from }: { v: AppSettings["mail"]; conf
 
           <div className="grid gap-5">
             <Toggle name="notifySales" label="Prévenir les commerciaux à chaque demande" defaultChecked={v.notifySales} />
-            <Field label="Adresses des commerciaux" hint="Une adresse par ligne (ou séparées par des virgules). Elles reçoivent toutes la demande ; « Répondre » écrit directement au client.">
+            <Field label="Adresses des commerciaux" hint="Une adresse par ligne (ou séparées par des virgules). Elles reçoivent les demandes de devis et les commandes ; « Répondre » écrit directement au client.">
               <textarea name="salesEmails" defaultValue={v.salesEmails.join("\n")} rows={3} className={textareaClass} placeholder="commercial1@prowattmadagascar.com" />
             </Field>
             <Field label="Sujet de l'e-mail aux commerciaux">
@@ -190,15 +190,40 @@ export function MailForm({ v, configured, from }: { v: AppSettings["mail"]; conf
               </ul>
             </div>
           </div>
-          <div className="mt-6 grid gap-4">
-            <Result state={state} />
-            <SubmitButton pending={pending} pendingLabel="Enregistrement…" className="w-fit">Enregistrer les e-mails</SubmitButton>
-          </div>
         </Panel>
+
+        <div className="mt-6">
+          <Panel title="E-mails des commandes" subtitle="À chaque commande passée sur la boutique, elle part aussitôt par e-mail aux commerciaux (les adresses ci-dessus), avec la liste des articles et le total.">
+            <div className="grid gap-5">
+              <Toggle name="notifyOrders" label="Prévenir les commerciaux à chaque commande" defaultChecked={v.notifyOrders} hint="« Répondre » écrit directement au client s'il a donné son e-mail." />
+              <Field label="Sujet de l'e-mail de commande">
+                <input name="orderSubject" defaultValue={v.orderSubject} className={inputClass} />
+              </Field>
+              <Field label="Texte de l'e-mail de commande">
+                <textarea name="orderBody" defaultValue={v.orderBody} rows={12} className={textareaClass} />
+              </Field>
+              <div className="rounded-2xl bg-accent-soft/60 p-4 text-sm">
+                <p className="font-semibold">Champs à insérer dans l&apos;e-mail de commande</p>
+                <ul className="mt-3 grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+                  {orderMailFields.map(([k, d]) => (
+                    <li key={k} className="flex gap-2">
+                      <code className="shrink-0 rounded bg-white/70 px-1.5 py-0.5 text-xs font-semibold text-teal">{`{{${k}}}`}</code>
+                      <span className="text-muted">{d}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="mt-6 grid gap-4">
+              <Result state={state} />
+              <SubmitButton pending={pending} pendingLabel="Enregistrement…" className="w-fit">Enregistrer les e-mails</SubmitButton>
+            </div>
+          </Panel>
+        </div>
       </form>
 
       <form method="post" onSubmit={test.onSubmit}>
-        <Panel title="Envoyer un essai" subtitle="Reçoit un exemple avec une demande fictive, à partir des textes enregistrés ci-dessus (enregistrez d'abord vos modifications).">
+        <Panel title="Envoyer un essai" subtitle="Reçoit un exemple avec une demande ou une commande fictive, à partir des textes enregistrés ci-dessus (enregistrez d'abord vos modifications).">
           <div className="grid gap-5 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
             <Field label="Adresse de test" required>
               <input name="to" type="email" required className={inputClass} placeholder="vous@exemple.com" />
@@ -207,6 +232,7 @@ export function MailForm({ v, configured, from }: { v: AppSettings["mail"]; conf
               <select name="which" className={selectClass} defaultValue="sales">
                 <option value="sales">Alerte aux commerciaux</option>
                 <option value="customer">Confirmation au client</option>
+                <option value="order">Nouvelle commande (commerciaux)</option>
               </select>
             </Field>
             <SubmitButton pending={test.pending} pendingLabel="Envoi…" variant="soft">Envoyer l&apos;essai</SubmitButton>

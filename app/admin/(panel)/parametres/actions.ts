@@ -8,7 +8,7 @@ import { getDb, schema } from "@/lib/db";
 import { intlDigits } from "@/lib/site-info";
 import { getSettings } from "@/lib/content";
 import { sendMail } from "@/lib/mail";
-import { renderMail } from "@/lib/mail-templates";
+import { renderMail, renderOrderMail, type OrderForMail } from "@/lib/mail-templates";
 import { buildRequest } from "@/lib/quote-requests";
 import { bool, isEmail, int, num, s, type FormState } from "@/lib/validate";
 
@@ -116,22 +116,57 @@ export async function saveMailAction(_: FormState, fd: FormData): Promise<FormSt
   const customerSubject = s(fd, "customerSubject").slice(0, 200);
   const salesBody = s(fd, "salesBody").slice(0, 8000);
   const customerBody = s(fd, "customerBody").slice(0, 8000);
-  if ((notifySales && (!salesSubject || !salesBody)) || (bool(fd, "confirmCustomer") && (!customerSubject || !customerBody))) {
+  const notifyOrders = bool(fd, "notifyOrders");
+  const orderSubject = s(fd, "orderSubject").slice(0, 200);
+  const orderBody = s(fd, "orderBody").slice(0, 8000);
+  if (notifyOrders && salesEmails.length === 0) return { error: "Ajoutez au moins une adresse de commercial, ou décochez l'alerte des commandes." };
+  if (
+    (notifySales && (!salesSubject || !salesBody)) ||
+    (bool(fd, "confirmCustomer") && (!customerSubject || !customerBody)) ||
+    (notifyOrders && (!orderSubject || !orderBody))
+  ) {
     return { error: "Le sujet et le texte d'un e-mail activé ne peuvent pas être vides." };
   }
 
-  await put("mail", { notifySales, salesEmails, salesSubject, salesBody, confirmCustomer: bool(fd, "confirmCustomer"), customerSubject, customerBody, replyTo });
+  await put("mail", { notifySales, salesEmails, salesSubject, salesBody, confirmCustomer: bool(fd, "confirmCustomer"), customerSubject, customerBody, replyTo, notifyOrders, orderSubject, orderBody });
   await logAudit(user, "modification", "réglages", "mail");
   updateTag("settings");
-  return { ok: "E-mails des demandes de devis enregistrés." };
+  return { ok: "Réglages des e-mails enregistrés." };
 }
+
+/** Commande fictive pour l'essai de l'e-mail des commandes. */
+const sampleOrder: OrderForMail = {
+  id: "00000000-0000-4000-8000-000000000000",
+  ref: "PW-EXEMPLE",
+  customerName: "Rina Rakoto",
+  customerPhone: "034 00 000 00",
+  customerEmail: "rina@exemple.com",
+  mode: "ship",
+  address: "Lot II A 12, Analakely",
+  city: "Antananarivo",
+  note: "Livraison de préférence l'après-midi.",
+  paymentLabel: "À la livraison (espèces)",
+  total: 2_450_000,
+  createdAt: new Date(),
+  items: [
+    { name: "Panneau solaire 550W mono-crystallin grade premium bifacial", unitPrice: 450_000, qty: 4 },
+    { name: "Batterie lithium 5,12 KW-100A 51,2V 6000 cycles Prowatt", unitPrice: 650_000, qty: 1 },
+  ],
+};
 
 /** Envoie un exemple de chaque e-mail (avec une demande fictive) pour vérifier la configuration et les textes enregistrés. */
 export async function sendTestMailAction(_: FormState, fd: FormData): Promise<FormState> {
   await requireActionUser("settings.manage");
   const to = s(fd, "to").toLowerCase();
   if (!isEmail(to)) return { error: "Indiquez l'adresse qui doit recevoir l'essai." };
-  const kind = s(fd, "which") === "customer" ? "customer" : "sales";
+  const which = s(fd, "which");
+  const settings = await getSettings();
+  if (which === "order") {
+    const mail = renderOrderMail({ subject: settings.mail.orderSubject, body: settings.mail.orderBody }, sampleOrder, settings);
+    const res = await sendMail({ to: [to], ...mail, subject: `[ESSAI] ${mail.subject}` });
+    return res.ok ? { ok: `E-mail d'essai envoyé à ${to}. Vérifiez aussi vos courriers indésirables.` } : { error: res.error };
+  }
+  const kind = which === "customer" ? "customer" : "sales";
   const built = buildRequest("individual", {
     firstName: ["Rina"],
     lastName: ["Rakoto"],
@@ -146,7 +181,6 @@ export async function sendTestMailAction(_: FormState, fd: FormData): Promise<Fo
     options: ["Monitoring à distance"],
   });
   if (!built) return { error: "Impossible de préparer l'exemple." };
-  const settings = await getSettings();
   const mail = renderMail(
     kind === "sales" ? { subject: settings.mail.salesSubject, body: settings.mail.salesBody } : { subject: settings.mail.customerSubject, body: settings.mail.customerBody },
     { id: "00000000-0000-4000-8000-000000000000", ref: "DD-EXEMPLE", createdAt: new Date(), ...built },

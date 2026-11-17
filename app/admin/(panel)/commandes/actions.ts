@@ -9,6 +9,7 @@ import { logAudit } from "@/lib/audit";
 import { getSettings } from "@/lib/content";
 import { getDb, schema } from "@/lib/db";
 import { addDays, today } from "@/lib/format";
+import { sendOrderMail } from "@/lib/order-mails";
 import { int, isIsoDate, isUuid, opt, s } from "@/lib/validate";
 
 export async function updateOrderStatusAction(fd: FormData) {
@@ -72,4 +73,13 @@ export async function createInvoiceFromOrderAction(fd: FormData) {
   await db.update(schema.payments).set({ invoiceId }).where(eq(schema.payments.orderId, id));
   await logAudit(user, "facture créée depuis commande", "facture", invoiceId, o.ref);
   redirect(`/admin/factures/${invoiceId}?ok=created`);
+}
+
+/** Renvoie la commande par e-mail aux commerciaux (après un échec, ou si les adresses ont changé dans les réglages). */
+export async function resendOrderMailAction(fd: FormData) {
+  await requireActionUser("orders.write");
+  const id = s(fd, "id");
+  if (!isUuid(id)) redirect("/admin/commandes?ok=notfound");
+  const res = await sendOrderMail(id);
+  redirect(`/admin/commandes/${id}?ok=${res.ok ? "order-mailed" : "order-mail-failed"}`);
 }

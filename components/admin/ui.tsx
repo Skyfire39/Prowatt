@@ -301,6 +301,8 @@ const flashMessages: Record<string, { tone: "ok" | "err"; text: string }> = {
   notissued: { tone: "err", text: "Émettez d'abord la facture pour enregistrer un paiement." },
   issued: { tone: "ok", text: "Document émis." },
   "req-mailed": { tone: "ok", text: "Envoi des e-mails relancé : le résultat est indiqué dans le bloc « E-mails »." },
+  "order-mailed": { tone: "ok", text: "Commande envoyée par e-mail aux commerciaux." },
+  "order-mail-failed": { tone: "err", text: "L'e-mail aux commerciaux n'est pas parti : le motif est indiqué dans le bloc « E-mail aux commerciaux »." },
   "req-customer": { tone: "ok", text: "Fiche client prête : vous pouvez maintenant lui préparer un devis." },
   "nl-synced": { tone: "ok", text: "Abonné envoyé à Mailchimp." },
   "nl-failed": { tone: "err", text: "Mailchimp a refusé l'envoi : le motif est indiqué dans la colonne « Mailchimp »." },

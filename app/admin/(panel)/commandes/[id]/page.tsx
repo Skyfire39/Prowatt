@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, like } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { SubmitButton } from "@/components/admin/client";
 import { Badge, DataTable, Field, Flash, PageHeader, Panel, Td, inputClass, selectClass } from "@/components/admin/ui";
@@ -12,7 +12,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db";
 import { ar, fmtDate, fmtDateTime, today } from "@/lib/format";
 import { isUuid } from "@/lib/validate";
-import { createInvoiceFromOrderAction, recordOrderPaymentAction, updateOrderStatusAction } from "../actions";
+import { createInvoiceFromOrderAction, recordOrderPaymentAction, resendOrderMailAction, updateOrderStatusAction } from "../actions";
 
 export const metadata: Metadata = { title: "Commande" };
 const payLabel = { paid: "Payée", pending: "En attente", partial: "Partielle", unpaid: "Non payée" } as const;
@@ -27,11 +27,19 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
   const [o] = await db.select().from(schema.orders).where(eq(schema.orders.id, id)).limit(1);
   if (!o) notFound();
 
-  const [items, pays, customer, invoice] = await Promise.all([
+  const [items, pays, customer, invoice, lastMail] = await Promise.all([
     db.select().from(schema.orderItems).where(eq(schema.orderItems.orderId, id)).orderBy(asc(schema.orderItems.name)),
     db.select().from(schema.payments).where(eq(schema.payments.orderId, id)).orderBy(desc(schema.payments.createdAt)),
     o.customerId ? db.select().from(schema.customers).where(eq(schema.customers.id, o.customerId)).limit(1).then((r) => r[0]) : Promise.resolve(undefined),
     o.invoiceId ? db.select({ id: schema.invoices.id, number: schema.invoices.number, status: schema.invoices.status }).from(schema.invoices).where(eq(schema.invoices.id, o.invoiceId)).limit(1).then((r) => r[0]) : Promise.resolve(undefined),
+    // Dernier envoi de l'e-mail aux commerciaux, tel qu'inscrit dans le journal d'activité.
+    db
+      .select({ action: schema.auditLog.action, detail: schema.auditLog.detail, at: schema.auditLog.createdAt })
+      .from(schema.auditLog)
+      .where(and(eq(schema.auditLog.entity, "commande"), eq(schema.auditLog.entityId, id), like(schema.auditLog.action, "%e-mail aux commerciaux%")))
+      .orderBy(desc(schema.auditLog.createdAt))
+      .limit(1)
+      .then((r) => r[0]),
   ]);
 
   const st = orderStatuses[o.status as OrderStatus] ?? orderStatuses.new;
@@ -149,6 +157,23 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
               </form>
             </Panel>
           )}
+
+          <Panel title="E-mail aux commerciaux" subtitle="Envoyé automatiquement à la commande, selon Paramètres → E-mails.">
+            <div className="flex items-center justify-between gap-3 text-sm">
+              <span className="text-muted">{lastMail ? fmtDateTime(lastMail.at) : "Aucun envoi enregistré"}</span>
+              <Badge tone={!lastMail ? "neutral" : lastMail.action.startsWith("échec") ? "red" : lastMail.action.includes("non envoyé") ? "amber" : "teal"}>{!lastMail ? "Non envoyé" : lastMail.action.startsWith("échec") ? "Échec" : lastMail.action.includes("non envoyé") ? "Non envoyé" : "Envoyé"}</Badge>
+            </div>
+            {lastMail?.detail && <p className={`mt-3 break-words rounded-xl px-3 py-2 text-xs ${lastMail.action.startsWith("échec") ? "border border-red-300 bg-red-50 text-red-800" : "bg-accent-soft/60 text-muted"}`}>{lastMail.detail}</p>}
+            {canWrite && (
+              <form action={resendOrderMailAction} className="mt-4">
+                <input type="hidden" name="id" value={o.id} />
+                <SubmitButton variant="soft" pendingLabel="Envoi…" className="w-full">
+                  <MailIcon className="size-4" />
+                  {lastMail ? "Renvoyer aux commerciaux" : "Envoyer aux commerciaux"}
+                </SubmitButton>
+              </form>
+            )}
+          </Panel>
 
           <Panel title="Facture">
             {invoice ? (

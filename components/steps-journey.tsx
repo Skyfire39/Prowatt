@@ -2,9 +2,9 @@
 
 import { AnimatePresence, motion, useInView } from "motion/react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { BoltIcon, QuoteIcon, SearchIcon, ShieldIcon, WrenchIcon } from "./icons";
+import { BoltIcon, HardHatIcon, QuoteIcon, SearchIcon, ShieldIcon } from "./icons";
 
-const icons = [SearchIcon, QuoteIcon, WrenchIcon, BoltIcon, ShieldIcon];
+const icons = [SearchIcon, QuoteIcon, HardHatIcon, BoltIcon, ShieldIcon];
 const STEP_MS = 3400;
 
 const subscribe = (notify: () => void) => {

@@ -237,6 +237,15 @@ export const TrashIcon = (p: IconProps) => (
   </svg>
 );
 
+/** Casque de chantier : l'installation. */
+export const HardHatIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M10 10V5.5a1.2 1.2 0 0 1 1.2-1.2h1.6A1.2 1.2 0 0 1 14 5.5V10" />
+    <path d="M14 6.4a6.5 6.5 0 0 1 5.5 6.4V15M4.5 15v-2.2A6.5 6.5 0 0 1 10 6.4" />
+    <rect x="2.5" y="15" width="19" height="4" rx="1.4" />
+  </svg>
+);
+
 export const TruckIcon = (p: IconProps) => (
   <svg {...base} {...p}>
     <path d="M3 6h11v10H3zM14 9h4l3 3.5V16h-7" />

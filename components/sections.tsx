@@ -9,6 +9,7 @@ import { ModelSlider } from "./model-slider";
 import { AudienceArt } from "./audience-art";
 import { SolutionArt } from "./solution-art";
 import { SolutionPicker } from "./solution-picker";
+import { StepsJourney } from "./steps-journey";
 import { TestimonialSlider } from "./testimonial-slider";
 import { WhyCards } from "./why-cards";
 import {
@@ -189,19 +190,9 @@ export function Steps({ dict }: { dict: Home["steps"] }) {
     <section className="px-4 py-24 sm:px-6 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={dict.eyebrow} title={dict.title} />
-        <div className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          {dict.items.map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.08}>
-              <div className="glass flex h-full flex-col rounded-3xl p-6">
-                <span className="grid size-10 place-items-center rounded-full bg-accent text-lg font-semibold text-on-accent">
-                  {i + 1}
-                </span>
-                <h3 className="mt-6 text-xl leading-snug tracking-tight">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal y={30}>
+          <StepsJourney items={dict.items} />
+        </Reveal>
       </div>
     </section>
   );

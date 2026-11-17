@@ -12,7 +12,7 @@ import { useState } from "react";
 export default function Image(props: ImageProps) {
   const [loaded, setLoaded] = useState(false);
   if (!props.fill || props.priority) return <NextImage {...props} />;
-  const { className = "", onLoad, ...rest } = props;
+  const { className = "", onLoad, onError, ...rest } = props;
   return (
     <>
       {!loaded && <span aria-hidden="true" className="skeleton pointer-events-none absolute inset-0" />}
@@ -25,6 +25,11 @@ export default function Image(props: ImageProps) {
         onLoad={(e) => {
           setLoaded(true);
           onLoad?.(e);
+        }}
+        // En cas d'erreur, on retire le squelette : jamais de chargement sans fin.
+        onError={(e) => {
+          setLoaded(true);
+          onError?.(e);
         }}
         className={`sk-img ${className} transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
       />

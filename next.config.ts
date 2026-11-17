@@ -42,8 +42,8 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: securityHeaders },
       // L'administration et les API ne doivent jamais être indexées.
       { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
-      // Les photos de /api/media/ restent indexables (images des fiches produit) ; le reste de l'API ne l'est jamais.
-      { source: "/api/:path((?!media/).*)", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      // Les photos de /api/media/ et /api/img restent indexables (images des fiches produit) ; le reste de l'API ne l'est jamais.
+      { source: "/api/:path((?!media/|img).*)", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
     ];
   },
   /* config options here */
@@ -56,10 +56,10 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "20mb" },
   },
   images: {
-    // AVIF puis WebP : bien plus léger que le PNG ou le JPEG d'origine, avec une qualité visuelle identique.
-    formats: ["image/avif", "image/webp"],
-    // Une image optimisée reste 31 jours en cache (les photos du site ne changent pas à l'adresse près).
-    minimumCacheTTL: 60 * 60 * 24 * 31,
+    // Redimensionnement fait par le site lui-même (voir lib/image-loader.ts) : l'optimiseur de Vercel a un quota
+    // mensuel, et une fois dépassé il renvoie une erreur 402 au lieu de l'image.
+    loader: "custom",
+    loaderFile: "./lib/image-loader.ts",
   },
   cacheComponents: true,
   partialPrefetching: true,

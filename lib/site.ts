@@ -2,10 +2,10 @@
 export const site = {
   name: "Prowatt Madagascar",
   email: "info@prowattmadagascar.com",
-  phone: "+261 34 34 222 20",
-  phoneHref: "tel:+261343422220",
+  phone: "+261 38 12 310 11",
+  phoneHref: "tel:+261381231011",
   // Numéro du site utilisé pour WhatsApp (format international sans « + »).
-  whatsappNumber: "261343422220",
+  whatsappNumber: "261381231011",
   address: {
     fr: "Antananarivo, Ankadifotsy, à 20 m de la station Shell",
     en: "Antananarivo, Ankadifotsy, 20 m from the Shell station",

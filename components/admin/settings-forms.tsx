@@ -26,7 +26,7 @@ export function CompanyForm({ v }: { v: AppSettings["company"] }) {
           <Field label="Téléphone" required>
             <input name="phone" defaultValue={v.phone} required className={inputClass} />
           </Field>
-          <Field label="Numéro WhatsApp" required hint="Format international sans « + », ex. 261343422220." className="sm:col-span-2">
+          <Field label="Numéro WhatsApp" required hint="Format international sans « + », ex. 261381231011." className="sm:col-span-2">
             <input name="whatsappNumber" defaultValue={v.whatsappNumber} required className={inputClass} />
           </Field>
           <Field label="Adresse">

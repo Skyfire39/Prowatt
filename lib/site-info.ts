@@ -12,13 +12,19 @@ export type SiteInfo = {
   payment: AppSettings["payment"];
 };
 
+/** Numéro au format international sans « + » : un numéro malgache saisi en local (038…) devient 26138…. */
+export const intlDigits = (phone: string) => {
+  const d = phone.replace(/\D/g, "");
+  return d.startsWith("0") ? `261${d.slice(1)}` : d;
+};
+
 export function toSiteInfo(s: AppSettings): SiteInfo {
   return {
     name: s.company.name,
     email: s.company.email,
     phone: s.company.phone,
-    phoneHref: `tel:+${s.company.phone.replace(/\D/g, "")}`,
-    whatsappNumber: s.company.whatsappNumber,
+    phoneHref: `tel:+${intlDigits(s.company.phone)}`,
+    whatsappNumber: intlDigits(s.company.whatsappNumber),
     address: s.company.address,
     hours: s.company.hours,
     payment: s.payment,

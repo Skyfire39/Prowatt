@@ -5,6 +5,7 @@ import { sql } from "drizzle-orm";
 import { requireActionUser } from "@/lib/auth/session";
 import { logAudit } from "@/lib/audit";
 import { getDb, schema } from "@/lib/db";
+import { intlDigits } from "@/lib/site-info";
 import { getSettings } from "@/lib/content";
 import { sendMail } from "@/lib/mail";
 import { renderMail } from "@/lib/mail-templates";
@@ -25,7 +26,8 @@ export async function saveCompanyAction(_: FormState, fd: FormData): Promise<For
   const name = s(fd, "name");
   const email = s(fd, "email");
   const phone = s(fd, "phone");
-  const wa = s(fd, "whatsappNumber").replace(/\D/g, "");
+  // Un numéro saisi en local (034…, 038…) est converti au format international (26134…, 26138…).
+  const wa = intlDigits(s(fd, "whatsappNumber"));
   if (name.length < 2) return { error: "Le nom de l'entreprise est obligatoire." };
   if (!isEmail(email)) return { error: "Adresse e-mail invalide." };
   if (phone.replace(/\D/g, "").length < 7) return { error: "Numéro de téléphone invalide." };

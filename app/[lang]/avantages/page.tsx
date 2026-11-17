@@ -4,11 +4,8 @@ import {
   DropIcon,
   GridIcon,
   HomeIcon,
-  LeafIcon,
-  PanelIcon,
   ShieldIcon,
   SunIcon,
-  BoltIcon,
 } from "@/components/icons";
 import { AdvantagesBanner } from "@/components/advantages-banner";
 import { Faq } from "@/components/faq";
@@ -28,7 +25,6 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/avantages"
 }
 
 const solIcons = [HomeIcon, BatteryIcon, GridIcon, ShieldIcon, SunIcon, DropIcon];
-const benIcons = [BoltIcon, LeafIcon, PanelIcon, ShieldIcon];
 
 export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avantages">) {
   const { dict } = await loadPage(params);
@@ -67,29 +63,6 @@ export default async function AdvantagesPage({ params }: PageProps<"/[lang]/avan
         </div>
       </section>
 
-      <section className="px-4 py-20 sm:px-6 sm:py-28">
-        <div className="mx-auto max-w-6xl">
-          <SectionHead eyebrow={d.eyebrow} title={d.benefitsTitle} />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2">
-            {d.benefits.map((b, i) => {
-              const Icon = benIcons[i];
-              return (
-                <Reveal key={b.title} delay={(i % 2) * 0.1}>
-                  <div className="glass flex h-full gap-5 rounded-2xl p-7">
-                    <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
-                      <Icon className="size-6" />
-                    </span>
-                    <div>
-                      <h3 className="text-2xl tracking-tight">{b.title}</h3>
-                      <p className="mt-2 leading-relaxed text-muted">{b.text}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       <WarrantySection
         eyebrow={d.warranty.eyebrow}

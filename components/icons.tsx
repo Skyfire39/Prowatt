@@ -96,6 +96,17 @@ export const KeyIcon = (p: IconProps) => (
   </svg>
 );
 
+/** Scooter de profil, tourné vers la gauche : tablier, plancher, selle et carénage arrière. */
+export const ScooterIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <circle cx="5.5" cy="17.5" r="2.5" />
+    <circle cx="18.5" cy="17.5" r="2.5" />
+    <path d="M7 4h3M8.5 4 5.4 15" />
+    <path d="M5.4 15c.8 1 2 1.5 3.6 1.5h4c0-3 2-4.5 4.5-4.5H20c1 0 1.4.9 1 1.8l-.6 1.4" />
+    <path d="M12.5 10.5h6.5M14 10.5l-.5 2" />
+  </svg>
+);
+
 export const ShieldIcon = (p: IconProps) => (
   <svg {...base} {...p}>
     <path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3ZM9 12l2 2 4-4" />

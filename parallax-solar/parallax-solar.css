@@ -33,7 +33,12 @@
   --ps-roof-far: #b9cde6;
   --ps-roof-near: #8ea7c9;
   /* Moto */
-  --ps-moto: #2ecc71;
+  --ps-moto: #8cc63f;
+  --ps-moto-hi: #c4e69a;
+  --ps-moto-ink: #2b2d42;
+  --ps-moto-floor: #eef2f6;
+  --ps-moto-floor-shade: #c9d3de;
+  --ps-taillight: #e5484d;
   --ps-dark: #22303f;
 
   /* Position : plein écran fixe derrière le contenu. */
@@ -108,16 +113,24 @@
 .ps-driveway { fill: var(--ps-driveway); }
 .ps-shadow { fill: #0b1d33; opacity: 0.18; }
 
-.ps-wheel circle { fill: var(--ps-dark); }
-.ps-rim circle { fill: var(--ps-house); }
-.ps-hub circle { fill: #9fb0c6; }
-.ps-fork { stroke: var(--ps-dark); stroke-width: 9; stroke-linecap: round; fill: none; }
+.ps-wheel circle { fill: var(--ps-moto-ink); }
+.ps-rim circle { fill: var(--ps-moto-floor); }
+.ps-hub circle { fill: var(--ps-moto-ink); }
+.ps-hub-dot circle { fill: var(--ps-moto-floor-shade); }
+.ps-fork { stroke: var(--ps-moto-ink); stroke-width: 8; stroke-linecap: round; fill: none; }
 .ps-moto-body { fill: var(--ps-moto); }
-.ps-moto-dark { fill: var(--ps-panel); }
-.ps-handlebar { stroke: var(--ps-panel); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; fill: none; }
-.ps-headlight { fill: var(--ps-sun); }
-.ps-battery-pack { fill: var(--ps-sky-low); }
-.ps-socket { fill: var(--ps-sun); stroke: var(--ps-panel); stroke-width: 3; }
+.ps-moto-ink { fill: var(--ps-moto-ink); }
+.ps-moto-seat { fill: var(--ps-moto-ink); }
+.ps-moto-floor { fill: var(--ps-moto-floor); }
+.ps-moto-floor-edge { fill: none; stroke: var(--ps-moto-floor-shade); stroke-width: 3; stroke-linecap: round; }
+.ps-moto-shine { fill: none; stroke: var(--ps-moto-hi); stroke-width: 4; stroke-linecap: round; opacity: 0.85; }
+.ps-moto-decal { fill: none; stroke: var(--ps-moto-ink); stroke-width: 2.5; stroke-linecap: round; opacity: 0.55; }
+.ps-moto-grill { fill: none; stroke: #4a4d66; stroke-width: 2.5; stroke-linecap: round; }
+.ps-moto-rack { fill: none; stroke: var(--ps-moto-ink); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.ps-mirror-stem { fill: none; stroke: var(--ps-moto-ink); stroke-width: 3; stroke-linecap: round; }
+.ps-taillight { fill: var(--ps-taillight); }
+.ps-headlight { fill: #f7fafc; stroke: var(--ps-moto-floor-shade); stroke-width: 2; }
+.ps-socket { fill: var(--ps-sun); stroke: var(--ps-moto-ink); stroke-width: 3; }
 
 .ps-cable { fill: none; stroke: var(--ps-dark); stroke-width: 6; stroke-linecap: round; }
 .ps-batt-frame { fill: #fff; stroke: var(--ps-panel); stroke-width: 6; }

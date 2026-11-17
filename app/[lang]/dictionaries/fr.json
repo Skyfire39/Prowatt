@@ -777,7 +777,12 @@
     "from": "À partir de",
     "subLabel": "Batterie",
     "catalogue": "Tout le catalogue",
-    "catalogueHint": "Tous les produits Prowatt, par catégorie."
+    "catalogueHint": "Tous les produits Prowatt, par catégorie.",
+    "catalogueProducts": "produits",
+    "catalogueCategories": "catégories",
+    "catalogueMore": "Voir les {n} autres",
+    "catalogueMoreOne": "Voir l'autre produit",
+    "catalogueLess": "Réduire"
   },
   "contact": {
     "eyebrow": "Contact",

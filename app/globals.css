@@ -637,3 +637,26 @@ body:has([data-sticky-buy]) .floating-contact {
 
 
 
+
+/* Index du catalogue (boutique) : ouverture en douceur de « Voir les N autres ». */
+.cat-more {
+  interpolate-size: allow-keywords;
+}
+.cat-more::details-content {
+  block-size: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    block-size 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease,
+    content-visibility 0.45s allow-discrete;
+}
+.cat-more[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cat-more::details-content {
+    transition: none;
+  }
+}

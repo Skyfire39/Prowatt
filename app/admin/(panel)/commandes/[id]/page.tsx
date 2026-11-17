@@ -6,7 +6,7 @@ import { SubmitButton } from "@/components/admin/client";
 import { Badge, DataTable, Field, Flash, PageHeader, Panel, Td, inputClass, selectClass } from "@/components/admin/ui";
 import { InvoiceIcon } from "@/components/admin/icons";
 import { MailIcon, PhoneIcon } from "@/components/icons";
-import { orderStatuses, orderStatusList, paymentMethods, type OrderStatus } from "@/lib/admin/status";
+import { orderPayKey, orderPayLabel, orderStatuses, orderStatusList, paymentMethods, type OrderStatus } from "@/lib/admin/status";
 import { can } from "@/lib/auth/permissions";
 import { requireUser } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db";
@@ -39,7 +39,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
   const paid = pays.reduce((s, p) => s + p.amount, 0);
   const remaining = Math.max(0, o.total - paid);
   const canWrite = can(user.role, "orders.write");
-  const methodKey = o.paymentMethod === "bank" ? "virement" : o.paymentMethod === "card" ? "carte" : o.paymentMethod;
+  const methodKey = orderPayKey(o.paymentMethod);
 
   return (
     <>
@@ -95,7 +95,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
           <Panel title="Paiements reçus" subtitle={`${ar(paid)} reçus sur ${ar(o.total)}`} flush>
             {pays.length === 0 ? (
               <p className="px-7 pb-6 text-sm text-muted">
-                Aucun paiement enregistré. Mode choisi par le client : <strong>{paymentMethods[methodKey as keyof typeof paymentMethods] ?? o.paymentMethod}</strong>.
+                Aucun paiement enregistré. Mode choisi par le client : <strong>{orderPayLabel(o.paymentMethod)}</strong>.
                 {o.paymentTx && <> Transaction MVola en cours : {o.paymentTx}.</>}
               </p>
             ) : (

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { and, desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm";
 import { Badge, DataTable, Empty, FilterBar, Flash, PageHeader, Pagination, Panel, Td, inputClass, selectClass } from "@/components/admin/ui";
 import { BagIcon } from "@/components/icons";
-import { orderStatuses, orderStatusList, paymentMethods, type OrderStatus, type PaymentMethod } from "@/lib/admin/status";
+import { orderPayLabel, orderStatuses, orderStatusList, type OrderStatus } from "@/lib/admin/status";
 import { requireUser } from "@/lib/auth/session";
 import { getDb, schema } from "@/lib/db";
 import { ar, fmtDateTime, num } from "@/lib/format";
@@ -94,7 +94,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
                   <Td right>{r.items}</Td>
                   <Td>
                     <Badge tone={payTone[pay]}>{payLabel[pay]}</Badge>
-                    <p className="mt-1 text-xs text-muted">{paymentMethods[(r.paymentMethod === "bank" ? "virement" : r.paymentMethod === "card" ? "carte" : r.paymentMethod) as PaymentMethod] ?? r.paymentMethod}</p>
+                    <p className="mt-1 text-xs text-muted">{orderPayLabel(r.paymentMethod)}</p>
                   </Td>
                   <Td>
                     <Badge tone={st.tone}>{st.label}</Badge>

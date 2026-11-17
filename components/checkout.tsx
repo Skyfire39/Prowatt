@@ -359,21 +359,27 @@ export function Checkout({
                 <legend className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-accent">{dict.payTitle}</legend>
                 <div className="grid gap-3 sm:grid-cols-3">
                   {payMethods.map((m) => (
-                    <label key={m.id} className="block cursor-pointer">
+                    <label key={m.id} className={`block ${m.soon ? "cursor-not-allowed" : "cursor-pointer"}`}>
                       <input
                         type="radio"
                         name="pay"
                         value={m.id}
                         checked={pay === m.id}
+                        disabled={m.soon}
                         onChange={() => setPay(m.id)}
                         className="peer sr-only"
                       />
-                      <span className="flex h-full min-h-24 flex-col gap-2 rounded-2xl border border-line bg-white/50 px-4 py-3.5 backdrop-blur-md transition peer-checked:border-accent peer-checked:bg-accent peer-checked:text-on-accent peer-focus-visible:ring-4 peer-focus-visible:ring-accent/30 hover:border-accent">
+                      <span
+                        className={`flex h-full min-h-24 flex-col gap-2 rounded-2xl border border-line bg-white/50 px-4 py-3.5 backdrop-blur-md transition peer-checked:border-accent peer-checked:bg-accent peer-checked:text-on-accent peer-focus-visible:ring-4 peer-focus-visible:ring-accent/30 ${
+                          m.soon ? "opacity-60" : "hover:border-accent"
+                        }`}
+                      >
                         <m.icon className="size-6" />
                         <span>
                           <span className="block font-semibold">{dict[m.title]}</span>
                           <span className="block text-sm opacity-75">{dict[m.text]}</span>
                         </span>
+                        {m.soon && <span className="mt-auto w-fit rounded-full bg-lime px-2.5 py-1 text-[11px] font-semibold text-teal">{dict.paySoon}</span>}
                       </span>
                     </label>
                   ))}

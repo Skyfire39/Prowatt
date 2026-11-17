@@ -31,6 +31,10 @@ export const paymentMethods = {
 export type PaymentMethod = keyof typeof paymentMethods;
 export const isPaymentMethod = (v: string): v is PaymentMethod => v in paymentMethods;
 
+/** Mode choisi par le client à la commande (mvola, cod, et les anciens bank / card) → mode de règlement de l'admin. */
+export const orderPayKey = (m: string) => (m === "bank" ? "virement" : m === "card" ? "carte" : m === "cod" ? "especes" : m);
+export const orderPayLabel = (m: string) => (m === "cod" ? "À la livraison (espèces)" : (paymentMethods[orderPayKey(m) as PaymentMethod] ?? m));
+
 export type InvoiceState = "draft" | "cancelled" | "paid" | "partial" | "overdue" | "due";
 export const invoiceStates: Record<InvoiceState, { label: string; tone: Tone }> = {
   draft: { label: "Brouillon", tone: "neutral" },

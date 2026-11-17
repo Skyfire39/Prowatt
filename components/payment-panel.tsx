@@ -4,18 +4,21 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import type { PaymentConfig } from "@/lib/site";
-import { ArrowIcon, BuildingIcon, CardIcon, CheckIcon, CopyIcon, PhoneIcon } from "./icons";
+import { ArrowIcon, CardIcon, CheckIcon, CopyIcon, PhoneIcon, TruckIcon } from "./icons";
 
-export type PayMethod = "mvola" | "bank" | "card";
+/** « cod » : paiement à la livraison (ou au retrait en boutique), en espèces. */
+export type PayMethod = "mvola" | "cod" | "card";
 export const payMethods: {
   id: PayMethod;
   icon: typeof CardIcon;
-  title: "payMvola" | "payBank" | "payCard";
-  text: "payMvolaText" | "payBankText" | "payCardText";
+  title: "payMvola" | "payCod" | "payCard";
+  text: "payMvolaText" | "payCodText" | "payCardText";
+  /** Affiché mais pas encore proposé : « Bientôt disponible ». */
+  soon?: boolean;
 }[] = [
   { id: "mvola", icon: PhoneIcon, title: "payMvola", text: "payMvolaText" },
-  { id: "bank", icon: BuildingIcon, title: "payBank", text: "payBankText" },
-  { id: "card", icon: CardIcon, title: "payCard", text: "payCardText" },
+  { id: "cod", icon: TruckIcon, title: "payCod", text: "payCodText" },
+  { id: "card", icon: CardIcon, title: "payCard", text: "payCardText", soon: true },
 ];
 
 type Dict = Dictionary["checkout"];
@@ -60,9 +63,9 @@ function Row({ label, value, dict, copy = true }: { label: string; value: string
 }
 
 /**
- * Consignes de paiement du mode choisi. Aucune donnée bancaire n'est saisie ici : MVola et virement
- * affichent les coordonnées de Prowatt (à copier), la carte passe par le lien de paiement sécurisé
- * du prestataire. Un champ non renseigné dans la config est simplement omis.
+ * Consignes de paiement du mode choisi. Aucune donnée bancaire n'est saisie ici : MVola affiche les coordonnées
+ * de Prowatt (à copier), le paiement à la livraison se règle en espèces à la réception. Un champ non renseigné
+ * dans la config est simplement omis.
  */
 export function PaymentPanel({
   method,
@@ -79,7 +82,6 @@ export function PaymentPanel({
 }) {
   const fill = (t: string) => t.replace("{amount}", amount).replace("{ref}", reference);
   const mv = config.mvola;
-  const bk = config.bank;
 
   const rows: { label: string; value: string; copy?: boolean }[] =
     method === "mvola"
@@ -87,15 +89,9 @@ export function PaymentPanel({
           { label: dict.mvolaNumber, value: mv.number },
           { label: dict.mvolaHolder, value: mv.holder, copy: false },
         ]
-      : method === "bank"
-        ? [
-            { label: dict.bankName, value: bk.bank, copy: false },
-            { label: dict.bankHolder, value: bk.holder },
-            { label: dict.bankAccount, value: bk.account },
-          ]
-        : [];
+      : [];
   const filled = rows.filter((r) => r.value);
-  const intro = method === "mvola" ? fill(dict.mvolaIntro) : method === "bank" ? fill(dict.bankIntro) : dict.cardIntro;
+  const intro = method === "mvola" ? fill(dict.mvolaIntro) : method === "cod" ? fill(dict.codIntro) : dict.cardIntro;
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -130,7 +126,7 @@ export function PaymentPanel({
             <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
           </a>
         ) : (
-          method !== "card" &&
+          method === "mvola" &&
           filled.length === 0 && <p className="mt-3 text-sm leading-relaxed text-muted">{dict.payTbd}</p>
         )}
       </motion.div>

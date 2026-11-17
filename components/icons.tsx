@@ -237,6 +237,14 @@ export const TrashIcon = (p: IconProps) => (
   </svg>
 );
 
+export const TruckIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 6h11v10H3zM14 9h4l3 3.5V16h-7" />
+    <circle cx="7" cy="17.5" r="1.8" />
+    <circle cx="17.5" cy="17.5" r="1.8" />
+  </svg>
+);
+
 export const BagIcon = (p: IconProps) => (
   <svg {...base} {...p}>
     <path d="M5 8h14l-1 12H6L5 8ZM9 8V6a3 3 0 0 1 6 0v2" />

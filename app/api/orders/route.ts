@@ -46,7 +46,8 @@ export async function POST(request: Request) {
   const address = clean(b.address, 200);
   const city = clean(b.city, 80);
   const note = clean(b.note, 500);
-  const pay = ["mvola", "bank", "card"].includes(String(b.pay)) ? (b.pay as string) : "mvola";
+  // Modes proposés : MVola ou paiement à la livraison (la carte est « bientôt disponible », le virement n'est plus proposé).
+  const pay = ["mvola", "cod"].includes(String(b.pay)) ? (b.pay as string) : "mvola";
   const lang = "fr";
 
   if (!REF.test(ref) || name.length < 2 || phone.replace(/\D/g, "").length < 7) return json({ ok: false, error: "bad_request" }, 400);

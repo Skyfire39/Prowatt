@@ -49,6 +49,8 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     agentFeedback: true,
+    // Mises à jour de Next.js menées par un agent : correctifs de sécurité seulement.
+    agentUpgrade: "security",
     // 404 des adresses qui ne correspondent à aucune page (le layout racine est sous un segment dynamique [lang]).
     globalNotFound: true,
     // Les formulaires d'administration envoient des photos (2 Mo chacune, plusieurs dans la fiche d'un modèle) :

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Reddit_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { BrandWatermark } from "@/components/brand-watermark";
 import { JsonLd } from "@/components/json-ld";
 import { CartDrawer } from "@/components/cart-drawer";
@@ -91,6 +92,7 @@ export default async function RootLayout({
             />
           </CatalogProvider>
         </MotionProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
